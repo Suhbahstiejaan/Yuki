@@ -1,0 +1,414 @@
+{
+  "commands": [
+    {
+      "name": "scramblr",
+      "summary": "Mixes messages",
+      "usage": "y!scramblr\ny!scramblr @user"
+    },
+    {
+      "name": "help",
+      "summary": "Provides usage information for commands",
+      "usage": "y!help\ny!help commandName\ny!help moduleName\n\n"
+    },
+    {
+      "name": "info",
+      "summary": "Provides bot statistics",
+      "usage": "y!info"
+    },
+    {
+      "name": "leave",
+      "summary": "Leaves the current audio channel",
+      "usage": "Execute y!leave while in a voice channel"
+    },
+    {
+      "name": "queue",
+      "summary": "Gets the current song queue",
+      "usage": "y!queue"
+    },
+    {
+      "name": "play",
+      "summary": "Plays a song in the current audio channel or adds it to the queue",
+      "usage": "y!play url"
+    },
+    {
+      "name": "8ball",
+      "summary": "Answers yes and no questions",
+      "usage": "y!8ball question"
+    },
+    {
+      "name": "hug",
+      "summary": "Free hugs!",
+      "usage": "y!hug\ny!hug @user"
+    },
+    {
+      "name": "avatar",
+      "summary": "Gets a users avatar",
+      "usage": "y!avatar\ny!avatar @user"
+    },
+    {
+      "name": "dog",
+      "summary": "Cute dog pictures!",
+      "usage": "y!dog"
+    },
+    {
+      "name": "cat",
+      "summary": "Cute cat pictures!",
+      "usage": "y!cat"
+    },
+    {
+      "name": "userinfo",
+      "summary": "Gets information about a user",
+      "usage": "y!userinfo\ny!userinfo @user"
+    },
+    {
+      "name": "serverinfo",
+      "summary": "Gets information about a server",
+      "usage": "y!serverinfo"
+    },
+    {
+      "name": "ping",
+      "summary": "Pong!",
+      "usage": "y!ping"
+    },
+    {
+      "name": "calc",
+      "summary": "Maths",
+      "usage": "y!calc operation"
+    },
+    {
+      "name": "roll",
+      "summary": "Roll the dice! What did you get?",
+      "usage": "y!roll maxNum"
+    },
+    {
+      "name": "goodnight",
+      "summary": "Goodnight.",
+      "usage": "y!goodnight"
+    },
+    {
+      "name": "booru",
+      "summary": "Random anime images!",
+      "usage": "y!booru\ny!booru search term"
+    },
+    {
+      "name": "remindme",
+      "summary": "Get a reminder!",
+      "usage": "y!remindme minutes Message"
+    },
+    {
+      "name": "roleinfo",
+      "summary": "Get information on a role",
+      "usage": "y!roleinfo role name"
+    },
+    {
+      "name": "flip",
+      "summary": "Flip a coin! What side did it land on?",
+      "usage": "y!flip"
+    },
+    {
+      "name": "pick",
+      "summary": "Can't decide between some things? Lemme pick for you!",
+      "usage": "y!pick option1 | option2 | etc"
+    },
+    {
+      "name": "kiss",
+      "summary": "Give that super cool person you know a kiss!",
+      "usage": "y!kiss @user"
+    },
+    {
+      "name": "pat",
+      "summary": "Pats for  everyone!",
+      "usage": "y!pat @user"
+    },
+    {
+      "name": "slap",
+      "summary": "Give that person that's been bothering you a *slap!*",
+      "usage": "y!slap @user"
+    },
+    {
+      "name": "tickle",
+      "summary": "Tickle someone!",
+      "usage": "y!tickle @user"
+    },
+    {
+      "name": "sad",
+      "summary": "For those emotional moments",
+      "usage": "y!sad"
+    },
+    {
+      "name": "lewd",
+      "summary": "D-Did someone say something per-perverted..? L-Lewd....",
+      "usage": "y!lewd"
+    },
+    {
+      "name": "role",
+      "summary": "Assign (or remove!) a role to/from yourself",
+      "usage": "y!role <role name>"
+    },
+    {
+      "name": "clear",
+      "summary": "Clears the last X amount of messages in the current channel",
+      "usage": "y!clear <amount>"
+    },
+    {
+      "name": "clear_with",
+      "summary": "Clears the last 100 messages that contain the specified phrase in the current channel",
+      "usage": "y!clear with <text>"
+    },
+    {
+      "name": "clear_user",
+      "summary": "Clears the last 100 messages from the specified user in the current channel",
+      "usage": "y!clear user <user>"
+    },
+    {
+      "name": "slowmode",
+      "summary": "Slows time (in seconds). y!slowmode to disable",
+      "usage": "y!slowmode\ny!slowmode <seconds>"
+    },
+    {
+      "name": "ban",
+      "summary": "Bans the specified user from the server",
+      "usage": "y!ban <user>"
+    },
+    {
+      "name": "kick",
+      "summary": "Kicks the specified user from the server",
+      "usage": "y!kick <user> <reason>"
+    },
+    {
+      "name": "mute",
+      "summary": "Mutes the specified user. Must set up a mute role first.",
+      "usage": "y!mute <user> <reason>"
+    },
+    {
+      "name": "unmute",
+      "summary": "Unmutes the specified user.",
+      "usage": "y!unmute <user> <reason>"
+    },
+    {
+      "name": "toggle",
+      "summary": "Enable/disable settings.\n\n**settings**:\n - **welcome** (for welcome messages)\n- **goodbye** (for goodbye messages)\n- **slowmodeAdmins**: whether or not admins are affected by slowmode\n- **logging**: enable/disable event logging for this server (must run y!set logchannel)",
+      "usage": "y!toggle <setting>"
+    },
+    {
+      "name": "delete_command",
+      "summary": "Deletes a custom command",
+      "usage": "y!delete command <commandName>"
+    },
+    {
+      "name": "delete_welcome",
+      "summary": "Deletes the custom welcome message",
+      "usage": "y!delete welcome"
+    },
+    {
+      "name": "delete_goodbye",
+      "summary": "Deletes the custom goodbye message",
+      "usage": "y!delete goodbye"
+    },
+    {
+      "name": "delete_welcomechannel",
+      "summary": "Deletes the stored welcome channel.",
+      "usage": "y!delete welcomechannel <channel>"
+    },
+    {
+      "name": "delete_nocache",
+      "summary": "Deletes a channel from the nocache table so messages in that channel can be cached again",
+      "usage": "y!delete nocache <channel-name>"
+    },
+    {
+      "name": "delete_muterole",
+      "summary": "Deletes the mute role",
+      "usage": "y!delete muterole"
+    },
+    {
+      "name": "delete_role",
+      "summary": "Deletes a custom role",
+      "usage": "y!delete role <Role Name>"
+    },
+    {
+      "name": "delete_warningaction",
+      "summary": "Delete a warning action",
+      "usage": "y!delete warningaction <warningNum> <action>\ny!delete warningaction <warningNum> <role name>"
+    },
+    {
+      "name": "delete_prefix",
+      "summary": "Deletes the custom prefix for this server",
+      "usage": "y!delete prefix <prefix>"
+    },
+    {
+      "name": "set_welcome",
+      "summary": "Sets/edits the welcome message.\nAdd %user% to the message to add in the new user's username\nAdd %muser% to the message to @mention the new user.\n\n*Note: Must have welcome messages enabled and a channel set*",
+      "usage": "y!set welcome <Welcome Message>"
+    },
+    {
+      "name": "set_goodbye",
+      "summary": "Sets/edits the goodbye message.\nAdd %user% to the message to add in the new user's username\nAdd %muser% to the message to @mention the new user.\n\n*Note: Must have goodbye messages enabled and a channel set*",
+      "usage": "y!set goodbye <Goodbye Message>"
+    },
+    {
+      "name": "set_command",
+      "summary": "Sets/edits a command and the response text",
+      "usage": "y!set command <command-name> <Command Text>\nTo mention the command executor, add %muser% to the text!\nTo insert the executor's username into the message, use %user%"
+    },
+    {
+      "name": "set_role",
+      "summary": "Sets/edits a custom role",
+      "usage": "y!set role <Role Name>"
+    },
+    {
+      "name": "set_nocache",
+      "summary": "Sets a channel to be ignored by Yuki's message caching feature",
+      "usage": "y!set nocache <channel-name>"
+    },
+    {
+      "name": "set_muterole",
+      "summary": "Sets/edits the mute role",
+      "usage": "y!set muterole <Role Name>"
+    },
+    {
+      "name": "set_welcomechannel",
+      "summary": "Set the channel where welcome/goodbye messages are sent",
+      "usage": "y!set welcomechannel <channel-name>"
+    },
+    {
+      "name": "set_rolecolor",
+      "summary": "Sets the color of a role",
+      "usage": "y!set rolecolor <Role Name> <hexcolor>"
+    },
+    {
+      "name": "set_warningaction",
+      "summary": "Set a warning action\nAvailable actions: ban, kick, applyrole",
+      "usage": "y!set warningaction <warningNum> <action>\ny!set warningAction <warningNum> <action> <role>"
+    },
+    {
+      "name": "set_logchannel",
+      "summary": "Sets the channel for logging",
+      "usage": "y!set logchannel <channel-name>"
+    },
+    {
+      "name": "set_prefix",
+      "summary": "Sets a custom prefix for this server",
+      "usage": "y!set prefix <prefix>"
+    },
+    {
+      "name": "ignoreserver",
+      "summary": "Toggles if all channels in the server should be ignored",
+      "usage": "y!ignoreserver"
+    },
+    {
+      "name": "warn",
+      "summary": "Warns a user",
+      "usage": "y!warn <user> <reason>"
+    },
+    {
+      "name": "unwarn",
+      "summary": "Removes a warning from a user",
+      "usage": "y!unwarn <user> <reason>"
+    },
+    {
+      "name": "warnings",
+      "summary": "List the warned users and their warnings in this guild",
+      "usage": "y!warnings"
+    },
+    {
+      "name": "set_game",
+      "summary": "Sets the bots game. BOT OWNER ONLY",
+      "usage": "y!set game <Text>"
+    },
+    {
+      "name": "set_pfp",
+      "summary": "Sets the bots pfp. BOT OWNER ONLY",
+      "usage": "y!set pfp <url>"
+    },
+    {
+      "name": "cachesize",
+      "summary": "Returns the total number of messages cached. BOT OWNER ONLY",
+      "usage": "y!cachesize\ny!cachesize thisserver"
+    },
+    {
+      "name": "backupdb",
+      "summary": "Performs a manual database backup. BOT OWNER ONLY",
+      "usage": "y!backupdb"
+    },
+    {
+      "name": "savecache",
+      "summary": "Performs a manual message cache backup. BOT OWNER ONLY",
+      "usage": "y!savecache"
+    },
+    {
+      "name": "vote",
+      "summary": "Casts a vote in a poll",
+      "usage": "y!vote <poll ID> <choice>"
+    },
+    {
+      "name": "commands",
+      "summary": "Lists the commands set in a server",
+      "usage": "y!commands <page number>"
+    },
+    {
+      "name": "roles",
+      "summary": "Lists the assignable roles in a server",
+      "usage": "y!roles <page number>"
+    },
+    {
+      "name": "createpoll",
+      "summary": "Creates a new poll",
+      "usage": "y!createpoll <poll name> | <options> | <end time>\n\n**options:** each option is separated with a ,**\n**end time:** when this poll ends.\nexamples: 2d 4h 3m\n4h 3m\n3d\n\nDays are represented by a \"d\", hours by an \"h\", and minutes my an \"m\". **maximum length of 14 days, total**"
+    },
+    {
+      "name": "stats",
+      "summary": "Lists the stats of a poll",
+      "usage": "y!stats <poll ID>"
+    },
+    {
+      "name": "roulette",
+      "summary": "Russian Roulette!",
+      "usage": "y!roulette\ny!roulette join\ny!roulette leave\ny!roulette players\ny!roulette start"
+    },
+    {
+      "name": "reverse",
+      "summary": "Reverse some text!",
+      "usage": "y!reverse <text>"
+    },
+    {
+      "name": "gelbooru",
+      "summary": "Searches Gelbooru",
+      "usage": "y!gelbooru\ny!gelbooru <terms>"
+    },
+    {
+      "name": "danbooru",
+      "summary": "Searches Danbooru",
+      "usage": "y!danbooru\ny!danbooru <terms>"
+    },
+    {
+      "name": "nsfw",
+      "summary": "Pulls an NSFW image (based on search or randomness)",
+      "usage": "y!nsfw\ny!nsfw <terms>"
+    },
+    {
+      "name": "hentai",
+      "summary": "Searches for hentai",
+      "usage": "y!hentai\ny!hentai <terms>"
+    },
+    {
+      "name": "e621",
+      "summary": "Searches e621",
+      "usage": "y!e621\ny!e621 <terms>"
+    },
+    {
+      "name": "r34",
+      "summary": "Searches rule34.xxx",
+      "usage": "y!r34\ny!r34 <terms>"
+    },
+    {
+      "name": "butts",
+      "summary": "Pulls a random butt image",
+      "usage": "y!butts"
+    },
+    {
+      "name": "boobs",
+      "summary": "Pulls a random boobs image",
+      "usage": "y!boobs"
+    }
+  ]
+}
