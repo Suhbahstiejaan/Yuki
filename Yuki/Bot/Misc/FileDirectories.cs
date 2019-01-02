@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Yuki.Bot.Misc
 {
@@ -7,7 +8,7 @@ namespace Yuki.Bot.Misc
         public static string AppDataDirectory {
             get
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\yuki\";
+                return (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) : "/home") + @"/yuki/";
             }
         }
         public static string DatabaseCopyPath {

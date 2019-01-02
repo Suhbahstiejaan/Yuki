@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Yuki.Bot.Discord.Events;
@@ -40,7 +41,7 @@ namespace Yuki.Bot
 
         /* Private */
         private Dictionary<int, List<ulong>> members = new Dictionary<int, List<ulong>>();
-        private Timer daily;
+        private System.Timers.Timer daily;
         private Logger _log = Logger.GetLoggerInstance();
         private YukiShardedEvents shardedEvents;
         private MessageEvents _messages = new MessageEvents();
@@ -99,7 +100,7 @@ namespace Yuki.Bot
             if(!initialized)
             {
                 /* Setup daily events timer */
-                Instance.daily = new Timer(TimeSpan.FromDays(1).TotalMilliseconds);
+                Instance.daily = new System.Timers.Timer(TimeSpan.FromDays(1).TotalMilliseconds);
                 Instance.daily.Elapsed += new ElapsedEventHandler((EventHandler)CheckDaily);
 
                 await SetupServices();
@@ -109,10 +110,14 @@ namespace Yuki.Bot
 
         public async Task Login()
         {
+            Console.CancelKeyPress += (s, ev) => Shutdown();
+            AppDomain.CurrentDomain.ProcessExit += (s, ev) => Shutdown();
+
             if (!initialized)
                 Initialize().Wait();
 
             _log.Write(Misc.LogSeverity.Info, "Logging in...");
+
             if (Credentials.Token != null)
             {
                 try
@@ -222,6 +227,25 @@ namespace Yuki.Bot
             }
         }
 
+        private void Shutdown()
+        {
+            Instance.DiscordClient.LogoutAsync();
+            Instance.DiscordClient.StopAsync();
+            Instance.DiscordClient.Dispose();
+
+            Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "Backing up database...");
+
+            if (File.Exists(FileDirectories.DatabaseCopyPath))
+                File.Delete(FileDirectories.DatabaseCopyPath);
+            File.Copy(FileDirectories.Database, FileDirectories.DatabaseCopyPath);
+
+            Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "Backing up message cache...");
+            MessageCache.DumpCacheToFile();
+
+            Logger.GetLoggerInstance().SendNotificationFromFirebaseCloud("Yuki, offline", "Process terminated", "INC_YUKI_TERMINATED", "Process terminated.");
+
+            Thread.Sleep(1000); //Sleep for 1s to give things enough time to back up.
+        }
 
 
         public void AddTo(int shard, ulong userId)

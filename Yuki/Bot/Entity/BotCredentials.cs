@@ -12,6 +12,7 @@ namespace Yuki.Bot.Entities
         public string Token { get; }
         public string CatApiKey { get; }
         public string FirebaseKey { get; }
+        public string EncryptionKey { get; }
 
         public ImmutableArray<ulong> OwnerIds { get; }
 
@@ -30,6 +31,8 @@ namespace Yuki.Bot.Entities
                 Token = credentials.Token;
                 CatApiKey = credentials.CatApiKey;
                 FirebaseKey = credentials.FirebaseKey;
+                EncryptionKey = credentials.EncryptionKey;
+
                 OwnerIds = credentials.OwnerIds.ToImmutableArray();
             }
             catch (Exception)
@@ -44,6 +47,7 @@ namespace Yuki.Bot.Entities
             public string Token { get; set; } = "";
             public string CatApiKey { get; set; } = "API_KEY";
             public string FirebaseKey { get; set; } = "FIREBASE_KEY";
+            public string EncryptionKey { get; set; } = "ENCRYPT_KEY";
             public ulong[] OwnerIds { get; set; } = new ulong[1];
         }
 

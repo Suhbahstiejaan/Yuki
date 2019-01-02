@@ -192,14 +192,14 @@ namespace Yuki.Bot.Services
 
         public static void DumpCacheToFile()
         {
-            string encryptedData = Encryption.Encrypt(JsonConvert.SerializeObject(Library.ToArray(), Formatting.Indented));
+            string encryptedData = Encryption.Encrypt(JsonConvert.SerializeObject(Library.ToArray(), Formatting.Indented), YukiClient.Instance.Credentials.EncryptionKey);
             File.WriteAllText(cacheFile, encryptedData);
         }
 
         public static void LoadCacheFromFile()
         {
             if(File.Exists(cacheFile))
-                Library = JsonConvert.DeserializeObject<CachedUser[]>(Encryption.Decrypt(File.ReadAllText(cacheFile))).ToList();
+                Library = JsonConvert.DeserializeObject<CachedUser[]>(Encryption.Decrypt(File.ReadAllText(cacheFile), YukiClient.Instance.Credentials.EncryptionKey)).ToList();
         }
     }
 

@@ -10,7 +10,7 @@ namespace Yuki.Bot.Services.Localization
 {
     public class Localizer
     {
-        private static string dir = FileDirectories.AppDataDirectory + "lang\\";
+        private static string dir = FileDirectories.AppDataDirectory + "lang/";
         private static Logger _log = Logger.GetLoggerInstance();
 
         public static Dictionary<string, List<ModuleInfo>> modules = new Dictionary<string, List<ModuleInfo>>();
@@ -28,9 +28,9 @@ namespace Yuki.Bot.Services.Localization
             
             int commandCount = YukiClient.Instance.CommandService.Modules.Select(mod => mod.Commands.Count).Sum();
             
-            foreach (string language in Directory.EnumerateDirectories(FileDirectories.AppDataDirectory + "lang"))
+            foreach (string language in Directory.EnumerateDirectories(dir))
             {
-                lang = language.Replace(FileDirectories.AppDataDirectory + "lang\\", "");
+                lang = language.Replace(dir, "");
                 int verifiedCommands = 0;
 
                 List<string> commands = GetCommands(lang).Select(x => x.Name).ToList();
@@ -84,7 +84,7 @@ namespace Yuki.Bot.Services.Localization
                 {
                     _log.Write(LogSeverity.Info, "Found " + commands.Count + " excess commands in commands.json:");
                     foreach (var command in commands)
-                        Console.WriteLine("\t- " + command);
+                        Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "\t- " + command);
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Yuki.Bot.Services.Localization
         {
             List<LocalizedCommand> commands = new List<LocalizedCommand>();
 
-            commands = JsonConvert.DeserializeObject<LocalizedCommands>(File.ReadAllText(dir + lang + "\\commands.json")).Commands;
+            commands = JsonConvert.DeserializeObject<LocalizedCommands>(File.ReadAllText(dir + lang + "/commands.json")).Commands;
 
             if (toIgnore != null && commands.FirstOrDefault(cmd => cmd.Name == toIgnore) != null)
                 commands.Remove(commands.FirstOrDefault(cmd => cmd.Name == toIgnore));
@@ -129,7 +129,7 @@ namespace Yuki.Bot.Services.Localization
             => JsonConvert.DeserializeObject<URLStrings>(File.ReadAllText(dir + "urls.json"));
 
         public static TranslatedStrings GetStrings(string lang)
-            => JsonConvert.DeserializeObject<TranslatedStrings>(File.ReadAllText(dir + lang + "\\strings.json"));
+            => JsonConvert.DeserializeObject<TranslatedStrings>(File.ReadAllText(dir + lang + "/strings.json"));
 
         public static YukiStrings YukiStrings
             => JsonConvert.DeserializeObject<YukiStrings>(File.ReadAllText(dir + "yuki.json"));

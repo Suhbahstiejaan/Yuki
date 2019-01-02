@@ -20,7 +20,7 @@ namespace Yuki.Bot.Misc
         private static int _incidentNums;
 
         private string logFileName;
-        private string LogDirectory = FileDirectories.AppDataDirectory + "\\logs\\";
+        private string LogDirectory = FileDirectories.AppDataDirectory + "/logs/";
 
         private StreamWriter log;
 
@@ -89,7 +89,7 @@ namespace Yuki.Bot.Misc
         public void Write(LogSeverity severity, Exception e)
             => Write(severity, e.ToString());
 
-        public void Write(LogSeverity severity, string message)
+        public void Write(LogSeverity severity, string message, bool newline = true)
         {
             string logText = "[" + DateTime.Now.ToLongTimeString() + "] [" + Enum.GetName(typeof(LogSeverity), severity) + "]: " + message;
 
@@ -111,12 +111,19 @@ namespace Yuki.Bot.Misc
                     break;
             }
 
-            Console.WriteLine(logText);
+            if (newline)
+                Console.WriteLine(logText);
+            else
+                Console.Write(logText);
 
             if (log == null)
                 log = new StreamWriter(LogDirectory + logFileName);
 
-            log.WriteLine(logText);
+            if (newline)
+                log.WriteLine(logText);
+            else
+                log.Write(logText);
+
             log.Flush();
 
             Console.ForegroundColor = c;
@@ -135,7 +142,7 @@ namespace Yuki.Bot.Misc
                     }
                     catch(Exception e)
                     {
-                        Console.WriteLine("Couldnt send notification! " + e);
+                        Write(LogSeverity.Warning, "Couldnt send notification! " + e);
                         _incidentNums--;
                     }
                 }

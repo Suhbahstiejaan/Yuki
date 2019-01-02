@@ -37,7 +37,7 @@ namespace Yuki.Bot.Discord.Events
             ConsoleColor color = Console.ForegroundColor;
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("[Info] Shard " + client.ShardId + " connected!");
+            Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "Shard " + client.ShardId + " connected!");
 
             Console.ForegroundColor = color;
 
