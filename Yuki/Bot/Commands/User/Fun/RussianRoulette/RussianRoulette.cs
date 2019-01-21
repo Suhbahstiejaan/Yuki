@@ -1,10 +1,11 @@
 ﻿using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Linq;
-using Yuki.Bot.Misc;
+using Yuki.Bot.Common;
+using Yuki.Bot.Entity;
 using Yuki.Bot.Misc.Extensions;
 
-namespace Yuki.Bot.Services
+namespace Yuki.Bot.Commands.User.Fun
 {
     public class RussianRoulette
     {
@@ -47,7 +48,7 @@ namespace Yuki.Bot.Services
 
         public string GetPlayers(ulong guild, int pageNum)
         {
-            SocketGuild _guild = YukiClient.Instance.DiscordClient.GetGuild(guild);
+            SocketGuild _guild = YukiClient.Instance.Client.GetGuild(guild);
             /* Get the username and discriminator value for each player in this game */
             string[] users = data[GetServer(guild)].Select(user => _guild.GetUser(user).Username + "#" + _guild.GetUser(user).Discriminator).ToArray();
 
@@ -71,7 +72,7 @@ namespace Yuki.Bot.Services
 
                     Generic.UpdateKey(data, GetServer(guild), server);
 
-                    return "*click*\nThe game has been started.\n\nIt's " + YukiClient.Instance.DiscordClient.GetGuild(guild).GetUser(data[GetServer(guild)][0]).Mention + "'s turn.";
+                    return "*click*\nThe game has been started.\n\nIt's " + YukiClient.Instance.Client.GetGuild(guild).GetUser(data[GetServer(guild)][0]).Mention + "'s turn.";
                 }
                 return "You're not the host of this game!";
             }
@@ -111,7 +112,7 @@ namespace Yuki.Bot.Services
             YukiRandom random = new YukiRandom();
             RouletteServerData server = GetServer(guild);
 
-            string username = YukiClient.Instance.DiscordClient.GetGuild(guild).GetUser(user).Username;
+            string username = YukiClient.Instance.Client.GetGuild(guild).GetUser(user).Username;
             string msg = "";
 
             if (server == null)
@@ -179,7 +180,7 @@ namespace Yuki.Bot.Services
             YukiRandom random = new YukiRandom();
             RouletteServerData server = GetServer(guild);
 
-            string username = YukiClient.Instance.DiscordClient.GetGuild(guild).GetUser(user).Username;
+            string username = YukiClient.Instance.Client.GetGuild(guild).GetUser(user).Username;
 
             if(server != null)
             {

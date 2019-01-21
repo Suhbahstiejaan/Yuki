@@ -1,6 +1,7 @@
 ﻿using Discord;
 using System.Collections.Generic;
 using Yuki.Bot.API;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc.Extensions;
 
 namespace Yuki.Bot.Misc
@@ -11,7 +12,7 @@ namespace Yuki.Bot.Misc
         {
             EmbedBuilder embed = new EmbedBuilder().WithImageUrl(url)
                                                    .WithAuthor(new EmbedAuthorBuilder() { IconUrl = message.Author.GetAvatarUrl() })
-                                                   .WithColor(Colors.pink);
+                                                   .WithColor(Colors.Pink);
 
             if (title != null)
                 embed.Author.Name = ((IGuildChannel)message.Channel).Guild.SanitizeMentions(title);

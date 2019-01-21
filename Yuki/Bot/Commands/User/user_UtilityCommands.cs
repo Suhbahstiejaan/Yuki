@@ -10,6 +10,8 @@ using Yuki.Bot.Helper;
 using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;
 using Yuki.Bot.Misc.Database;
+using Yuki.Bot.Common;
+using Yuki.Bot.Entity;
 
 namespace Yuki.Bot.Modules
 {
@@ -36,7 +38,7 @@ namespace Yuki.Bot.Modules
 
         [Command("help")]
         public async Task HelpAsync([Remainder] string param = null)
-            => await Help.GetHelp(Context.Channel, param, Localizer.YukiStrings.default_lang, YukiClient.Instance.DiscordClient.GetShardFor(Context.Guild));
+            => await Help.GetHelp(Context.Channel, param, Localizer.YukiStrings.default_lang, YukiClient.Instance.Client.GetShardFor(Context.Guild));
         
         [Command("userinfo")]
         public async Task UserInfoAsync([Remainder] string usr = null)
@@ -201,7 +203,7 @@ namespace Yuki.Bot.Modules
             {
                 Poll poll = JSONManager.LoadPoll(pollId);
                 //loop through all guilds with the command executor in it,
-                IGuild guild = YukiClient.Instance.DiscordClient.GetGuild(poll.guildId);
+                IGuild guild = YukiClient.Instance.Client.GetGuild(poll.guildId);
 
                 if (poll == null)
                 {

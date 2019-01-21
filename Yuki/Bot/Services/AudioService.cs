@@ -9,10 +9,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;
-using Yuki.Bot.Entities;
+using Yuki.Bot.Entity;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Services
 {
@@ -20,7 +20,7 @@ namespace Yuki.Bot.Services
     {
         public static ConcurrentDictionary<AudioChannel, List<Song>> AudioData = new ConcurrentDictionary<AudioChannel, List<Song>>();
         
-        public AudioService(BotCredentials _credentials)
+        public AudioService(Config _Config)
         {
 
         }

@@ -3,6 +3,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using Yuki.Bot.API;
 using Yuki.Bot.API.RamMoe;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;

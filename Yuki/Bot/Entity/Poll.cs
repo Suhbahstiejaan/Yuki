@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yuki.Bot.Common;
 
-namespace Yuki.Bot.Misc
+namespace Yuki.Bot.Entity
 {
     public class Polls
     {

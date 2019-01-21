@@ -45,12 +45,12 @@ namespace Yuki.Bot.Common.Events
 
         public Task ShardConnected(DiscordSocketClient client)
         {
-            Logger.Instance.Write(LogSeverity.Success, "Shard " + client.ShardId + " connected!");
+            Logger.Instance.Write(LogLevel.Success, "Shard " + client.ShardId + " connected!");
 
             
             if (YukiClient.Instance.ConnectedShards.Count == YukiClient.Instance.MaxShards)
             {
-                Logger.Instance.Write(LogSeverity.Debug, "Yuki, online!");
+                Logger.Instance.Write(LogLevel.Debug, "Yuki, online!");
                 Logger.Instance.SendNotificationFromFirebaseCloud("Yuki, online!", "Yuki has successfully connected.");
             }
 
@@ -61,7 +61,7 @@ namespace Yuki.Bot.Common.Events
         {
             if(!YukiClient.Instance.IsShuttingDown)
             {
-                Logger.Instance.Write(LogSeverity.Error, "Shard " + client.ShardId + " disconnected. Reason: " + e.Message);
+                Logger.Instance.Write(LogLevel.Error, "Shard " + client.ShardId + " disconnected. Reason: " + e.Message);
 
                 /* Remove shard from connected list */
                 YukiClient.Instance.ConnectedShards.Remove(YukiClient.Instance.ConnectedShards.First(shard => shard.ShardId == client.ShardId));

@@ -2,7 +2,7 @@
 using Discord.Commands;
 using System.Linq;
 using System.Threading.Tasks;
-using Yuki.Bot.Misc;
+using Yuki.Bot.Common;
 using Yuki.Bot.Services.Localization;
 
 namespace Yuki.Bot.Modules.Moderator

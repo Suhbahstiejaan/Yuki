@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
 
 namespace Yuki.Bot.Services.Localization
@@ -11,8 +12,7 @@ namespace Yuki.Bot.Services.Localization
     public class Localizer
     {
         private static string dir = FileDirectories.AppDataDirectory + "lang/";
-        private static Logger _log = Logger.GetLoggerInstance();
-
+        
         public static Dictionary<string, List<ModuleInfo>> modules = new Dictionary<string, List<ModuleInfo>>();
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Yuki.Bot.Services.Localization
                                 LocalizedCommand cmd = GetCommands(lang, null, cmdName).FirstOrDefault();
 
                                 if (cmd == null)
-                                    _log.Write(LogSeverity.Warning, "Command \"" + cmdName + "\" must have an entry in " + YukiStrings.default_lang);
+                                    Logger.Instance.Write(LogLevel.Warning, "Command \"" + cmdName + "\" must have an entry in " + YukiStrings.default_lang);
                                 else
                                 {
                                     verifiedCommands++;
@@ -72,19 +72,19 @@ namespace Yuki.Bot.Services.Localization
                     catch (Exception e)
                     {
                         //File most likely does not exist
-                        _log.Write(LogSeverity.Error, e.Message);
+                        Logger.Instance.Write(LogLevel.Error, e.Message);
                         break;
                     }
                 }
 
-                _log.Write(LogSeverity.Info, verifiedCommands + "/" + commandCount + " command translations valid for " + lang);
+                Logger.Instance.Write(LogLevel.Info, verifiedCommands + "/" + commandCount + " command translations valid for " + lang);
 
 
                 if (commands != null)
                 {
-                    _log.Write(LogSeverity.Info, "Found " + commands.Count + " excess commands in commands.json:");
+                    Logger.Instance.Write(LogLevel.Info, "Found " + commands.Count + " excess commands in commands.json:");
                     foreach (var command in commands)
-                        Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "\t- " + command);
+                        Logger.Instance.Write(LogLevel.Info, "\t- " + command);
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace Yuki.Bot.Services.Localization
             {
                 if (!module.IsSubmodule)
                 {
-                    string moduleName = module.Name.Split('_')[0];
+                    string moduleName = module.Name.Split('_')[0].ToLower();
 
                     if (!modules.ContainsKey(moduleName))
                         modules.Add(moduleName, new List<ModuleInfo>());

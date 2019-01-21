@@ -4,15 +4,13 @@ using System;
 using System.Linq;
 using Yuki.Bot.Services.Localization;
 
-namespace Yuki.Bot.Misc
+namespace Yuki.Bot.Common
 {
     public class YukiRandom : Random
     {
         public Color RandomColor {
             get {
-                Color[] colors = { Color.Blue, Color.DarkBlue, Color.DarkerGrey, Color.DarkGreen, Color.DarkGrey, Color.DarkMagenta, Color.DarkOrange,
-                                   Color.DarkPurple, Color.DarkRed, Color.DarkTeal, Color.Gold, Color.Green, Color.LighterGrey, Color.LightGrey, Color.LightOrange,
-                                   Color.Magenta, Color.Orange, Color.Purple, Color.Red, Color.Teal };
+                Color[] colors = Colors.Get();
                 return colors[Next(1, colors.Length) - 1];
             }
         }
@@ -41,10 +39,10 @@ namespace Yuki.Bot.Misc
             string[] games = Localizer.YukiStrings.info.Select(x => x.Replace("%version%", Localizer.YukiStrings.version)
                                                                      .Replace("%versionname%", Localizer.YukiStrings.version_name)
                                                                      .Replace("%prefix%", Localizer.YukiStrings.prefix)
-                                                                     .Replace("%totalusers%", YukiClient.Instance.TotalMembers.ToString())
-                                                                     .Replace("%shardusers%", YukiClient.Instance.MembersOnShard(client.ShardId).ToString())
+                                                                     .Replace("%totalusers%", YukiClient.Instance.TotalUsers.ToString())
+                                                                     .Replace("%shardusers%", YukiClient.Instance.ConnectedShards.First(shard => shard.ShardId == client.ShardId).Members.Count.ToString())
                                                                      .Replace("%shard%", client.ShardId.ToString())
-                                                                     .Replace("%totalservers%", YukiClient.Instance.DiscordClient.Guilds.Count.ToString())
+                                                                     .Replace("%totalservers%", YukiClient.Instance.Client.Guilds.Count.ToString())
                                                                      .Replace("%shardservers%", client.Guilds.Count.ToString())).ToArray();
 
             return games[Next(games.Length)];

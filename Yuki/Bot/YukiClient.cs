@@ -11,8 +11,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Yuki.Bot.Common;
 using Yuki.Bot.Common.Events;
-using Yuki.Bot.Entities;
 using Yuki.Bot.Entity;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Database;
@@ -89,12 +89,12 @@ namespace Yuki.Bot
             /* Make sure we aren't logged in before continuing */
             if (isLoggedIn)
             {
-                Logger.Instance.Write(Misc.LogSeverity.Error, "Already logged in!");
+                Logger.Instance.Write(LogLevel.Error, "Already logged in!");
                 return;
             }
 
 
-            Logger.Instance.Write(Misc.LogSeverity.Info, "Logging in...");
+            Logger.Instance.Write(LogLevel.Info, "Logging in...");
 
 
             if (Config.Token != null)
@@ -107,7 +107,7 @@ namespace Yuki.Bot
 
                     MaxShards = await Client.GetRecommendedShardCountAsync();
 
-                    Logger.Instance.Write(Misc.LogSeverity.Info, "Shards set to: " + MaxShards);
+                    Logger.Instance.Write(LogLevel.Info, "Shards set to: " + MaxShards);
 
                     await Client.LogoutAsync();
 
@@ -132,25 +132,25 @@ namespace Yuki.Bot
                 }
                 catch (HttpException e)
                 {
-                    Logger.Instance.Write(Misc.LogSeverity.Error, e);
+                    Logger.Instance.Write(LogLevel.Error, e);
                     return;
                 }
                 catch (HttpRequestException e)
                 {
-                    Logger.Instance.Write(Misc.LogSeverity.Error, e);
+                    Logger.Instance.Write(LogLevel.Error, e);
                     return;
                 }
                 
                 isLoggedIn = true;
             }
             else
-                Logger.Instance.Write(Misc.LogSeverity.Error, "Cannot login: Token not set!");
+                Logger.Instance.Write(LogLevel.Error, "Cannot login: Token not set!");
         }
 
 
         private Task Log(LogMessage message)
         {
-            Logger.Instance.Write(Misc.LogSeverity.DiscordNet, message.Message);
+            Logger.Instance.Write(LogLevel.DiscordNet, message.Message);
             return Task.CompletedTask;
         }
 
@@ -184,15 +184,15 @@ namespace Yuki.Bot
 
             Client.Dispose();
 
-            Logger.Instance.Write(Misc.LogSeverity.Info, "Client stopped.");
-            Logger.Instance.Write(Misc.LogSeverity.Info, "Backing up database...");
+            Logger.Instance.Write(LogLevel.Info, "Client stopped.");
+            Logger.Instance.Write(LogLevel.Info, "Backing up database...");
 
             if (File.Exists(FileDirectories.DatabaseCopyPath))
                 File.Delete(FileDirectories.DatabaseCopyPath);
 
             File.Copy(FileDirectories.Database, FileDirectories.DatabaseCopyPath);
 
-            Logger.Instance.Write(Misc.LogSeverity.Info, "Writing message cache to file...");
+            Logger.Instance.Write(LogLevel.Info, "Writing message cache to file...");
             MessageCache.DumpCacheToFile();
 
             Logger.Instance.SendNotificationFromFirebaseCloud("Yuki, offline", "Yuki has been shut down");

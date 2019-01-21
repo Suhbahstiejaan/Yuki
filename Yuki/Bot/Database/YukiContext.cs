@@ -4,13 +4,13 @@ using Microsoft.Data.Sqlite;
 using System.IO;
 using System;
 using Yuki.Bot.Misc;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Misc.Database
 {
 
     public class YukiContextFactory : IDesignTimeDbContextFactory<YukiContext>
     {
-        private static Logger _log = Logger.GetLoggerInstance();
         private static YukiContext _context;
         
         public static void DatabaseSetupOrMigrate()
@@ -29,9 +29,9 @@ namespace Yuki.Bot.Misc.Database
             optionsBuilder.UseSqlite(stringBuilder.ToString(), x => x.SuppressForeignKeyEnforcement());
             _context = new YukiContext(optionsBuilder.Options);
             _context.Database.SetCommandTimeout(60);
-            _log.Write(LogSeverity.Info, "Performing any needed migrations....");
+            //Logger.Instance.Write(LogSeverity.Info, "Performing any needed migrations....");
             _context.Database.Migrate();
-            _log.Write(LogSeverity.Info, "Database setup!");
+            //Logger.Instance.Write(LogSeverity.Info, "Database setup!");
             return _context;
         }
         
@@ -58,6 +58,7 @@ namespace Yuki.Bot.Misc.Database
         public DbSet<GuildWarningAction> WarningActions { get; set; }
         public DbSet<CustomPrefix> CustomPrefixes { get; set; }
         public DbSet<DataOptIn> DataCollectionOptIn { get; set; }
+        public DbSet<AutoBanUser> AutoBanUsers { get; set; }
 
         public YukiContext(DbContextOptions<YukiContext> options)
             : base(options)
@@ -145,6 +146,11 @@ namespace Yuki.Bot.Misc.Database
             });
 
             model.Entity<DataOptIn>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
+
+            model.Entity<AutoBanUser>(entity =>
             {
                 entity.HasKey(e => e.Id);
             });

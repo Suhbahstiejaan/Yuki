@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yuki.Bot.Misc.Database;
 
 namespace Yuki.Migrations
 {
     [DbContext(typeof(YukiContext))]
-    partial class YukiContextModelSnapshot : ModelSnapshot
+    [Migration("20190107084119_AutoBanMigration")]
+    partial class AutoBanMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

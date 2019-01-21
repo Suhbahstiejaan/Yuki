@@ -1,4 +1,4 @@
-﻿namespace Yuki.Bot.Misc
+﻿namespace Yuki.Bot.Entity
 {
     public class Page
     {

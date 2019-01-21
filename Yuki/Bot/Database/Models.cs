@@ -4,7 +4,6 @@ using Yuki.Bot.Services;
 
 namespace Yuki.Bot.Misc.Database
 {
-
     public class DbEntity
     {
         [Key]
@@ -117,5 +116,11 @@ namespace Yuki.Bot.Misc.Database
     {
         public ulong UserId { get; set; }
         public bool optedIn { get; set; }
+    }
+
+    public class AutoBanUser : DbEntity
+    {
+        public ulong UserId { get; set; }
+        public ulong ServerId { get; set; }
     }
 }

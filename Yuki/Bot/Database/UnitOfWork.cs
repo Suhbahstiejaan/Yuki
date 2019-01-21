@@ -23,6 +23,7 @@ namespace Yuki.Bot.Misc.Database
         private WarningActionRepository warningActionRepository;
         private CustomPrefixRepository customPrefixRepository;
         private DataOptInRepository dataOptInRepository;
+        private AutoBanRepository autoBanRepository;
 #pragma warning restore 649
 
         public SettingRepository SettingsRepository
@@ -69,6 +70,9 @@ namespace Yuki.Bot.Misc.Database
 
         public DataOptInRepository DataOptInRepository
             => dataOptInRepository ?? new DataOptInRepository(_context);
+
+        public AutoBanRepository AutoBanRepository
+            => autoBanRepository ?? new AutoBanRepository(_context);
 
         public void Save()
             => _context.SaveChanges();

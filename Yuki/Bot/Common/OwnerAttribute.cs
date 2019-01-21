@@ -1,7 +1,7 @@
 ﻿using Discord.Commands;
 using System;
 using System.Threading.Tasks;
-using Yuki.Bot.Entities;
+using Yuki.Bot.Entity;
 
 namespace Yuki.Bot.Common
 {

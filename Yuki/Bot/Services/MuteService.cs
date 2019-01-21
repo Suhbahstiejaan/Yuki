@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Yuki.Bot.Misc.Database;
-using Yuki.Bot.Discord.Events;
+using Yuki.Bot.Common.Events;
 
 namespace Yuki.Bot.Services
 {

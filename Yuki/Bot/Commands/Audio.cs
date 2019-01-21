@@ -40,7 +40,7 @@ public class Audio : ModuleBase
             else
                 await ReplyAsync("You're not in a voice channel, silly!");
         }
-        catch(Exception e) { Console.WriteLine(e); }
+        catch(Exception e) { Logger.Instance.Write(Misc.LogSeverity.Error, e); }
     }
 
     [Command("leave")]

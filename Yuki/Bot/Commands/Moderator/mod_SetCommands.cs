@@ -3,11 +3,11 @@ using Discord.Commands;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Yuki.Bot.Misc;
 using Yuki.Bot.Services.Localization;
 using Yuki.Bot.Services;
 using Yuki.Bot.Misc.Database;
 using Yuki.Bot.Misc.Extensions;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Modules.Moderator
 {
@@ -171,7 +171,7 @@ namespace Yuki.Bot.Modules.Moderator
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e);
+                    Logger.Instance.Write(LogLevel.Error, e);
                 }
             }
 
@@ -237,7 +237,7 @@ namespace Yuki.Bot.Modules.Moderator
 
                             MessageCache.DeleteMessagesFromChannel(channel.ChannelId);
                         }
-                        catch(Exception e) { Console.WriteLine(e); }
+                        catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
 
                         await ReplyAsync("Messages in <#" + channel.ChannelId + "> will no longer be cached. Any pre-cached messages were removed.");
                     }
@@ -292,7 +292,7 @@ namespace Yuki.Bot.Modules.Moderator
                     else
                         await ReplyAsync("Could not find a role with the name \"" + roleName + "\"");
                 }
-                catch(Exception e) { Console.WriteLine(e); }
+                catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
             }
 
             [Command("logchannel")]
@@ -363,7 +363,7 @@ namespace Yuki.Bot.Modules.Moderator
                     else
                         await ReplyAsync("Insufficient parameters. Accepted parameters:\n**\t**warningNum action\nOR\n**\t**warningNum action role\n\nAvailable actions: kick, ban, applyrole");
                 }
-                catch(Exception e) { Console.WriteLine(e); }
+                catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
             }
 
             [Command("prefix")]
@@ -402,7 +402,7 @@ namespace Yuki.Bot.Modules.Moderator
                         await ReplyAsync(response);
                     }
                 }
-                catch(Exception e) { Console.WriteLine(e); }
+                catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
             }
         }
     }

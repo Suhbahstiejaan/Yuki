@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Extensions;
 

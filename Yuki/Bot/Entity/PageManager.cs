@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yuki.Bot.Common;
 
-namespace Yuki.Bot.Misc
+namespace Yuki.Bot.Entity
 {
     public class PageManager
     {
@@ -58,7 +59,7 @@ namespace Yuki.Bot.Misc
                         pages.Add(page);
                     }
                 }
-                catch(Exception e) { Console.WriteLine(e); }
+                catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
 
                 Page[] _pages = pages.ToArray();
 

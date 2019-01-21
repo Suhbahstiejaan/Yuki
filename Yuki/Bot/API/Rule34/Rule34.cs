@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Yuki.Bot.Misc;
+using Yuki.Bot.Common;
 using Yuki.Bot.Services.Localization;
 
 namespace Yuki.Bot.API.Rule34

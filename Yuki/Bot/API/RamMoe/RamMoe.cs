@@ -48,7 +48,7 @@ namespace Yuki.Bot.API.RamMoe
                     ulong userId = ((IGuildChannel)message.Channel).Guild.GetUserId(user);
 
                     if (userId != 0)
-                        user = YukiClient.Instance.DiscordClient.GetShardFor((message.Channel is IGuildChannel) ? ((IGuildChannel)message.Channel).Guild : null).GetUser(userId).Username;
+                        user = YukiClient.Instance.Client.GetShardFor((message.Channel is IGuildChannel) ? ((IGuildChannel)message.Channel).Guild : null).GetUser(userId).Username;
                 }
 
                 text = executor + " " + type + (type == "kiss" ? "es" : "s") + " " + user;

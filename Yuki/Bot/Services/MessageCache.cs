@@ -8,7 +8,8 @@ using System.IO;
 using System.Linq;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Database;
-using Yuki.Bot.Discord.Events;
+using Yuki.Bot.Common.Events;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Services
 {
@@ -192,14 +193,14 @@ namespace Yuki.Bot.Services
 
         public static void DumpCacheToFile()
         {
-            string encryptedData = Encryption.Encrypt(JsonConvert.SerializeObject(Library.ToArray(), Formatting.Indented), YukiClient.Instance.Credentials.EncryptionKey);
+            string encryptedData = Encryption.Encrypt(JsonConvert.SerializeObject(Library.ToArray(), Formatting.Indented), YukiClient.Instance.Config.EncryptionKey);
             File.WriteAllText(cacheFile, encryptedData);
         }
 
         public static void LoadCacheFromFile()
         {
             if(File.Exists(cacheFile))
-                Library = JsonConvert.DeserializeObject<CachedUser[]>(Encryption.Decrypt(File.ReadAllText(cacheFile), YukiClient.Instance.Credentials.EncryptionKey)).ToList();
+                Library = JsonConvert.DeserializeObject<CachedUser[]>(Encryption.Decrypt(File.ReadAllText(cacheFile), YukiClient.Instance.Config.EncryptionKey)).ToList();
         }
     }
 

@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using Yuki.Bot.Entity;
 
-namespace Yuki.Bot.Misc
+namespace Yuki.Bot.Common
 {
     public class JSONManager
     {

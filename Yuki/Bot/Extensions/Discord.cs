@@ -22,7 +22,7 @@ namespace Yuki.Bot.Misc.Extensions
                         if(guild != null)
                             return guild.GetUsersAsync().Result.FirstOrDefault(usr => usr.Username == user.Substring(0, index) && usr.Discriminator == user.Substring(index + 1)).Id;
                         else
-                            return YukiClient.Instance.GetShard(0).Guilds.Select(x => x.Users.FirstOrDefault(usr => usr.Username == user.Substring(0, index) && usr.Discriminator == user.Substring(index + 1))).FirstOrDefault().Id;
+                            return YukiClient.Instance.Client.GetShard(0).Guilds.Select(x => x.Users.FirstOrDefault(usr => usr.Username == user.Substring(0, index) && usr.Discriminator == user.Substring(index + 1))).FirstOrDefault().Id;
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace Yuki.Bot.Misc.Extensions
         {
             ulong[] requestedRoleIds = toModify.RoleIds.Where(x => x != executor.Guild.EveryoneRole.Id).ToArray();
             ulong[] executorRoleIds =  executor.RoleIds.Where(x => x != executor.Guild.EveryoneRole.Id).ToArray();
-            ulong[] botRoleIds = executor.Guild.GetUserAsync(YukiClient.Instance.GetShard(executor.Guild).CurrentUser.Id).Result.RoleIds.Where(x => x != executor.Guild.EveryoneRole.Id).ToArray();
+            ulong[] botRoleIds = executor.Guild.GetUserAsync(YukiClient.Instance.Client.GetShardFor(executor.Guild).CurrentUser.Id).Result.RoleIds.Where(x => x != executor.Guild.EveryoneRole.Id).ToArray();
             IRole[] serverRoles = executor.Guild.Roles.Where(x => x.Id != executor.Guild.EveryoneRole.Id).ToArray();
             
             if (serverRoles != null)
@@ -145,7 +145,7 @@ namespace Yuki.Bot.Misc.Extensions
                     string rep = strs[i];
                     if (Id != 0)
                     {
-                        SocketUser user = YukiClient.Instance.GetShard(guild).GetUser(Id);
+                        SocketUser user = YukiClient.Instance.Client.GetShardFor(guild).GetUser(Id);
                         if (user != null && !ignoreUserMentions)
                             rep = user.Username;
                         else if (guild.GetRole(Id) != null)

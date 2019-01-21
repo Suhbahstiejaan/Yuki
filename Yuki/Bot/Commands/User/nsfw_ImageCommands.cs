@@ -8,8 +8,8 @@ using Yuki.Bot.API.Danbooru;
 using Yuki.Bot.API.E621;
 using Yuki.Bot.API.Gelbooru;
 using Yuki.Bot.API.Rule34;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
-using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;
 
 namespace Yuki.Bot.Modules.User

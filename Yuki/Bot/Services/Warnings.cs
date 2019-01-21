@@ -3,7 +3,8 @@ using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
 using Yuki.Bot.Misc.Database;
-using Yuki.Bot.Discord.Events;
+using Yuki.Bot.Common.Events;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Services
 {
@@ -26,18 +27,18 @@ namespace Yuki.Bot.Services
                 {
                     GuildWarningAction action = uow.WarningActionRepository.GetAction(user.ServerId, user.Warning);
 
-                    SocketGuild guild = YukiClient.Instance.DiscordClient.GetGuild(user.ServerId);
+                    SocketGuild guild = YukiClient.Instance.Client.GetGuild(user.ServerId);
                     IGuildUser guser = guild.GetUser(user.UserId);
                     
                     switch(action.Action)
                     {
                         case WarningAction.BAN:
                             await guild.AddBanAsync(guser);
-                            await events.UserBanned((SocketUser)guser, YukiClient.Instance.DiscordClient.CurrentUser, guild, "User reached " + user.Warning + " warnings");
+                            await events.UserBanned((SocketUser)guser, YukiClient.Instance.Client.CurrentUser, guild, "User reached " + user.Warning + " warnings");
                             break;
                         case WarningAction.KICK:
                             await guser.KickAsync();
-                            await events.UserKicked((SocketUser)guser, YukiClient.Instance.DiscordClient.CurrentUser, guild, "User reached " + user.Warning + " warnings");
+                            await events.UserKicked((SocketUser)guser, YukiClient.Instance.Client.CurrentUser, guild, "User reached " + user.Warning + " warnings");
                             break;
                         case WarningAction.APPLYROLE:
                             if(action.RoleId != 0)
@@ -49,7 +50,7 @@ namespace Yuki.Bot.Services
                     }
                 }
             }
-            catch(Exception e) { Console.WriteLine(e); }
+            catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
         }
     }
 }

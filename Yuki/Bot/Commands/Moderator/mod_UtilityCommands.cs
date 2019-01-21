@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using System.Threading.Tasks;
-using Yuki.Bot.Misc;
 using Yuki.Bot.Services;
 using Yuki.Bot.Misc.Database;
 using Yuki.Bot.Services.Localization;
@@ -12,8 +11,10 @@ using Discord;
 using Discord.WebSocket;
 using System.Text.RegularExpressions;
 using System.IO;
-using Yuki.Bot.Discord.Events;
+using Yuki.Bot.Common.Events;
 using Yuki.Bot.Misc.Extensions;
+using Yuki.Bot.Common;
+using Yuki.Bot.Entity;
 
 namespace Yuki.Bot.Modules.Moderator
 {
@@ -83,21 +84,35 @@ namespace Yuki.Bot.Modules.Moderator
             {
                 IGuildUser user = await Context.Guild.GetUserAsync(Context.Guild.GetUserId(banString.Split(' ')[0]));
 
-                if(user == Context.User)
+                if(user != null)
                 {
-                    await ReplyAsync("You can't ban yourself, silly!");
-                    return;
-                }
+                    if (user == Context.User)
+                    {
+                        await ReplyAsync("You can't ban yourself, silly!");
+                        return;
+                    }
 
-                if(((IGuildUser)Context.User).CanModify(user))
-                {
-                    string reason = banString.Replace(banString.Split(' ')[0], null) ?? "Unspecified";
-                    await ReplyAsync("*" + user.Username + " has been banned.*");
-                    await events.UserBanned((SocketUser)user, (SocketUser)Context.User, (SocketGuild)Context.Guild, reason);
-                    await Context.Guild.AddBanAsync(user);
+                    if (((IGuildUser)Context.User).CanModify(user))
+                    {
+                        string reason = banString.Replace(banString.Split(' ')[0], null) ?? "Unspecified";
+
+                        await ReplyAsync("*" + user.Username + " has been banned.*");
+                        await events.UserBanned((SocketUser)user, (SocketUser)Context.User, (SocketGuild)Context.Guild, reason);
+                        await Context.Guild.AddBanAsync(user);
+                    }
+                    else
+                        await ReplyAsync("Unfortunately, I cannot ban this person :/");
                 }
                 else
-                    await ReplyAsync("Unfortunately, I cannot ban this person :/");
+                {
+                    using (UnitOfWork uow = new UnitOfWork())
+                        uow.AutoBanRepository.Add(
+                            new AutoBanUser()
+                            {
+                                ServerId = Context.Guild.Id,
+                                UserId = Context.Guild.GetUserId(banString.Split(' ')[0])
+                            });
+                }
             }
         }
 
@@ -463,7 +478,7 @@ namespace Yuki.Bot.Modules.Moderator
                         await ReplyAsync("Invalid time!");
                 }
             }
-            catch (Exception e) { Logger.GetLoggerInstance().Write(Misc.LogSeverity.Error, e); }
+            catch (Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
         }
         
         [RequireUserPermission(GuildPermission.ManageMessages)]
@@ -486,5 +501,28 @@ namespace Yuki.Bot.Modules.Moderator
 
             await ReplyAsync(poll.statsText + $"\nTotal votes: " + poll.totalVotes);
         }
+
+        /*[RequireUserPermission(GuildPermission.BanMembers)]
+        [Command("autoban")]
+        public async Task AutoBanAsync(ulong userId)
+        {
+            IGuildUser user = await Context.Guild.GetUserAsync(Context.Guild.GetUserId(banString.Split(' ')[0]));
+
+                if (user == Context.User)
+                {
+                    await ReplyAsync("You can't ban yourself, silly!");
+                    return;
+                }
+
+                if (((IGuildUser)Context.User).CanModify(user))
+                {
+                    string reason = banString.Replace(banString.Split(' ')[0], null) ?? "Unspecified";
+                    await ReplyAsync("*" + user.Username + " has been banned.*");
+                    await events.UserBanned((SocketUser)user, (SocketUser)Context.User, (SocketGuild)Context.Guild, reason);
+                    await Context.Guild.AddBanAsync(user);
+                }
+                else
+                    await ReplyAsync("Unfortunately, I cannot ban this person :/");
+        }*/
     }
 }

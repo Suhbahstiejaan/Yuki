@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;
@@ -58,7 +59,7 @@ namespace Yuki.Bot.Helper
         {
             EmbedBuilder embed = new EmbedBuilder
             {
-                Color = Colors.pink,
+                Color = Colors.Pink,
                 Footer = new EmbedFooterBuilder()
                 {
                     Text = "Yuki " + Localizer.YukiStrings.version + " " + Localizer.YukiStrings.version_name + " | y!help " + term
@@ -72,9 +73,9 @@ namespace Yuki.Bot.Helper
                 embed.Title = Localizer.GetLocalizedStringFromData(help, "looking_for_help");
                 embed.Description = Localizer.GetLocalizedStringFromData(help, "description") + "\n** **";
                 embed.AddField(Localizer.GetLocalizedStringFromData(data_info, "creator"), "Vee#0003", true)
-                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "shard"), client.ShardId + (YukiClient.Instance.TotalShards > 1 ? "/" + YukiClient.Instance.TotalShards : ""), true)
-                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "servers"), client.Guilds.Count + (YukiClient.Instance.TotalShards > 1 ? " (" + YukiClient.Instance.DiscordClient.Guilds.Count + " total)" : ""), true)
-                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "unique"), YukiClient.Instance.MembersOnShard(client.ShardId) + (YukiClient.Instance.TotalShards > 1 ? " (" + YukiClient.Instance.TotalMembers + " total)" : ""), true)
+                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "shard"), client.ShardId + (YukiClient.Instance.ConnectedShards.Count > 1 ? "/" + YukiClient.Instance.ConnectedShards.Count : ""), true)
+                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "servers"), client.Guilds.Count + (YukiClient.Instance.ConnectedShards.Count > 1 ? " (" + YukiClient.Instance.Client.Guilds.Count + " total)" : ""), true)
+                     .AddField(Localizer.GetLocalizedStringFromData(data_info, "unique"), YukiClient.Instance.ConnectedShards[client.ShardId].Members.Count + (YukiClient.Instance.ConnectedShards.Count > 1 ? " (" + YukiClient.Instance.ConnectedShards.SelectMany(shard => shard.Members).Count() + " total)" : ""), true)
                      .AddField(Localizer.GetLocalizedStringFromData(help, "useful_links"),
                                $"[{Localizer.GetLocalizedStringFromData(help, "server")}]({Localizer.GetURLs.server_invite_url})\n\t" +
                                $"[{Localizer.GetLocalizedStringFromData(help, "invitation")}]({Localizer.GetURLs.bot_invite_url})\n\t" +
@@ -144,7 +145,7 @@ namespace Yuki.Bot.Helper
 
         private static Embed GenerateCommandList(string lang, string term)
         {
-            EmbedBuilder embed = new EmbedBuilder().WithAuthor(new EmbedAuthorBuilder() { Name = Localizer.GetLocalizedStringFromData(help, "list_of_commands") }).WithColor(Colors.pink);
+            EmbedBuilder embed = new EmbedBuilder().WithAuthor(new EmbedAuthorBuilder() { Name = Localizer.GetLocalizedStringFromData(help, "list_of_commands") }).WithColor(Colors.Pink);
 
             foreach (KeyValuePair<string, List<ModuleInfo>> pair in Localizer.modules)
             {

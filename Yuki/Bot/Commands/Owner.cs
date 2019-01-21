@@ -5,13 +5,13 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Yuki.Bot.Misc;
-using Yuki.Bot.Discord.Attributes;
 using Yuki.Bot.Services.Localization;
 using Yuki.Bot.Services;
 using Yuki.Bot.Misc.Database;
 using Discord.WebSocket;
 using Yuki.Bot.Misc.Extensions;
 using System.Text.RegularExpressions;
+using Yuki.Bot.Common;
 
 namespace Yuki.Bot.Modules
 {
@@ -25,7 +25,7 @@ namespace Yuki.Bot.Modules
             [Command("game")]
             public async Task SetGameAsync([Remainder] string game = null)
             {
-                DiscordSocketClient client = YukiClient.Instance.GetShard(Context.Guild);
+                DiscordSocketClient client = YukiClient.Instance.Client.GetShardFor(Context.Guild);
                 if (!string.IsNullOrEmpty(game))
                     await client.SetGameAsync(game);
                 else
@@ -37,7 +37,7 @@ namespace Yuki.Bot.Modules
             {
                 string pfp = avatar ?? "default.png";
                 if (!string.IsNullOrEmpty(avatar))
-                    await YukiClient.Instance.GetShard(Context.Guild).CurrentUser.ModifyAsync(x =>
+                    await YukiClient.Instance.Client.GetShardFor(Context.Guild).CurrentUser.ModifyAsync(x =>
                     {
                         if (StringHelper.IsImage(avatar))
                         {
@@ -97,7 +97,7 @@ namespace Yuki.Bot.Modules
                 /* order: name, options, end time */
                 string[] _params = Regex.Split(parameters, @"\s*[|]\s*");
 
-                Logger.GetLoggerInstance().SendNotificationFromFirebaseCloud(_params[0], _params[1], "INC_NOTIF_TEST", _params[2]);
+                Logger.Instance.SendNotificationFromFirebaseCloud(_params[0], _params[1]);
             }
         }
     }

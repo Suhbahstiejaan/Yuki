@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
-using Yuki.Bot.Misc;
+using Yuki.Bot.Common;
 using Yuki.Bot.Services.Localization;
 
 namespace Yuki.Bot.Services
@@ -23,7 +23,7 @@ namespace Yuki.Bot.Services
                 if (message.Content.StartsWith(greetings[i].Replace("'", "") + " yuki", StringComparison.OrdinalIgnoreCase) ||
                     message.Content.StartsWith(greetings[i].Replace("'", "") + ", yuki", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (message.Author.Id != YukiClient.Instance.DiscordClient.CurrentUser.Id || !message.Author.IsBot)
+                    if (message.Author.Id != YukiClient.Instance.Client.CurrentUser.Id || !message.Author.IsBot)
                     {
                         string endmark = "!";
                         string greet = greetings[random.Next(greetings.Length)];
