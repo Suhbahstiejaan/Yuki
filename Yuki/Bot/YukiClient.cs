@@ -7,272 +7,198 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using Yuki.Bot.Discord.Events;
+using Yuki.Bot.Common.Events;
 using Yuki.Bot.Entities;
+using Yuki.Bot.Entity;
 using Yuki.Bot.Misc;
 using Yuki.Bot.Misc.Database;
 using Yuki.Bot.Services;
-using Yuki.Bot.Services.Localization;
 
 namespace Yuki.Bot
 {
     public class YukiClient
     {
         /* Static */
-        private static YukiClient client;
-        
-        public static YukiClient Instance
-        {
+        private static YukiClient _instance;
+
+        public static YukiClient Instance {
             get
             {
-                if (client == null)
-                    client = new YukiClient();
+                if (_instance == null)
+                    _instance = new YukiClient();
 
-                return client;
+                return _instance;
             }
         }
-
-
-        /* Private */
-        private Dictionary<int, List<ulong>> members = new Dictionary<int, List<ulong>>();
-        private System.Timers.Timer daily;
-        private Logger _log = Logger.GetLoggerInstance();
-        private YukiShardedEvents shardedEvents;
-        private MessageEvents _messages = new MessageEvents();
-        private bool initialized;
 
 
         /* Public */
-        public int ShardsReady { get; private set; }
-        public int TotalMembers {
-            get {
-                List<ulong> grabbedIds = new List<ulong>();
-                
-                foreach (List<ulong> value in members.Values)
-                    grabbedIds.AddRange(value.Where(id => !grabbedIds.Contains(id)));
+        public DiscordShardedClient Client { get; private set; }
+        public YukiShardedEvents Events { get; private set; }
+        public Config Config { get; private set; }
 
-                return grabbedIds.Count;
+        public int MaxShards { get; private set; }
+
+        public IServiceProvider Services { get; private set; }
+        public CommandService CommandService { get; private set; }
+
+        public List<YukiShard> ConnectedShards { get; private set; }
+
+        public bool ShardConnected(int shardId)
+            => !ConnectedShards.FirstOrDefault(shard => shard.ShardId == shardId).Equals(default(YukiShard));
+
+        public bool IsShuttingDown { get; private set; }
+
+        public int TotalUsers {
+            get
+            {
+                int total = 0;
+
+                for (int i = 0; i < ConnectedShards.Count; i++)
+                    total += ConnectedShards[i].Members.Count;
+
+                return total;
             }
         }
+
         
-        public DiscordShardedClient DiscordClient { get; private set; }
-        public BotCredentials Credentials { get; private set; }
-        public CommandService CommandService { get; private set; }
-        public IServiceProvider Services { get; private set; }
+        /* Private */
+        private bool isLoggedIn;
 
-        public DiscordSocketClient GetShard(int id)
-            => Instance.DiscordClient.GetShard(id);
-
-        public DiscordSocketClient GetShard(IGuild guild)
-            => guild != null ? Instance.DiscordClient.GetShardFor(guild) : Instance.GetShard(0);
-
-        public int TotalShards
-            => Instance.DiscordClient.Shards.Count;
-
-        public int MembersOnShard(int shard)
-            => !members.Keys.Contains(shard) ? 0 : members[shard].Count;
-
-        public int ConnectedShards { get; private set; }
-
-        public bool Connected
-            => TotalShards == ConnectedShards;
-
-        public bool ShardReady(int shardid)
-            => MembersOnShard(shardid) > 0;
 
 
 
         public YukiClient()
         {
-            DiscordClient = new DiscordShardedClient();
-            shardedEvents = new YukiShardedEvents();
-            Credentials = new BotCredentials();
-        }
+            ConnectedShards = new List<YukiShard>();
 
-        public async Task Initialize()
-        {
-            if(!initialized)
-            {
-                /* Setup daily events timer */
-                Instance.daily = new System.Timers.Timer(TimeSpan.FromDays(1).TotalMilliseconds);
-                Instance.daily.Elapsed += new ElapsedEventHandler((EventHandler)CheckDaily);
+            Client = new DiscordShardedClient();
+            Events = new YukiShardedEvents();
+            Config = Config.Get();
 
-                await SetupServices();
-                initialized = true;
-            }
-        }
-
-        public async Task Login()
-        {
             Console.CancelKeyPress += (s, ev) => Shutdown();
             AppDomain.CurrentDomain.ProcessExit += (s, ev) => Shutdown();
+        }
 
-            if (!initialized)
-                Initialize().Wait();
+        public async Task LoginAsync()
+        {
+            /* Make sure we aren't logged in before continuing */
+            if (isLoggedIn)
+            {
+                Logger.Instance.Write(Misc.LogSeverity.Error, "Already logged in!");
+                return;
+            }
 
-            _log.Write(Misc.LogSeverity.Info, "Logging in...");
 
-            if (Credentials.Token != null)
+            Logger.Instance.Write(Misc.LogSeverity.Info, "Logging in...");
+
+
+            if (Config.Token != null)
             {
                 try
                 {
-                    /* Get the recommended amount of shards */
-                    await Instance.DiscordClient.LoginAsync(TokenType.Bot, Credentials.Token);
+                    /* Get the amount of shards needed */
                     
-                    int shards = await Instance.DiscordClient.GetRecommendedShardCountAsync();
-                    _log.Write(Misc.LogSeverity.Info, "Recommended shards: " + shards);
-                    await Instance.DiscordClient.LogoutAsync();
-                    
-                    /* Recreate our client with the recommended amount of shards and login */
-                    Instance.DiscordClient = new DiscordShardedClient(new DiscordSocketConfig()
-                                                                            {
-                                                                                AlwaysDownloadUsers = true,
-                                                                                MessageCacheSize = 10000,
-                                                                                TotalShards = shards
-                                                                             });
-                    
-                    await Instance.DiscordClient.LoginAsync(TokenType.Bot, Credentials.Token);
-                    await Instance.DiscordClient.StartAsync();
+                    await Client.LoginAsync(TokenType.Bot, Config.Token);
+
+                    MaxShards = await Client.GetRecommendedShardCountAsync();
+
+                    Logger.Instance.Write(Misc.LogSeverity.Info, "Shards set to: " + MaxShards);
+
+                    await Client.LogoutAsync();
+
+                    /* Recreate our Client and login */
+                    Client = new DiscordShardedClient(new DiscordSocketConfig()
+                    {
+                        AlwaysDownloadUsers = true,
+                        MessageCacheSize = 10000,
+                        TotalShards = MaxShards,
+                        LogLevel = Discord.LogSeverity.Info
+                    });
+
+                    Client.Log += Log;
+
+                    await Client.LoginAsync(TokenType.Bot, Config.Token);
+                    await Client.StartAsync();
 
 
-                    /* Setup the events for our shards */
-                    Instance.DiscordClient.ShardReady += shardedEvents.ShardReady;
-                    Instance.DiscordClient.ShardConnected += shardedEvents.ShardConnected;
-                    Instance.DiscordClient.ShardDisconnected += shardedEvents.ShardDisconnected;
+                    SetupServices();
 
-                    daily.Start();
+                    SetupShardEvents();
                 }
                 catch (HttpException e)
                 {
-                    _log.Write(Misc.LogSeverity.Error, e.Message);
+                    Logger.Instance.Write(Misc.LogSeverity.Error, e);
                     return;
                 }
-                catch(HttpRequestException e)
+                catch (HttpRequestException e)
                 {
-                    _log.Write(Misc.LogSeverity.Error, e.Message);
+                    Logger.Instance.Write(Misc.LogSeverity.Error, e);
                     return;
                 }
+                
+                isLoggedIn = true;
             }
             else
-                _log.Write(Misc.LogSeverity.Error, "Token not set!");
-
-            _log.Write(Misc.LogSeverity.Info, "Yuki, online!");
-            _log.SendNotificationFromFirebaseCloud("Yuki, online!", "Yuki connected", "INC_CLIENT_CONNECT", "Yuki has successfully connected.");
+                Logger.Instance.Write(Misc.LogSeverity.Error, "Cannot login: Token not set!");
         }
 
 
-        private void GetMembers(DiscordSocketClient client)
+        private Task Log(LogMessage message)
         {
-            /* for loops on arrays are about 5x cheaper than foreach loops on lists. */
-            IGuild[] guilds = client.Guilds.ToArray();
-            
-            for (int j = 0; j < guilds.Length; j++)
-            {
-                IGuildUser[] users = guilds[j].GetUsersAsync().Result.ToArray();
-
-                for (int k = 0; k < users.Length; k++)
-                    Instance.AddTo(client.ShardId, users[k].Id);
-            }
+            Logger.Instance.Write(Misc.LogSeverity.DiscordNet, message.Message);
+            return Task.CompletedTask;
         }
 
-        private async Task SetupServices()
+        private void SetupShardEvents()
         {
-            Instance.Services = new ServiceCollection()
-                .AddSingleton(DiscordClient)
-                .AddSingleton(Credentials)
-                .AddSingleton(new AudioService(Credentials))
+            Client.ShardReady += Events.ShardReady;
+            Client.ShardConnected += Events.ShardConnected;
+            Client.ShardDisconnected += Events.ShardDisconnected;
+        }
+
+        private void SetupServices()
+        {
+            Services = new ServiceCollection()
+                .AddSingleton(Client)
+                .AddSingleton(Config)
+                .AddSingleton(new AudioService(Config))
                 /*.AddSingleton<InteractiveService>()*/
                 .AddDbContext<YukiContext>()
                 .BuildServiceProvider();
 
-
-            Instance.CommandService = new CommandService();
-            await Instance.CommandService.AddModulesAsync(Assembly.GetEntryAssembly(), Instance.Services);
-
-
-            _log.Write(Misc.LogSeverity.Info, "Verifying commands....");
-            Localizer.VerifyCommands();
-            _log.Write(Misc.LogSeverity.Info, "Command verification complete!");
-        }
-
-        private void CheckDaily(object sender, EventArgs e)
-        {
-            try
-            {
-                using (UnitOfWork uow = new UnitOfWork())
-                    if (uow.PurgeableGuildsRepository != null)
-                        PurgeService.CheckForPurge();
-
-                if (File.Exists(FileDirectories.DatabaseCopyPath))
-                    File.Delete(FileDirectories.DatabaseCopyPath);
-
-                File.Copy(FileDirectories.Database, FileDirectories.DatabaseCopyPath);
-
-                CachedUser[] users = MessageCache.Users;
-                for (int i = 0; i < users.Length; i++)
-                    if (DateTime.Now.Subtract(users[i].LastSeenOn).TotalDays >= 7)
-                        MessageCache.DeleteUser(users[i].UserId);
-
-                MessageCache.DumpCacheToFile();
-            }
-            catch(Exception ex)
-            {
-                _log.Write(Misc.LogSeverity.Error, ex);
-            }
+            CommandService = new CommandService();
+            CommandService.AddModulesAsync(Assembly.GetEntryAssembly(), Services);
         }
 
         private void Shutdown()
         {
-            Instance.DiscordClient.LogoutAsync();
-            Instance.DiscordClient.StopAsync();
-            Instance.DiscordClient.Dispose();
+            IsShuttingDown = true;
 
-            Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "Backing up database...");
+            Client.LogoutAsync();
+            Client.StopAsync();
+
+            Client.Dispose();
+
+            Logger.Instance.Write(Misc.LogSeverity.Info, "Client stopped.");
+            Logger.Instance.Write(Misc.LogSeverity.Info, "Backing up database...");
 
             if (File.Exists(FileDirectories.DatabaseCopyPath))
                 File.Delete(FileDirectories.DatabaseCopyPath);
+
             File.Copy(FileDirectories.Database, FileDirectories.DatabaseCopyPath);
 
-            Logger.GetLoggerInstance().Write(Misc.LogSeverity.Info, "Backing up message cache...");
+            Logger.Instance.Write(Misc.LogSeverity.Info, "Writing message cache to file...");
             MessageCache.DumpCacheToFile();
 
-            Logger.GetLoggerInstance().SendNotificationFromFirebaseCloud("Yuki, offline", "Process terminated", "INC_YUKI_TERMINATED", "Process terminated.");
+            Logger.Instance.SendNotificationFromFirebaseCloud("Yuki, offline", "Yuki has been shut down");
 
-            Thread.Sleep(1000); //Sleep for 1s to give things enough time to back up.
+            /* Wait a little to make sure everything has had enough time to write */
+            Thread.Sleep(1000);
         }
-
-
-        public void AddTo(int shard, ulong userId)
-        {
-            if (!Instance.members.ContainsKey(shard))
-                Instance.members.Add(shard, new List<ulong>());
-
-            if(!Instance.members[shard].Contains(userId))
-                Instance.members[shard].Add(userId);
-        }
-
-        public void RemoveFrom(int shard, ulong userId)
-        {
-            if (Instance.members == null)
-                Instance.members = new Dictionary<int, List<ulong>>();
-
-            if (Instance.members.ContainsKey(shard) && members[shard].Contains(userId))
-                Instance.members[shard].Remove(userId);
-        }
-        
-        public void ShardReady(DiscordSocketClient client)
-        {
-            Instance.ShardsReady++;
-            Instance.GetMembers(client);
-        }
-
-        public void ShardConnected()
-            => Instance.ConnectedShards++;
     }
 }
