@@ -1,0 +1,16 @@
+version = "5.0.0"
+lang = "en_US"
+prefix = ["y!", "yuki " ",,"]
+playing_seconds = 300
+enable_notifications = false
+
+# People allowed to execute bot owner-level commands
+owners = [0 #Your user ID here]
+
+[keys]
+token = "HBi8U9i.iUYhhgUhIk.OUiuUTiyyUyiuHiugYUiuguyg"
+encryption = "GUYguyGMOJhYTFJKnnuiGUI.UGGUYGGYuUYiuhJK8&8b"
+#token for thecatapi.com
+api_cat = "asijviajs-asfuhsdifj-ushdfjiv"
+#not required if enable_notifications is false
+api_firebase = "abcdefg:hijklm_nopqrstuv123wxyz456_7890"
