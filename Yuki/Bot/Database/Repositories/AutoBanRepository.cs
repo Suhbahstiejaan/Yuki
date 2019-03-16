@@ -27,6 +27,9 @@ namespace Yuki.Bot.Misc.Database.Repositories
         public AutoBanUser GetUser(ulong userId, ulong guildId)
             => context.AutoBanUsers.Where(x => x.ServerId == guildId && x.UserId == userId).FirstOrDefault();
 
+        public AutoBanUser[] GetUsers(ulong guildId)
+            => context.AutoBanUsers.Where(x => x.ServerId == guildId).ToArray();
+
         #region IDisposable Support
         private bool disposed = false;
 

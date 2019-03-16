@@ -100,5 +100,12 @@ namespace Yuki.Bot.Modules
                 Logger.Instance.SendNotificationFromFirebaseCloud(_params[0], _params[1]);
             }
         }
+
+        [OwnerOnly]
+        [Command("forcepurge")]
+        public async Task ForcePurgeAsync()
+        {
+            PurgeService.CheckForPurge();
+        }
     }
 }

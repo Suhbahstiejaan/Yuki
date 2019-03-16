@@ -17,6 +17,11 @@ namespace Yuki.Bot.Misc.Database.Repositories
         {
             context.IgnoredServers.Add(server);
         }
+
+        public void RemoveServer(IgnoredServer s)
+        {
+            context.IgnoredServers.Remove(s);
+        }
         
         public IgnoredServer GetServer(ulong guildId)
         {
