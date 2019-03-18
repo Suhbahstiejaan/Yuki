@@ -1,5 +1,6 @@
 {
-	"donation_url": "https://www.patreon.com/user?u=7361846",
+	"donation_patreon": "https://www.patreon.com/user?u=7361846",
+	"donation_paypal": "https://paypal.me/veenus2247",
 	"bot_invite_url": "https://discordapp.com/oauth2/authorize?client_id=338887651677700098&scope=bot&permissions=271690950",
 	"server_invite_url": "https://discord.gg/qA4c4f3",
 	"source_url": "https://gitlab.com/veethree/yuki/",

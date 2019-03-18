@@ -79,7 +79,8 @@ namespace Yuki.Bot.Helper
                      .AddField(Localizer.GetLocalizedStringFromData(help, "useful_links"),
                                $"[{Localizer.GetLocalizedStringFromData(help, "server")}]({Localizer.GetURLs.server_invite_url})\n\t" +
                                $"[{Localizer.GetLocalizedStringFromData(help, "invitation")}]({Localizer.GetURLs.bot_invite_url})\n\t" +
-                               $"[{Localizer.GetLocalizedStringFromData(help, "donate")}]({Localizer.GetURLs.donation_url})\n\t" + 
+                               $"[{Localizer.GetLocalizedStringFromData(help, "donate_patreon")}]({Localizer.GetURLs.donation_patreon})\n\t" + 
+                               $"[{Localizer.GetLocalizedStringFromData(help, "donate_paypal")}]({Localizer.GetURLs.donation_paypal})\n\t" + 
                                $"[{Localizer.GetLocalizedStringFromData(help, "source")}]({Localizer.GetURLs.source_url})\n** **");
             }
 

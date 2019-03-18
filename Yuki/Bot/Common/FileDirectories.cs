@@ -7,7 +7,7 @@ namespace Yuki.Bot.Common
     public class FileDirectories
     {
         public static string AppDataDirectory
-            => AppDomain.CurrentDomain.BaseDirectory + @"data/";
+            => AppDomain.CurrentDomain.BaseDirectory.Replace(@"\", "/") + @"data/";
 
         public static string DatabaseCopyPath
             => AppDataDirectory + "yuki_" + DateTime.Now.Month + "_" + DateTime.Now.Day + ".db";
