@@ -96,8 +96,7 @@ namespace Yuki.Bot
 
             Logger.Instance.Write(LogLevel.Info, "Logging in...");
 
-
-            if (Config.Token != null)
+            if (Config != null && Config.Token != null)
             {
                 try
                 {
@@ -144,7 +143,7 @@ namespace Yuki.Bot
                 isLoggedIn = true;
             }
             else
-                Logger.Instance.Write(LogLevel.Error, "Cannot login: Token not set!");
+                Logger.Instance.Write(LogLevel.Warning, "Cannot login: Token not set! Configure in " + FileDirectories.AppDataDirectory + "config.json.");
         }
 
 

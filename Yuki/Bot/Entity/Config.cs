@@ -29,9 +29,10 @@ namespace Yuki.Bot.Entity
             }
             catch (Exception)
             {
-                if(!File.Exists(FileDirectories.AppDataDirectory + "config.json"))
-                    File.WriteAllText(FileDirectories.AppDataDirectory + "config.json", JsonConvert.SerializeObject(new Config(), Formatting.Indented));
-                throw;
+                if(!File.Exists(FileDirectories.AppDataDirectory + "config_example.json"))
+                    File.WriteAllText(FileDirectories.AppDataDirectory + "config_example.json", JsonConvert.SerializeObject(new Config(), Formatting.Indented));
+
+                Logger.Instance.Write(LogLevel.Warning, "Config file doesn't exist! An example has been downloaded for you.");
             }
 
             return _creds;
