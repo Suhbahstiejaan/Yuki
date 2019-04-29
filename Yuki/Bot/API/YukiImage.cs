@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Discord;
+using System.Collections.Generic;
 
 namespace Yuki.Bot.API
 {
@@ -10,11 +11,11 @@ namespace Yuki.Bot.API
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public static List<YukiImage> GetBatchImages(string term = "", bool isNsfw = false)
+        public static List<YukiImage> GetBatchImages(IChannel channel, string term = "", bool isNsfw = false)
         {
             List<YukiImage> images = new List<YukiImage>();
 
-            images.AddRange(GetBatchAnimeImages(term, isNsfw));
+            images.AddRange(GetBatchAnimeImages(channel, term, isNsfw));
 
             images.AddRange(Rule34.Rule34.GetImages(term).Result);
             images.AddRange(E621.E621.GetImages(term).Result);
@@ -22,12 +23,12 @@ namespace Yuki.Bot.API
             return images;
         }
 
-        public static List<YukiImage> GetBatchAnimeImages(string term = "", bool isNsfw = false)
+        public static List<YukiImage> GetBatchAnimeImages(IChannel channel, string term = "", bool isNsfw = false)
         {
             List<YukiImage> images = new List<YukiImage>();
             List<YukiImage> _images = new List<YukiImage>();
 
-            _images = Gelbooru.Gelbooru.GetImages(term, isNsfw).Result;
+            _images = Gelbooru.Gelbooru.GetImages(channel, term, isNsfw).Result;
 
             if (_images != null)
             {
@@ -37,7 +38,7 @@ namespace Yuki.Bot.API
 
             if (term.Split(' ').Length <= 2 || term.Split('+').Length <= 2)
             {
-                _images = Danbooru.Danbooru.GetImages(term, isNsfw).Result;
+                _images = Danbooru.Danbooru.GetImages(channel, term, isNsfw).Result;
 
                 if (_images != null)
                 {

@@ -1,10 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
+using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Bot.API;
+using Yuki.Bot.API.Danbooru;
+using Yuki.Bot.API.Gelbooru;
 using Yuki.Bot.API.RamMoe;
 using Yuki.Bot.Common;
 using Yuki.Bot.Misc;
+using Yuki.Bot.Misc.Database;
 using Yuki.Bot.Misc.Extensions;
 using Yuki.Bot.Services.Localization;
 
@@ -64,12 +68,65 @@ namespace Yuki.Bot.Modules.User
         [Command("booru")]
         public async Task RedditSearchAsync([Remainder] string term = null)
         {
-            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchAnimeImages(term), Context.Message, term);
+            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchAnimeImages(Context.Channel, term), Context.Message, term);
 
             if(embed != null)
                 await ReplyAsync("", false, embed);
             else
                 await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`", false, embed);
+        }
+
+        /* Search gelbooru */
+        [Command("gelbooru")]
+        public async Task GelbooruAsync([Remainder] string term = "")
+        {
+            bool isNsfw = false;
+
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                if(Context.Channel is IDMChannel)
+                {
+                    isNsfw = false;
+                }
+
+                isNsfw = uow.NsfwChannelRepository.GetChannels(((IGuildChannel)Context.Channel).GuildId).FirstOrDefault() != null;
+            }
+
+            Embed embed = Embeds.EmbedWithSource(await Gelbooru.GetImages(Context.Channel, term, isNsfw), Context.Message, term);
+
+            if (embed != null)
+                await ReplyAsync("", false, embed);
+            else
+                await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
+        }
+
+        /* Search danbooru */
+        [Command("danbooru")]
+        public async Task DanbooruAsync([Remainder] string term = "")
+        {
+            bool isNsfw = false;
+
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                if (Context.Channel is IDMChannel)
+                {
+                    isNsfw = false;
+                }
+
+                isNsfw = uow.NsfwChannelRepository.GetChannels(((IGuildChannel)Context.Channel).GuildId).FirstOrDefault() != null;
+            }
+
+            if (term.Split(' ').Length > 2 || term.Split('+').Length > 2)
+                await ReplyAsync("Cannot have more than 2 tags");
+            else
+            {
+                Embed embed = Embeds.EmbedWithSource(await Danbooru.GetImages(Context.Channel, term, isNsfw), Context.Message, term);
+
+                if (embed != null)
+                    await ReplyAsync("", false, embed);
+                else
+                    await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
+            }
         }
     }
 }

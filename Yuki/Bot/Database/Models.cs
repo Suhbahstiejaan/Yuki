@@ -123,4 +123,10 @@ namespace Yuki.Bot.Misc.Database
         public ulong UserId { get; set; }
         public ulong ServerId { get; set; }
     }
+
+    public class NsfwChannel : DbEntity
+    {
+        public ulong ChannelId { get; set; }
+        public ulong ServerId { get; set; }
+    }
 }

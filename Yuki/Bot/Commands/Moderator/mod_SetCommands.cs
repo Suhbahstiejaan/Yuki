@@ -404,6 +404,24 @@ namespace Yuki.Bot.Modules.Moderator
                 }
                 catch(Exception e) { Logger.Instance.Write(LogLevel.Error, e); }
             }
+
+            [Command("nsfwchannel")]
+            public async Task SetNsfwChannelAsync()
+            {
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    NsfwChannel channel = new NsfwChannel()
+                    {
+                        ServerId = Context.Guild.Id,
+                        ChannelId = Context.Channel.Id
+                    };
+
+                    uow.NsfwChannelRepository.Add(channel);
+
+                    uow.Save();
+                    await ReplyAsync("Added <#" + channel.ChannelId + "> as an NSFW channel.");
+                }
+            }
         }
     }
 }

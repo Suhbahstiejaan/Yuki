@@ -113,10 +113,10 @@ namespace Yuki.Bot
                     /* Recreate our Client and login */
                     Client = new DiscordShardedClient(new DiscordSocketConfig()
                     {
-                        AlwaysDownloadUsers = true,
                         MessageCacheSize = 10000,
                         TotalShards = MaxShards,
-                        LogLevel = Discord.LogSeverity.Info
+                        LogLevel = LogSeverity.Info,
+                        ConnectionTimeout = 300 * 1000
                     });
 
                     Client.Log += Log;

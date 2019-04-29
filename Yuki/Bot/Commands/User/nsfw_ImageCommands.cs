@@ -17,11 +17,11 @@ namespace Yuki.Bot.Modules.User
     public class nsfw_ImageCommands : ModuleBase
     {
         /* Search all the available nsfw sites */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("nsfw")]
         public async Task NSFWAsync([Remainder] string term = "")
         {
-            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchImages(term, true), Context.Message, term);
+            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchImages(Context.Channel, term, true), Context.Message, term);
 
             if (embed != null)
                 await ReplyAsync("", false, embed);
@@ -30,20 +30,20 @@ namespace Yuki.Bot.Modules.User
         }
 
         /* H-Hentai..!~ */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("hentai")]
         public async Task HentaiAsync([Remainder] string term = "")
         {
-            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchAnimeImages(term, true), Context.Message, term);
+            Embed embed = Embeds.EmbedWithSource(YukiImage.GetBatchAnimeImages(Context.Channel, term, true), Context.Message, term);
 
             if (embed != null)
                 await ReplyAsync("", false, embed);
             else
                 await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
         }
-        
+
         /* Search e621 */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("e621")]
         public async Task E621Async([Remainder] string term = "")
         {
@@ -56,7 +56,7 @@ namespace Yuki.Bot.Modules.User
         }
 
         /* Search rule34.xxx */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("r34")]
         public async Task R34Async([Remainder] string term = "")
         {
@@ -68,39 +68,8 @@ namespace Yuki.Bot.Modules.User
                 await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
         }
 
-        /* Search gelbooru */
-        [RequireNsfw]
-        [Command("gelbooru")]
-        public async Task GelbooruAsync([Remainder] string term = "")
-        {
-            Embed embed = Embeds.EmbedWithSource(await Gelbooru.GetImages(term, true), Context.Message, term);
-
-            if (embed != null)
-                await ReplyAsync("", false, embed);
-            else
-                await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
-        }
-
-        /* Search danbooru */
-        [RequireNsfw]
-        [Command("danbooru")]
-        public async Task DanbooruAsync([Remainder] string term = "")
-        {
-            if(term.Split(' ').Length > 2 || term.Split('+').Length > 2)
-                await ReplyAsync("Cannot have more than 2 tags");
-            else
-            {
-                Embed embed = Embeds.EmbedWithSource(await Danbooru.GetImages(term, true), Context.Message, term);
-
-                if (embed != null)
-                    await ReplyAsync("", false, embed);
-                else
-                    await ReplyAsync(Localizer.GetStrings(Localizer.YukiStrings.default_lang).no_results + ": `" + term + "`");
-            }
-        }
-
         /* Get a random butt image */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("butts")]
         public async Task ButtAsync()
         {
@@ -114,7 +83,7 @@ namespace Yuki.Bot.Modules.User
         }
 
         /* Get a random image of boobs */
-        [RequireNsfw]
+        [NsfwChannel]
         [Command("boobs")]
         public async Task BoobAsync()
         {

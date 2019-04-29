@@ -24,6 +24,7 @@ namespace Yuki.Bot.Misc.Database
         private CustomPrefixRepository customPrefixRepository;
         private DataOptInRepository dataOptInRepository;
         private AutoBanRepository autoBanRepository;
+        private NsfwChannelRepository nsfwChannelRepository;
 #pragma warning restore 649
 
         public SettingRepository SettingsRepository
@@ -73,6 +74,9 @@ namespace Yuki.Bot.Misc.Database
 
         public AutoBanRepository AutoBanRepository
             => autoBanRepository ?? new AutoBanRepository(_context);
+
+        public NsfwChannelRepository NsfwChannelRepository
+            => nsfwChannelRepository ?? new NsfwChannelRepository(_context);
 
         public void Save()
             => _context.SaveChanges();

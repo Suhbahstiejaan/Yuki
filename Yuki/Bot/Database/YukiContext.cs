@@ -59,6 +59,7 @@ namespace Yuki.Bot.Misc.Database
         public DbSet<CustomPrefix> CustomPrefixes { get; set; }
         public DbSet<DataOptIn> DataCollectionOptIn { get; set; }
         public DbSet<AutoBanUser> AutoBanUsers { get; set; }
+        public DbSet<NsfwChannel> NsfwChannels { get; set; }
 
         public YukiContext(DbContextOptions<YukiContext> options)
             : base(options)
@@ -151,6 +152,11 @@ namespace Yuki.Bot.Misc.Database
             });
 
             model.Entity<AutoBanUser>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+            });
+
+            model.Entity<NsfwChannel>(entity =>
             {
                 entity.HasKey(e => e.Id);
             });

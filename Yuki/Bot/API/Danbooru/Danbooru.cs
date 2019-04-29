@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Discord;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -15,15 +16,15 @@ namespace Yuki.Bot.API.Danbooru
         private static YukiRandom _random = new YukiRandom();
 
         /* Return a random image with the received search terms */
-        public static async Task<YukiImage> GetImage(string term = null, bool isNsfwSearch = false)
+        public static async Task<YukiImage> GetImage(IChannel channel, string term = null, bool isNsfwSearch = false)
         {
-            List<YukiImage> images = await GetImages(term, isNsfwSearch);
+            List<YukiImage> images = await GetImages(channel, term, isNsfwSearch);
 
             return images[_random.Next(images.Count)];
         }
 
         /* Return a List of images that match our search terms */
-        public static async Task<List<YukiImage>> GetImages(string term = null, bool isNsfwSearch = false)
+        public static async Task<List<YukiImage>> GetImages(IChannel channel, string term = null, bool isNsfwSearch = false)
         {
             List<YukiImage> images = new List<YukiImage>();
 
@@ -42,8 +43,8 @@ namespace Yuki.Bot.API.Danbooru
                     {
                         for (int i = 0; i < danbooru.Length; i++)
                             //check if the rating matches the search type, if it does add it to the list
-                            if(((danbooru[i].rating == "e" || danbooru[i].rating == "q") && isNsfwSearch) ||
-                                danbooru[i].rating == "s" && !isNsfwSearch)
+                            if(((danbooru[i].rating == "e" || danbooru[i].rating == "q") && ((channel is IDMChannel) || isNsfwSearch)) ||
+                                danbooru[i].rating == "s" && ((channel is IDMChannel) || !isNsfwSearch))
                             {
                                 bool isAllowed = true;
                                 string[] tags = danbooru[i].tag_string.Split('+');

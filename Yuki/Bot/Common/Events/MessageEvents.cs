@@ -46,6 +46,11 @@ namespace Yuki.Bot.Common.Events
             context = new SocketCommandContext(YukiClient.Instance.Client.GetShard(0), message);
 
             IResult result = await YukiClient.Instance.CommandService.ExecuteAsync(context, argPos, YukiClient.Instance.Services);
+
+            if(!result.IsSuccess && result.Error != CommandError.UnknownCommand)
+            {
+                await context.Channel.SendMessageAsync(result.ErrorReason);
+            }
         }
 
         public static bool HasPrefix(SocketUserMessage message, ref int argPos)

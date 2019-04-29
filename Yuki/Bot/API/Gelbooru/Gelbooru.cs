@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Discord;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -15,15 +16,15 @@ namespace Yuki.Bot.API.Gelbooru
         private static YukiRandom _random = new YukiRandom();
 
         /* Return a random image with the received search terms */
-        public static async Task<YukiImage> GetImage(string term = null, bool isNsfwSearch = false)
+        public static async Task<YukiImage> GetImage(IChannel channel, string term = null, bool isNsfwSearch = false)
         {
-            List<YukiImage> images = await GetImages(term, isNsfwSearch);
+            List<YukiImage> images = await GetImages(channel, term, isNsfwSearch);
 
             return images[_random.Next(images.Count)];
         }
 
         /* Return a List of images that match our search terms */
-        public static async Task<List<YukiImage>> GetImages(string term = null, bool isNsfwSearch = false)
+        public static async Task<List<YukiImage>> GetImages(IChannel channel, string term = null, bool isNsfwSearch = false)
         {
             List<YukiImage> images = new List<YukiImage>();
 
@@ -31,10 +32,13 @@ namespace Yuki.Bot.API.Gelbooru
             {
                 string url = apiUrl;
 
-                if (isNsfwSearch)
-                    url += "explicit";
-                else
-                    url += "safe";
+                if(!(channel is IDMChannel))
+                {
+                    if (isNsfwSearch)
+                        url += "explicit";
+                    else
+                        url += "safe";
+                }
 
                 if (term != null)
                     url += "%20" + term.Replace(" ", "%20");

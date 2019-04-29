@@ -9,7 +9,7 @@ namespace Yuki.Bot.Modules.Moderator
     public class mod_DeleteCommands : ModuleBase
     {
         [RequireUserPermission(GuildPermission.ManageGuild)]
-        [Group("delete")]
+        [Group("remove")]
         public class Delete : ModuleBase
         {
             [Command("command")]
@@ -182,6 +182,24 @@ namespace Yuki.Bot.Modules.Moderator
                     }
                     else
                         await ReplyAsync("No prefix set for this server!");
+                }
+            }
+
+            [Command("nsfwchannel")]
+            public async Task RemoveNsfwChannelAsync()
+            {
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    NsfwChannel channel = uow.NsfwChannelRepository.Get(Context.Channel.Id, Context.Guild.Id);
+
+                    if (channel == null)
+                        await ReplyAsync("This channel has not been marked as an NSFW channel.");
+                    else
+                    {
+                        uow.NsfwChannelRepository.Remove(channel);
+                        uow.Save();
+                        await ReplyAsync("Removed <#" + channel.ChannelId + "> as an NSFW channel.");
+                    }
                 }
             }
         }
