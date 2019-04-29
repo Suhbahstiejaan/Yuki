@@ -4,8 +4,6 @@ namespace Yuki.Bot.Services.Localization
 {
     public class YukiStrings
     {
-        public string version { get; set; }
-        public string version_name { get; set; }
         public string default_lang { get; set; }
         public string prefix { get; set; }
         public string prefix_string { get; set; }

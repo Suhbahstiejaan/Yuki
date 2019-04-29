@@ -62,7 +62,7 @@ namespace Yuki.Bot.Helper
                 Color = Colors.Pink,
                 Footer = new EmbedFooterBuilder()
                 {
-                    Text = "Yuki " + Localizer.YukiStrings.version + " " + Localizer.YukiStrings.version_name + " | y!help " + term
+                    Text = "Yuki " + YukiClient.version + " | y!help " + term
                 },
             };
 
@@ -176,7 +176,7 @@ namespace Yuki.Bot.Helper
                     embed.AddField(pair.Key.CapitalizeFirst(), cmds.Remove(cmds.Length - 2));
             }
 
-            embed.Footer = new EmbedFooterBuilder() { Text = "Yuki " + Localizer.YukiStrings.version + " | y!help " + term };
+            embed.Footer = new EmbedFooterBuilder() { Text = "Yuki " + YukiClient.version + " | y!help " + term };
 
             return embed.Build();
         }

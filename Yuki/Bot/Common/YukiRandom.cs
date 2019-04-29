@@ -36,8 +36,7 @@ namespace Yuki.Bot.Common
         }
 
         public string RandomGame(DiscordSocketClient client) {
-            string[] games = Localizer.YukiStrings.info.Select(x => x.Replace("%version%", Localizer.YukiStrings.version)
-                                                                     .Replace("%versionname%", Localizer.YukiStrings.version_name)
+            string[] games = Localizer.YukiStrings.info.Select(x => x.Replace("%version%", YukiClient.version)
                                                                      .Replace("%prefix%", Localizer.YukiStrings.prefix)
                                                                      .Replace("%totalusers%", YukiClient.Instance.TotalUsers.ToString())
                                                                      .Replace("%shardusers%", YukiClient.Instance.ConnectedShards.First(shard => shard.ShardId == client.ShardId).Members.Count.ToString())

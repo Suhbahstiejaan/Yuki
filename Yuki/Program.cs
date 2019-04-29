@@ -56,7 +56,7 @@ namespace Yuki
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Title = "Yuki " + Localizer.YukiStrings.version;
+            Console.Title = "Yuki " + YukiClient.version;
 
             Logger.Instance.Write(LogLevel.Info, "Setting up database/applying any needed migrations...");
             YukiContextFactory.DatabaseSetupOrMigrate();
