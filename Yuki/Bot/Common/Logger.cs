@@ -145,6 +145,11 @@ namespace Yuki.Bot.Common
                     }
                 }
             }
+
+            if (message.Contains("WebSocket connection was closed"))
+            {
+                YukiClient.Instance.Shutdown(1);
+            }
         }
 
         public void SetLoggingDirectory(string directory)

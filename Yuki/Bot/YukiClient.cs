@@ -25,7 +25,7 @@ namespace Yuki.Bot
         /* Static */
         private static YukiClient _instance;
 
-        public const string version = "1.5.1";
+        public const string version = "1.5.2";
 
         public static YukiClient Instance {
             get
@@ -176,7 +176,7 @@ namespace Yuki.Bot
             CommandService.AddModulesAsync(Assembly.GetEntryAssembly(), Services);
         }
 
-        private void Shutdown()
+        public void Shutdown(int exitCode = 0)
         {
             IsShuttingDown = true;
 
@@ -200,6 +200,7 @@ namespace Yuki.Bot
 
             /* Wait a little to make sure everything has had enough time to write */
             Thread.Sleep(1000);
+            Environment.Exit(exitCode);
         }
     }
 }
