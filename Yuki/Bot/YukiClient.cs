@@ -25,7 +25,7 @@ namespace Yuki.Bot
         /* Static */
         private static YukiClient _instance;
 
-        public const string version = "1.5.2";
+        public const string version = "1.5.3";
 
         public static YukiClient Instance {
             get

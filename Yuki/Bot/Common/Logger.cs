@@ -144,10 +144,7 @@ namespace Yuki.Bot.Common
                         Write(LogLevel.Warning, "Couldnt send notification! " + e);
                     }
                 }
-            }
 
-            if (message.Contains("WebSocket connection was closed"))
-            {
                 YukiClient.Instance.Shutdown(1);
             }
         }
