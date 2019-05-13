@@ -145,7 +145,7 @@ namespace Yuki.Bot.Common
                     }
                 }
 
-                YukiClient.Instance.Shutdown(1);
+                YukiClient.Instance.Restart(1);
             }
         }
 

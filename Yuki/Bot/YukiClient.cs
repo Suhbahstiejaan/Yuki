@@ -95,7 +95,6 @@ namespace Yuki.Bot
                 return;
             }
 
-
             Logger.Instance.Write(LogLevel.Info, "Logging in...");
 
             if (Config != null && Config.Token != null)
@@ -176,7 +175,7 @@ namespace Yuki.Bot
             CommandService.AddModulesAsync(Assembly.GetEntryAssembly(), Services);
         }
 
-        public void Shutdown(int exitCode = 0)
+        public void Shutdown(int exitCode = 0, bool isRestart = false)
         {
             IsShuttingDown = true;
 
@@ -200,6 +199,18 @@ namespace Yuki.Bot
 
             /* Wait a little to make sure everything has had enough time to write */
             Thread.Sleep(1000);
+
+            if(isRestart)
+            {
+                Environment.Exit(exitCode);
+            }
+        }
+
+        public void Restart(int exitCode)
+        {
+            Shutdown(exitCode, true);
+
+            System.Diagnostics.Process.Start(Assembly.GetExecutingAssembly().Location);
             Environment.Exit(exitCode);
         }
     }
