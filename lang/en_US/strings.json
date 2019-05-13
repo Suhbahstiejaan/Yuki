@@ -1,0 +1,232 @@
+{
+  "no_results": ":warning: | No results found for",
+  "eight_ball": [
+    "It is certain",
+    "It is decidedly so",
+    "Without a doubt",
+    "Yes, definitely",
+    "You may rely on it",
+    "As I see it, yes",
+    "Most likely",
+    "Outlook good",
+    "Yes",
+    "Signs point to yes",
+    "Reply hazy try again",
+    "Ask again later",
+    "Better not tell you now",
+    "Cannot predict now",
+    "Concentrate and ask again",
+    "Don't count on it",
+    "My reply is no",
+    "My sources say no",
+    "Outlook not so good",
+    "Very doubtful"
+  ],
+  "message_empty": [
+    "Huh?",
+    "What was that?",
+    "Sorry, can you repeat that?",
+    "Come again?",
+    "What now?",
+    "Don't think I caught that",
+    "Sorry, I don't think I caught that",
+    "...Come again?"
+  ],
+  "already_in_vc": [
+    "I'm already in a voice channel, silly!",
+    "Sorry, I'm already in a voice channel :/",
+    "Hm? I'm already in one...",
+    "I can't join a voice channel when I'm already in one :P",
+    "Oh, silly, I'm already in one!"
+  ],
+  "not_server": [
+    "Hm? This isn't a server, silly!",
+    "You cannot use this command outside of servers",
+    "You silly goose, this isn't a server!",
+    "Sorry, but this command can't be used here",
+    "I can't do this outside of a server :/"
+  ],
+  "slowmode_disabled": [
+    "Slowmode's already disabled in this channel",
+    "This channel doesn't have slowmode on, silly",
+    "Slowmode isn't on in this channel, silly!",
+    "Sorry, I can't do that, slowmode's already disabled here",
+    "Disabling slo-*waaiiit*, it's already disabled!"
+  ],
+  "greeting": [
+    "Hi",
+    "Heya",
+    "Hey",
+    "Yo",
+    "Hiya",
+    "Hello",
+    "What's up",
+    "sup"
+  ],
+  "help": [
+    {
+      "name": "looking_for_help",
+      "translation": "Looking for help?"
+    },
+    {
+      "name": "description",
+      "translation": "Here's a list of commands you can use, and a bit of info on them!\n\nFor help on a command: y!help <command name>\nTo list commands in a module: y!help <module name>"
+    },
+    {
+      "name": "usage",
+      "translation": "Usage"
+    },
+    {
+      "name": "useful_links",
+      "translation": "Useful Links"
+    },
+    {
+      "name": "server",
+      "translation": "Support Server"
+    },
+    {
+      "name": "invitation",
+      "translation": "Invite Link"
+    },
+    {
+      "name": "donate",
+      "translation": "Donate!"
+    },
+    {
+      "name": "source",
+      "translation": "Source Code"
+    },
+    {
+      "name": "commands_found",
+      "translation": "Commands found for"
+    },
+    {
+      "name": "suggestions",
+      "translation": "Not what you're looking for?"
+    },
+    {
+      "name": "try",
+      "translation": "Try"
+    },
+    {
+      "name": "list_of_commands",
+      "translation": "List of Commands"
+    },
+    {
+      "name": "info",
+      "translation": "info"
+    },
+    {
+      "name": "no_command",
+      "translation": "No command found."
+    }
+  ],
+  "audio": [
+    {
+      "name": "added_queue",
+      "translation": "Added to queue"
+    },
+    {
+      "name": "uploader",
+      "translation": "Uploader"
+    },
+    {
+      "name": "length",
+      "translation": "Length"
+    },
+    {
+      "name": "requested_by",
+      "translation": "Requested by"
+    },
+    {
+      "name": "queue_position",
+      "translation": "Queue position"
+    },
+    {
+      "name": "now_playing",
+      "translation": "Now Playing"
+    },
+    {
+      "name": "disconnect",
+      "translation": "Disconnecting from voice"
+    }
+  ],
+  "owner": [
+    {
+      "name": "saved",
+      "translation": "Saved as"
+    },
+    {
+      "name": "backup_made",
+      "translation": "A backup has already been made today!"
+    },
+    {
+      "name": "cache_saved",
+      "translation": "Message cache has been saved"
+    },
+    {
+      "name": "total_messages",
+      "translation": "There are %s messages cached"
+    }
+  ],
+  "info": [
+    {
+      "name": "creator",
+      "translation": "Created by"
+    },
+    {
+      "name": "servers",
+      "translation": "Servers"
+    },
+    {
+      "name": "shard",
+      "translation": "Current Shard"
+    },
+    {
+      "name": "unique",
+      "translation": "Unique Users"
+    }
+  ],
+  "role_info": [
+    {
+      "name": "info",
+      "translation": "Information about"
+    },
+    {
+      "name": "none",
+      "translation": "None"
+    },
+    {
+      "name": "too_big",
+      "translation": "Member list too long to display"
+    },
+    {
+      "name": "role_id",
+      "translation": "Role ID"
+    },
+    {
+      "name": "creation",
+      "translation": "Creation Date"
+    },
+    {
+      "name": "permissions",
+      "translation": "Permissions"
+    },
+    {
+      "name": "is_hoisted",
+      "translation": "Is hoisted?"
+    },
+    {
+      "name": "is_mentionable",
+      "translation": "Is mentionable?"
+    },
+    {
+      "name": "members",
+      "translation": "Members"
+    },
+    {
+      "name": "not_found",
+      "translation": "Sorry! I couldn't find that role =/"
+    }
+  ]
+}

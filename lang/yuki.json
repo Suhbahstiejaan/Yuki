@@ -1,0 +1,17 @@
+{
+  "version": "v5.0.0",
+  "version_name": "",
+  "default_lang": "en_US",
+  "prefix": "y!",
+  "prefix_string": "yuki ",
+  "info": [
+    "%version%",
+    "%version% %versionname%",
+    "%prefix%help",
+    "%prefix%help info",
+    "%prefix%scramblr",
+    "in %totalservers% servers",
+    "with %totalusers% users",
+	"Donate to help support me!"
+  ]
+}

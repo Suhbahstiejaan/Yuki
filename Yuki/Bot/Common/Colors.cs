@@ -1,0 +1,26 @@
+﻿using Discord;
+using System.Collections.Generic;
+
+namespace Yuki.Bot.Common
+{
+    public static class Colors
+    {
+        public static Color[] DiscordColors()
+        {
+            return new[] { Color.Blue, Color.DarkBlue, Color.DarkerGrey, Color.DarkGreen, Color.DarkGrey, Color.DarkMagenta, Color.DarkOrange,
+                           Color.DarkPurple, Color.DarkRed, Color.DarkTeal, Color.Gold, Color.Green, Color.LighterGrey, Color.LightGrey, Color.LightOrange,
+                           Color.Magenta, Color.Orange, Color.Purple, Color.Red, Color.Teal };
+        }
+        public static Color[] Get()
+        {
+            List<Color> Colors = new List<Color>();
+            Colors.Add(Pink);
+
+            Colors.AddRange(DiscordColors());
+
+            return Colors.ToArray();
+
+        }
+        public static Color Pink = new Color(228, 11, 210);
+    }
+}
