@@ -51,7 +51,6 @@ namespace Yuki.Bot.Common.Events
             if (YukiClient.Instance.ConnectedShards.Count == YukiClient.Instance.MaxShards)
             {
                 Logger.Instance.Write(LogLevel.Debug, "Yuki, online!");
-                Logger.Instance.SendNotificationFromFirebaseCloud("Yuki, online!", "Yuki has successfully connected.");
             }
 
             return Task.CompletedTask;

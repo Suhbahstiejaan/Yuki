@@ -195,8 +195,6 @@ namespace Yuki.Bot
             Logger.Instance.Write(LogLevel.Info, "Writing message cache to file...");
             MessageCache.DumpCacheToFile();
 
-            Logger.Instance.SendNotificationFromFirebaseCloud("Yuki, offline", "Yuki has been shut down");
-
             /* Wait a little to make sure everything has had enough time to write */
             Thread.Sleep(1000);
 

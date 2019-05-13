@@ -87,20 +87,6 @@ namespace Yuki.Bot.Modules
         public async Task CacheSizeAsync()
             => await ReplyAsync(Localizer.GetLocalizedStringFromData(Localizer.GetStrings(Localizer.YukiStrings.default_lang).owner, "total_messages").Replace("%s", MessageCache.Size + ""));
 
-        /* Test */
-        [OwnerOnly]
-        [Command("notif")]
-        public async Task NotifyAsync([Remainder] string parameters)
-        {
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                /* order: name, options, end time */
-                string[] _params = Regex.Split(parameters, @"\s*[|]\s*");
-
-                Logger.Instance.SendNotificationFromFirebaseCloud(_params[0], _params[1]);
-            }
-        }
-
         [OwnerOnly]
         [Command("forcepurge")]
         public async Task ForcePurgeAsync()
