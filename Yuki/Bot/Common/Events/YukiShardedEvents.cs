@@ -65,9 +65,7 @@ namespace Yuki.Bot.Common.Events
                 /* Remove shard from connected list */
                 YukiClient.Instance.ConnectedShards.Remove(YukiClient.Instance.ConnectedShards.First(shard => shard.ShardId == client.ShardId));
 
-
-                client.StopAsync();
-                client.StartAsync();
+                YukiClient.Instance.Restart(1);
             }
 
             return Task.CompletedTask;
