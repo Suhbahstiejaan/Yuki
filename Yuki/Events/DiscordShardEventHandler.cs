@@ -8,7 +8,7 @@ using Yuki.Core;
 using System.Timers;
 using Yuki.Data;
 
-namespace Yuki.Discord.Events
+namespace Yuki.Events
 {
     public static class DiscordShardEventHandler
     {
@@ -43,7 +43,7 @@ namespace Yuki.Discord.Events
             }
             else
             {
-                YukiBot.Services.GetRequiredService<YukiLogger>().Write(LogLevel.Debug, "SocketClient with ID " + client.ShardId + " already connected!");
+                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "SocketClient with ID " + client.ShardId + " already connected!");
             }
 
             return Task.CompletedTask;
@@ -51,7 +51,7 @@ namespace Yuki.Discord.Events
 
         public static Task ShardConnected(DiscordSocketClient client)
         {
-            YukiBot.Services.GetRequiredService<YukiLogger>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": connected");
+            YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": connected");
 
             return Task.CompletedTask;
         }
@@ -60,7 +60,7 @@ namespace Yuki.Discord.Events
         {
             if(!YukiBot.Services.GetRequiredService<YukiBot>().IsShuttingDown)
             {
-                YukiBot.Services.GetRequiredService<YukiLogger>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
+                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
 
                 client.StopAsync();
                 client.StartAsync();

@@ -1,14 +1,11 @@
 ﻿using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Nett;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Yuki.Data;
-using Yuki.Data.ConfigurationDatabase;
+using Yuki.Data.Objects;
 
-namespace Yuki.Services.Localization
+namespace Yuki.Services
 {
     public class LocalizationService
     {
@@ -59,7 +56,7 @@ namespace Yuki.Services.Localization
 
         public Language GetLanguage(ICommandContext context)
         {
-            string langCode = YukiBot.Services.GetRequiredService<CDatabase>().GetConfiguration(context.Guild.Id).langCode;
+            string langCode = YukiBot.Services.GetRequiredService<ConfigDB>().GetConfiguration(context.Guild.Id).langCode;
 
             if (string.IsNullOrEmpty(langCode))
             {

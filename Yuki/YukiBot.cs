@@ -13,18 +13,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Yuki.Core;
 using Yuki.Data;
-using Yuki.Data.ConfigurationDatabase;
-using Yuki.Data.MessageDatabase;
-using Yuki.Discord;
-using Yuki.Discord.Events;
-using Yuki.Services.Localization;
+using Yuki.Events;
+using Yuki.Services;
 
 namespace Yuki
 {
     public class YukiBot
     {
-        public const string version = "1.5.0";
-
         public static string DataDirectoryRootPath
             => AppDomain.CurrentDomain.BaseDirectory + "/data/";
 
@@ -40,24 +35,24 @@ namespace Yuki
 
         public bool IsShuttingDown = false;
 
-        private YukiLogger logger;
+        private LoggingService logger;
         private LocalizationService localizationService;
 
         public YukiBot()
         {
-            if (!Directory.Exists(YukiLogger.LogDirectory))
+            if (!Directory.Exists(LoggingService.LogDirectory))
             {
-                Directory.CreateDirectory(YukiLogger.LogDirectory);
+                Directory.CreateDirectory(LoggingService.LogDirectory);
             }
 
-            if (File.Exists(YukiLogger.LogDirectory + "latest.log"))
+            if (File.Exists(LoggingService.LogDirectory + "latest.log"))
             {
-                File.Delete(YukiLogger.LogDirectory + "latest.log");
+                File.Delete(LoggingService.LogDirectory + "latest.log");
             }
 
             Shards = new List<YukiShard>();
 
-            logger = new YukiLogger();
+            logger = new LoggingService();
             localizationService = new LocalizationService();
 
             logger.Write(LogLevel.Info, "Loading languages....");
@@ -123,7 +118,7 @@ namespace Yuki
 
         private Task Log(LogMessage logMessage)
         {
-            Services.GetRequiredService<YukiLogger>().Write(LogLevel.DiscordNet, logMessage.Message);
+            Services.GetRequiredService<LoggingService>().Write(LogLevel.DiscordNet, logMessage.Message);
 
             return Task.CompletedTask;
         }
@@ -139,8 +134,8 @@ namespace Yuki
         {
             Services = new ServiceCollection()
                 .AddSingleton<InteractiveService>()
-                .AddSingleton<CDatabase>()
-                .AddSingleton<MDatabase>()
+                .AddSingleton<ConfigDB>()
+                .AddSingleton<MessageDB>()
                 .AddSingleton(Configuration)
                 .AddSingleton(DiscordClient)
                 .AddSingleton(logger)
@@ -159,7 +154,7 @@ namespace Yuki
         public void Shutdown()
         {
             IsShuttingDown = true;
-            Services.GetRequiredService<YukiLogger>().Write(LogLevel.Debug, "Stopping client...");
+            Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Stopping client...");
 
             DiscordClient.LogoutAsync();
             DiscordClient.StopAsync();

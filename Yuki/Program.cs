@@ -11,7 +11,7 @@ namespace Yuki
             Console.CancelKeyPress += (s, ev) => bot.Shutdown();
             AppDomain.CurrentDomain.ProcessExit += (s, ev) => bot.Shutdown();
 
-            Console.Title = "Yuki v" + YukiBot.version;
+            Console.Title = "Yuki v" + Version.ToString();
 
             /* Run the bot */
             bot.LoginAsync().GetAwaiter().GetResult();

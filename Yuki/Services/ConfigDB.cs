@@ -1,9 +1,10 @@
 ﻿using LiteDB;
 using System.Linq;
+using Yuki.Data.Objects;
 
-namespace Yuki.Data.ConfigurationDatabase
+namespace Yuki.Services
 {
-    public class CDatabase
+    public class ConfigDB
     {
         public const int MAX_COMMANDS = 100;
         public const int PATRON_ADDITIONAL_COMMANDS = 150;

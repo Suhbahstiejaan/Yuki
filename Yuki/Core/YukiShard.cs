@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Timers;
 
-namespace Yuki.Discord
+namespace Yuki.Core
 {
     public struct YukiShard
     {

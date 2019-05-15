@@ -2,9 +2,10 @@
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
-using Yuki.Data.MessageDatabase;
+using Yuki.Data.Objects;
+using Yuki.Services;
 
-namespace Yuki.Discord.Events
+namespace Yuki.Events
 {
     public static class DiscordSocketEventHandler
     {
@@ -21,27 +22,27 @@ namespace Yuki.Discord.Events
         
         public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
-            Message msg = new Message()
+            YukiMessage msg = new YukiMessage()
             {
                 Id = current.Id,
                 ChannelId = channel.Id,
                 Content = current.Content
             };
 
-            YukiBot.Services.GetRequiredService<MDatabase>().Edit(msg, current.Author.Id);
+            YukiBot.Services.GetRequiredService<MessageDB>().Edit(msg, current.Author.Id);
 
             return Task.CompletedTask;
         }
         public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
-            Message msg = new Message()
+            YukiMessage msg = new YukiMessage()
             {
                 Id = message.Id,
                 ChannelId = channel.Id,
                 Content = message.GetOrDownloadAsync().Result.Content
             };
 
-            YukiBot.Services.GetRequiredService<MDatabase>().Delete(msg);
+            YukiBot.Services.GetRequiredService<MessageDB>().Delete(msg);
 
             return Task.CompletedTask;
         }

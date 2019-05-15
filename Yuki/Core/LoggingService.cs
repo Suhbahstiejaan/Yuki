@@ -14,7 +14,7 @@ namespace Yuki.Core
         DiscordNet
     }
 
-    public class YukiLogger
+    public class LoggingService
     {
         /* Private */
         private string logFileName = "latest.log";

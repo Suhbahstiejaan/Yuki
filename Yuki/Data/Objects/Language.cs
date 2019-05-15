@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Yuki.Data
+namespace Yuki.Data.Objects
 {
     public class Language
     {

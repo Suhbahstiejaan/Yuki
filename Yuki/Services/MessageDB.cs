@@ -1,9 +1,10 @@
 ﻿using LiteDB;
 using System.Linq;
+using Yuki.Data.Objects;
 
-namespace Yuki.Data.MessageDatabase
+namespace Yuki.Services
 {
-    public class MDatabase
+    public class MessageDB
     {
         public const int MAX_MSGS = 50;
         public const int PATREON_ADDITIONAL_MSGS = 50;
@@ -20,7 +21,7 @@ namespace Yuki.Data.MessageDatabase
 
                 if (!user.Equals(default(YukiUser)))
                 {
-                    if (!user.Messages.FirstOrDefault(_msg => _msg.Id == usr.Messages[0].Id).Equals(default(Message)))
+                    if (!user.Messages.FirstOrDefault(_msg => _msg.Id == usr.Messages[0].Id).Equals(default(YukiMessage)))
                     {
                         Edit(usr.Messages[0], usr.Id);
                     }
@@ -47,17 +48,17 @@ namespace Yuki.Data.MessageDatabase
             }
         }
         
-        public void Delete(Message msg)
+        public void Delete(YukiMessage msg)
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 
-                YukiUser user = col.FindAll().Where(usr => !usr.Messages.FirstOrDefault(_msg => _msg.Id == msg.Id).Equals(default(Message))).FirstOrDefault();
+                YukiUser user = col.FindAll().Where(usr => !usr.Messages.FirstOrDefault(_msg => _msg.Id == msg.Id).Equals(default(YukiMessage))).FirstOrDefault();
 
-                Message uMsg = user.Messages.FirstOrDefault(_msg => _msg.Id == msg.Id);
+                YukiMessage uMsg = user.Messages.FirstOrDefault(_msg => _msg.Id == msg.Id);
 
-                if (!uMsg.Equals(default(Message)))
+                if (!uMsg.Equals(default(YukiMessage)))
                 {
                     user.Messages.Remove(uMsg);
                     
@@ -82,7 +83,7 @@ namespace Yuki.Data.MessageDatabase
             }
         }
 
-        public void Edit(Message msg, ulong author)
+        public void Edit(YukiMessage msg, ulong author)
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
@@ -90,18 +91,18 @@ namespace Yuki.Data.MessageDatabase
 
                 YukiUser user = col.FindAll().Where(usr => usr.Id == author).FirstOrDefault();
 
-                Message uMsg;
+                YukiMessage uMsg;
 
                 if (user.Messages == null || user.Messages.Count < 1)
                 {
-                    uMsg = default(Message);
+                    uMsg = default(YukiMessage);
                 }
                 else
                 {
                     uMsg = user.Messages.FirstOrDefault(_msg => _msg.Id == msg.Id);
                 }
 
-                if (!uMsg.Equals(default(Message)))
+                if (!uMsg.Equals(default(YukiMessage)))
                 {
                     int indexOfX = user.Messages.IndexOf(uMsg);
 

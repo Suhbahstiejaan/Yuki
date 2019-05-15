@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yuki.Data;
-using Yuki.Data.ConfigurationDatabase;
-using Yuki.Data.MessageDatabase;
+using Yuki.Data.Objects;
+using Yuki.Services;
 
-namespace Yuki.Discord.Events
+namespace Yuki.Events
 {
     public static class DiscordSocketMessageEventHandler
     {
@@ -27,19 +27,19 @@ namespace Yuki.Discord.Events
                                             YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShard(0);
 
 
-            YukiUser currentUser = YukiBot.Services.GetRequiredService<MDatabase>().GetUser(message.Author.Id);
+            YukiUser currentUser = YukiBot.Services.GetRequiredService<MessageDB>().GetUser(message.Author.Id);
 
             if (!currentUser.Equals(default(YukiUser)) && currentUser.CanGetMsgs) /* Check to make sure the user exists in the db */
             {
                 if(!HasPrefix(message, ref argPos))
                 {
-                    YukiBot.Services.GetRequiredService<MDatabase>().Add(
+                    YukiBot.Services.GetRequiredService<MessageDB>().Add(
                         new YukiUser()
                         {
                             Id = message.Author.Id,
-                            Messages = new List<Message>()
+                            Messages = new List<YukiMessage>()
                             {
-                                new Message()
+                                new YukiMessage()
                                 {
                                     Id = message.Id,
                                     ChannelId = message.Channel.Id,
