@@ -208,8 +208,7 @@ namespace Yuki.Bot
         {
             Shutdown(exitCode, true);
 
-            System.Diagnostics.Process.Start(Assembly.GetExecutingAssembly().Location);
-            Environment.Exit(exitCode);
+            LoginAsync().GetAwaiter().GetResult();
         }
     }
 }
