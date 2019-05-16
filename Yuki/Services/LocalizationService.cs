@@ -1,17 +1,17 @@
-﻿using Discord.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Nett;
+﻿using Nett;
+using Qmmands;
 using System.Collections.Generic;
 using System.IO;
+using Yuki.Commands;
 using Yuki.Data.Objects;
 
 namespace Yuki.Services
 {
-    public class LocalizationService
+    public static class LocalizationService
     {
-        private Dictionary<string, Language> languages = new Dictionary<string, Language>();
+        private static Dictionary<string, Language> languages = new Dictionary<string, Language>();
 
-        public void LoadLanguages()
+        public static void LoadLanguages()
         {
             if(!Directory.Exists(FileDirectories.LangRoot))
             {
@@ -33,7 +33,7 @@ namespace Yuki.Services
 
 
 
-        public void Reload()
+        public static void Reload()
         {
             if(languages.Count > 0)
             {
@@ -42,7 +42,7 @@ namespace Yuki.Services
             }
         }
 
-        public Language GetLanguage(string code)
+        public static Language GetLanguage(string code)
         {
             if(languages.ContainsKey(code))
             {
@@ -54,16 +54,16 @@ namespace Yuki.Services
             }
         }
 
-        public Language GetLanguage(ICommandContext context)
+        public static Language GetLanguage(YukiCommandContext context)
         {
-            string langCode = YukiBot.Services.GetRequiredService<ConfigDB>().GetConfiguration(context.Guild.Id).langCode;
+            string langCode = ConfigDB.GetConfiguration(context.Guild.Id).langCode;
 
             if (string.IsNullOrEmpty(langCode))
             {
                 langCode = "en_US";
             }
 
-            return YukiBot.Services.GetRequiredService<LocalizationService>().GetLanguage(langCode);
+            return GetLanguage(langCode);
         }
     }
 }

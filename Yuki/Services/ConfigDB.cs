@@ -4,12 +4,12 @@ using Yuki.Data.Objects;
 
 namespace Yuki.Services
 {
-    public class ConfigDB
+    public static class ConfigDB
     {
         public const int MAX_COMMANDS = 100;
         public const int PATRON_ADDITIONAL_COMMANDS = 150;
 
-        public void Add(GuildConfiguration guildConfig)
+        public static void Add(GuildConfiguration guildConfig)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
@@ -30,7 +30,7 @@ namespace Yuki.Services
             }
         }
 
-        public void Update(GuildConfiguration newConfiguration)
+        public static void Update(GuildConfiguration newConfiguration)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
@@ -49,7 +49,7 @@ namespace Yuki.Services
             }
         }
         
-        public void Delete(ulong guildId)
+        public static void Delete(ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
@@ -65,7 +65,7 @@ namespace Yuki.Services
             }
         }
 
-        public GuildConfiguration GetConfiguration(ulong guildId)
+        public static GuildConfiguration GetConfiguration(ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {

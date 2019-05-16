@@ -1,9 +1,9 @@
 ﻿using Discord;
-using Discord.Addons.Interactive;
-using Discord.Commands;
 using Discord.Net;
 using Discord.WebSocket;
+using InteractivityAddon;
 using Microsoft.Extensions.DependencyInjection;
+using Qmmands;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,31 +23,24 @@ namespace Yuki
 
         public DiscordShardedClient DiscordClient;
         public CommandService CommandService;
-        public Config Configuration;
-
+        
         public int ShardCount;
 
         public List<YukiShard> Shards;
 
         public bool IsShuttingDown = false;
 
-        private LoggingService logger;
-        private LocalizationService localizationService;
-
         public YukiBot()
         {
             Shards = new List<YukiShard>();
 
-            logger = new LoggingService();
-            localizationService = new LocalizationService();
-
-            logger.Write(LogLevel.Info, "Loading languages....");
-            localizationService.LoadLanguages();
+            LoggingService.Write(LogLevel.Info, "Loading languages....");
+            LocalizationService.LoadLanguages();
         }
 
         public async Task LoginAsync()
         {
-            Configuration = Config.GetConfig();
+            Config Configuration = Config.GetConfig(true);
 
             if (Configuration != null)
             {
@@ -59,7 +52,7 @@ namespace Yuki
 
                     ShardCount = await DiscordClient.GetRecommendedShardCountAsync();
 
-                    logger.Write(LogLevel.Info, "Recommended shards: " + ShardCount);
+                    LoggingService.Write(LogLevel.Info, "Recommended shards: " + ShardCount);
 
                     //cleanup
                     await DiscordClient.LogoutAsync();
@@ -81,8 +74,8 @@ namespace Yuki
                 }
                 catch(HttpException http)
                 {
-                    logger.Write(LogLevel.Warning, http);
-                    logger.Write(LogLevel.Info, "Press any key to retry.");
+                    LoggingService.Write(LogLevel.Warning, http);
+                    LoggingService.Write(LogLevel.Info, "Press any key to retry.");
 
                     Console.Read();
 
@@ -90,8 +83,8 @@ namespace Yuki
                 }
                 catch(HttpRequestException http)
                 {
-                    logger.Write(LogLevel.Warning, http);
-                    logger.Write(LogLevel.Info, "Press any key to retry.");
+                    LoggingService.Write(LogLevel.Warning, http);
+                    LoggingService.Write(LogLevel.Info, "Press any key to retry.");
 
                     Console.Read();
 
@@ -104,7 +97,7 @@ namespace Yuki
 
         private Task Log(LogMessage logMessage)
         {
-            Services.GetRequiredService<LoggingService>().Write(LogLevel.DiscordNet, logMessage.Message);
+            LoggingService.Write(LogLevel.DiscordNet, logMessage.Message);
 
             return Task.CompletedTask;
         }
@@ -119,28 +112,23 @@ namespace Yuki
         public void SetupServices()
         {
             Services = new ServiceCollection()
-                .AddSingleton<InteractiveService>()
-                .AddSingleton<ConfigDB>()
-                .AddSingleton<MessageDB>()
-                .AddSingleton(Configuration)
                 .AddSingleton(DiscordClient)
-                .AddSingleton(logger)
-                .AddSingleton(localizationService)
+                .AddSingleton(new InteractivityService(DiscordClient, TimeSpan.FromSeconds(Config.GetConfig().command_timeout_seconds)))
                 .AddSingleton(this)
                 .BuildServiceProvider();
 
-            CommandService = new CommandService(new CommandServiceConfig()
+            CommandService = new CommandService(new CommandServiceConfiguration()
             {
-                CaseSensitiveCommands = false,
+                CaseSensitive = false,
             });
 
-            CommandService.AddModulesAsync(Assembly.GetEntryAssembly(), Services);
+            CommandService.AddModules(Assembly.GetEntryAssembly());
         }
 
         public void Shutdown()
         {
             IsShuttingDown = true;
-            Services.GetRequiredService<LoggingService>().Write(LogLevel.Status, "Stopping client...");
+            LoggingService.Write(LogLevel.Status, "Stopping client...");
 
             DiscordClient.LogoutAsync();
             DiscordClient.StopAsync();

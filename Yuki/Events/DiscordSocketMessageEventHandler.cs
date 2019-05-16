@@ -1,10 +1,11 @@
 ﻿using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using Qmmands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Yuki.Commands;
 using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Services;
@@ -20,20 +21,20 @@ namespace Yuki.Events
             if (message.Source != MessageSource.User)
                 return;
             
-            int argPos = 0;
-
             DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
                                             YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShardFor(((IGuildChannel)message.Channel).Guild) :
                                             YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShard(0);
 
 
-            YukiUser currentUser = YukiBot.Services.GetRequiredService<MessageDB>().GetUser(message.Author.Id);
+            YukiUser currentUser = MessageDB.GetUser(message.Author.Id);
+
+            bool hasPrefix = HasPrefix(message, out string output);
 
             if (!currentUser.Equals(default(YukiUser)) && currentUser.CanGetMsgs) /* Check to make sure the user exists in the db */
             {
-                if(!HasPrefix(message, ref argPos))
+                if(!hasPrefix)
                 {
-                    YukiBot.Services.GetRequiredService<MessageDB>().Add(
+                    MessageDB.Add(
                         new YukiUser()
                         {
                             Id = message.Author.Id,
@@ -51,31 +52,25 @@ namespace Yuki.Events
                 }
             }
 
-            if (!HasPrefix(message, ref argPos))
+            if (!hasPrefix)
                 return;
 
-            SocketCommandContext context;
-            context = new SocketCommandContext(shard, message);
-            IResult result = await YukiBot.Services.GetRequiredService<YukiBot>().CommandService.ExecuteAsync(context, argPos, YukiBot.Services);
+            IResult result = await YukiBot.Services.GetRequiredService<YukiBot>().CommandService.ExecuteAsync(output, new YukiCommandContext(YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient, socketMessage as IUserMessage, YukiBot.Services));
 
-            if(!result.IsSuccess)
+            if(result is FailedResult failedResult)
             {
-                if(result.Error != CommandError.UnknownCommand)
+                if(!failedResult.Reason.ToLower().Contains("unknown command"))
                 {
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    await message.Channel.SendMessageAsync(failedResult.Reason);
                 }
             }
         }
 
-        private static bool HasPrefix(SocketUserMessage message, ref int argPos)
+        private static bool HasPrefix(SocketUserMessage message, out string output)
         {
-            foreach(string prefix in Config.GetConfig().prefix.ToArray())
-            {
-                if (message.HasStringPrefix(prefix, ref argPos, StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
+            output = string.Empty;
 
-            return false;
+            return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
         }
     }
 }

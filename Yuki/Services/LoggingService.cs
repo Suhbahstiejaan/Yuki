@@ -13,11 +13,11 @@ namespace Yuki.Services
         Status
     }
 
-    public class LoggingService
+    public static class LoggingService
     {
-        private string latestLogFile;
+        private static string latestLogFile;
         
-        public LoggingService()
+        static LoggingService()
         {
             if(!Directory.Exists(FileDirectories.LogRoot))
             {
@@ -34,7 +34,7 @@ namespace Yuki.Services
             File.Create(latestLogFile).Dispose();
         }
 
-        public void Write(LogLevel logLevel, object o)
+        public static void Write(LogLevel logLevel, object o)
         {
             /* only print debug info if its a prerelease or dev build */
             if((logLevel == LogLevel.Debug) && (Version.ReleaseType != ReleaseType.Development && Version.ReleaseType != ReleaseType.PreRelease))
@@ -42,7 +42,7 @@ namespace Yuki.Services
                 return;
             }
 
-            string line = $"[{DateTime.Now.TimeOfDay}] [{logLevel.ToString()}] {o.ToString()}";
+            string line = $"[{DateTime.Now.ToShortTimeString()}] [{logLevel.ToString()}] {o.ToString()}";
 
             using (FileStream file = new FileStream(latestLogFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -52,6 +52,8 @@ namespace Yuki.Services
                     sw.Flush();
                 }
             }
+
+            Console.WriteLine(line);
 
             if(logLevel == LogLevel.Error)
             {

@@ -11,22 +11,13 @@ namespace Yuki
 
         public static ReleaseType ReleaseType { get; } = ReleaseType.Development;
 
-        public static string DiscordNetVersion { get; } = DiscordConfig.Version;
+        public static string DiscordNetVersion { get; } = DiscordConfig.Version + $" (API v{DiscordConfig.APIVersion}, Voice API v{DiscordConfig.VoiceAPIVersion})";
 
-        public static string Get()
-        {
-            return $"{Major}.{Minor}.{Hotfix}.{Patch}";
-        }
+        public static string Get() => $"{Major}.{Minor}.{Hotfix}.{Patch}";
 
-        public static string GetFull()
-        {
-            return Get() + $"-{ReleaseType}";
-        }
+        public static string GetFull() => Get() + $"-{ReleaseType}";
 
-        public static new string ToString()
-        {
-            return GetFull() + $" | Discord.Net {DiscordNetVersion}";
-        }
+        public static new string ToString() => GetFull() + $" | Discord.Net v{DiscordNetVersion}";
     }
 
     public enum ReleaseType

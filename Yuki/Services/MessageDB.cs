@@ -4,12 +4,12 @@ using Yuki.Data.Objects;
 
 namespace Yuki.Services
 {
-    public class MessageDB
+    public static class MessageDB
     {
         public const int MAX_MSGS = 50;
         public const int PATREON_ADDITIONAL_MSGS = 50;
 
-        public void Add(YukiUser usr)
+        public static void Add(YukiUser usr)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
@@ -46,7 +46,7 @@ namespace Yuki.Services
             }
         }
         
-        public void Delete(YukiMessage msg)
+        public static void Delete(YukiMessage msg)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
@@ -65,7 +65,7 @@ namespace Yuki.Services
             }
         }
 
-        public void Delete(ulong userId)
+        public static void Delete(ulong userId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
@@ -81,7 +81,7 @@ namespace Yuki.Services
             }
         }
 
-        public void Edit(YukiMessage msg, ulong author)
+        public static void Edit(YukiMessage msg, ulong author)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
@@ -113,7 +113,7 @@ namespace Yuki.Services
             }
         }
 
-        public YukiUser GetUser(ulong userId)
+        public static YukiUser GetUser(ulong userId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {

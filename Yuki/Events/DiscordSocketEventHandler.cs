@@ -29,7 +29,7 @@ namespace Yuki.Events
                 Content = current.Content
             };
 
-            YukiBot.Services.GetRequiredService<MessageDB>().Edit(msg, current.Author.Id);
+            MessageDB.Edit(msg, current.Author.Id);
 
             return Task.CompletedTask;
         }
@@ -42,7 +42,7 @@ namespace Yuki.Events
                 Content = message.GetOrDownloadAsync().Result.Content
             };
 
-            YukiBot.Services.GetRequiredService<MessageDB>().Delete(msg);
+            MessageDB.Delete(msg);
 
             return Task.CompletedTask;
         }
