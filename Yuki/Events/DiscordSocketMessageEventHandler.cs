@@ -69,7 +69,7 @@ namespace Yuki.Events
 
         private static bool HasPrefix(SocketUserMessage message, ref int argPos)
         {
-            foreach(string prefix in YukiConfig.GetConfig().prefix.ToArray())
+            foreach(string prefix in Config.GetConfig().prefix.ToArray())
             {
                 if (message.HasStringPrefix(prefix, ref argPos, StringComparison.OrdinalIgnoreCase))
                     return true;

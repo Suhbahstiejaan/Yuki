@@ -9,7 +9,7 @@ namespace Yuki
         public static int Hotfix { get; } = 0;
         public static int Patch  { get; } = 0;
 
-        public static ReleaseType Release { get; } = ReleaseType.Development;
+        public static ReleaseType ReleaseType { get; } = ReleaseType.Development;
 
         public static string DiscordNetVersion { get; } = DiscordConfig.Version;
 
@@ -20,7 +20,7 @@ namespace Yuki
 
         public static string GetFull()
         {
-            return Get() + $"-{Release}";
+            return Get() + $"-{ReleaseType}";
         }
 
         public static new string ToString()

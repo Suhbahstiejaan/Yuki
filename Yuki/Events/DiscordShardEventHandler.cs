@@ -7,6 +7,7 @@ using System.Linq;
 using Yuki.Core;
 using System.Timers;
 using Yuki.Data;
+using Yuki.Services;
 
 namespace Yuki.Events
 {
@@ -25,7 +26,7 @@ namespace Yuki.Events
                 //shard.Members = client.Guilds.SelectMany(guild => guild.Users).Select(user => user.Id).ToList();
                 shard.Members = client.Guilds.SelectMany(guild => guild.Users).Select(user => user.Id).Where(user => shards.FirstOrDefault(sh => sh.Members.Contains(user)).Equals(default(YukiShard))).ToList();
 
-                shard.Playing = new Timer(YukiConfig.GetConfig().playing_seconds * 1000);
+                shard.Playing = new Timer(Config.GetConfig().playing_seconds * 1000);
                 shard.Playing.Elapsed += new ElapsedEventHandler((EventHandler)delegate (object sender, EventArgs e)
                 {
                     client.SetGameAsync("Shard " + shard.Id  + "  (" + shard.Members.Count  + " members)");
@@ -43,7 +44,7 @@ namespace Yuki.Events
             }
             else
             {
-                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "SocketClient with ID " + client.ShardId + " already connected!");
+                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Warning, "SocketClient with ID " + client.ShardId + " already connected!");
             }
 
             return Task.CompletedTask;
@@ -51,7 +52,7 @@ namespace Yuki.Events
 
         public static Task ShardConnected(DiscordSocketClient client)
         {
-            YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": connected");
+            YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Status, "Shard " + client.ShardId + ": connected");
 
             return Task.CompletedTask;
         }
@@ -60,7 +61,7 @@ namespace Yuki.Events
         {
             if(!YukiBot.Services.GetRequiredService<YukiBot>().IsShuttingDown)
             {
-                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
+                YukiBot.Services.GetRequiredService<LoggingService>().Write(LogLevel.Error, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
 
                 client.StopAsync();
                 client.StartAsync();

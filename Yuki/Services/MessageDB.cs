@@ -9,11 +9,9 @@ namespace Yuki.Services
         public const int MAX_MSGS = 50;
         public const int PATREON_ADDITIONAL_MSGS = 50;
 
-        private string path = YukiBot.DataDirectoryRootPath + "messages.db";
-
         public void Add(YukiUser usr)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 
@@ -50,7 +48,7 @@ namespace Yuki.Services
         
         public void Delete(YukiMessage msg)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 
@@ -69,7 +67,7 @@ namespace Yuki.Services
 
         public void Delete(ulong userId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 
@@ -85,7 +83,7 @@ namespace Yuki.Services
 
         public void Edit(YukiMessage msg, ulong author)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 
@@ -117,7 +115,7 @@ namespace Yuki.Services
 
         public YukiUser GetUser(ulong userId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.MessageDB))
             {
                 LiteCollection<YukiUser> col = db.GetCollection<YukiUser>();
 

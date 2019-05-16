@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Yuki.Data
 {
-    public class YukiConfig
+    public class Config
     {
         public string default_lang { get; set; }
         public List<string> prefix { get; set; }
@@ -20,9 +20,9 @@ namespace Yuki.Data
         public List<string> blacklist { get; set; }
         public List<string> rammoe_exclude { get; set; }
         
-        public static YukiConfig GetConfig()
+        public static Config GetConfig()
         {
-            return Toml.ReadFile<YukiConfig>(YukiBot.DataDirectoryRootPath + "config.toml");
+            return Toml.ReadFile<Config>(FileDirectories.ConfigFile);
         }
     }
 }

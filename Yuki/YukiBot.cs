@@ -6,7 +6,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -20,14 +19,11 @@ namespace Yuki
 {
     public class YukiBot
     {
-        public static string DataDirectoryRootPath
-            => AppDomain.CurrentDomain.BaseDirectory + "/data/";
-
         public static IServiceProvider Services { get; private set; }
 
         public DiscordShardedClient DiscordClient;
         public CommandService CommandService;
-        public YukiConfig Configuration;
+        public Config Configuration;
 
         public int ShardCount;
 
@@ -40,16 +36,6 @@ namespace Yuki
 
         public YukiBot()
         {
-            if (!Directory.Exists(LoggingService.LogDirectory))
-            {
-                Directory.CreateDirectory(LoggingService.LogDirectory);
-            }
-
-            if (File.Exists(LoggingService.LogDirectory + "latest.log"))
-            {
-                File.Delete(LoggingService.LogDirectory + "latest.log");
-            }
-
             Shards = new List<YukiShard>();
 
             logger = new LoggingService();
@@ -61,7 +47,7 @@ namespace Yuki
 
         public async Task LoginAsync()
         {
-            Configuration = YukiConfig.GetConfig();
+            Configuration = Config.GetConfig();
 
             if (Configuration != null)
             {
@@ -95,7 +81,7 @@ namespace Yuki
                 }
                 catch(HttpException http)
                 {
-                    logger.Write(LogLevel.SilentError, http);
+                    logger.Write(LogLevel.Warning, http);
                     logger.Write(LogLevel.Info, "Press any key to retry.");
 
                     Console.Read();
@@ -104,7 +90,7 @@ namespace Yuki
                 }
                 catch(HttpRequestException http)
                 {
-                    logger.Write(LogLevel.SilentError, http);
+                    logger.Write(LogLevel.Warning, http);
                     logger.Write(LogLevel.Info, "Press any key to retry.");
 
                     Console.Read();
@@ -154,7 +140,7 @@ namespace Yuki
         public void Shutdown()
         {
             IsShuttingDown = true;
-            Services.GetRequiredService<LoggingService>().Write(LogLevel.Debug, "Stopping client...");
+            Services.GetRequiredService<LoggingService>().Write(LogLevel.Status, "Stopping client...");
 
             DiscordClient.LogoutAsync();
             DiscordClient.StopAsync();

@@ -9,11 +9,9 @@ namespace Yuki.Services
         public const int MAX_COMMANDS = 100;
         public const int PATRON_ADDITIONAL_COMMANDS = 150;
 
-        private string path = YukiBot.DataDirectoryRootPath + "configuration.db";
-
         public void Add(GuildConfiguration guildConfig)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
                 LiteCollection<GuildConfiguration> collection = db.GetCollection<GuildConfiguration>();
 
@@ -34,7 +32,7 @@ namespace Yuki.Services
 
         public void Update(GuildConfiguration newConfiguration)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
                 LiteCollection<GuildConfiguration> collection = db.GetCollection<GuildConfiguration>();
 
@@ -53,7 +51,7 @@ namespace Yuki.Services
         
         public void Delete(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
                 LiteCollection<GuildConfiguration> collection = db.GetCollection<GuildConfiguration>();
 
@@ -69,7 +67,7 @@ namespace Yuki.Services
 
         public GuildConfiguration GetConfiguration(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.ConfigDB))
             {
                 LiteCollection<GuildConfiguration> collection = db.GetCollection<GuildConfiguration>();
 

@@ -13,14 +13,14 @@ namespace Yuki.Services
 
         public void LoadLanguages()
         {
-            if(!Directory.Exists(YukiBot.DataDirectoryRootPath + "languages/"))
+            if(!Directory.Exists(FileDirectories.LangRoot))
             {
-                Directory.CreateDirectory(YukiBot.DataDirectoryRootPath + "languages/");
+                Directory.CreateDirectory(FileDirectories.LangRoot);
             }
 
             if(languages.Count < 1)
             {
-                string[] langFiles = Directory.GetFiles(YukiBot.DataDirectoryRootPath + "languages/");
+                string[] langFiles = Directory.GetFiles(FileDirectories.LangRoot);
 
                 for(int i = 0; i < langFiles.Length; i++)
                 {
