@@ -11,21 +11,14 @@ namespace Yuki.Commands.UtilityModule
         [Command("avatar")]
         public async Task GetAvatarAsync(IUser user = null)
         {
-            try
+            if (user == null)
             {
-                if (user == null)
-                {
-                    user = Context.User;
-                }
-
-                string title = Language.GetString("avatar_user_avatar").Replace("%username_full%", $"{user.Username}#{user.Discriminator}");
-
-                await ReplyAsync(Context.CreateImageEmbedBuilder(title, user.GetBigAvatarUrl()));
+                user = Context.User;
             }
-            catch(Exception e)
-            {
-                await ReplyAsync(e.ToString());
-            }
+
+            string title = Language.GetString("avatar_user_avatar").Replace("%username_full%", $"{user.Username}#{user.Discriminator}");
+
+            await ReplyAsync(Context.CreateImageEmbedBuilder(title, user.GetBigAvatarUrl()));
         }
     }
 }
