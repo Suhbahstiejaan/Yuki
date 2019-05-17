@@ -11,7 +11,7 @@ namespace Yuki.Commands.UtilityModule
         [Command("repeat")]
         public async Task ExampleReplyNextMessageAsync()
         {
-            await ReplyAsync("Send a message!");
+            await ReplyAsync(Language.GetString("interactive_repeat_send_message"));
 
             InteractivityResult<SocketMessage> result = await Interactivity.NextMessageAsync(x => x.Author == Context.User);
 

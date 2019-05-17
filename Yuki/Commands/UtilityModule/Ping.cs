@@ -11,7 +11,7 @@ namespace Yuki.Commands.UtilityModule
         [Command("ping")]
         public async Task PingAsync()
         {
-            EmbedBuilder embedBuilder = Context.CreateEmbedBuilder("Pinging....");
+            EmbedBuilder embedBuilder = Context.CreateEmbedBuilder(Language.GetString("ping_pinging"));
 
             Stopwatch watch = Stopwatch.StartNew();
             IUserMessage msg = await embedBuilder.SendToAsync(Context.Channel);
@@ -20,9 +20,9 @@ namespace Yuki.Commands.UtilityModule
             await msg.ModifyAsync(emb =>
             {
                 embedBuilder.WithDescription(
-                    "Pong!\n" +
-                    $"Took {watch.ElapsedMilliseconds}ms to respond\n" +
-                    $"API latency: {Context.Client.Latency}ms"
+                    Language.GetString("ping_pong") + "\n" +
+                    Language.GetString("ping_latency").Replace("%latency%", watch.ElapsedMilliseconds.ToString()) + "\n" +
+                    Language.GetString("ping_api_latency").Replace("%latency%", Context.Client.Latency.ToString())
                 );
                 emb.Embed = embedBuilder.Build();
             });

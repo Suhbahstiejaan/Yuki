@@ -41,10 +41,13 @@ namespace Yuki.Data.Objects
 
     public class TranslatedStrings
     {
+        public string ping_pinging { get; set; }
         public string ping_pong { get; set; }
-        public string ping_waiting { get; set; }
-        public string ping_response { get; set; }
+        public string ping_latency { get; set; }
+        public string ping_api_latency { get; set; }
 
         public string avatar_user_avatar { get; set; }
+
+        public string interactive_repeat_send_message { get; set; }
     }
 }

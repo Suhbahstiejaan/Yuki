@@ -1,6 +1,5 @@
 ﻿using Discord;
 using Qmmands;
-using System;
 using System.Threading.Tasks;
 using Yuki.Extensions;
 
