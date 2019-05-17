@@ -1,0 +1,27 @@
+Code = "en_US"
+
+[[Translations]]
+Name = "avatar"
+Summary = "Fetch a user's avatar"
+Usage = "y!avatar | y!avatar @exampleuser#1234"
+
+[[Translations]]
+Name = "ping"
+Summary = "Pong! Find out the bot's latency"
+Usage = "y!ping"
+
+[[Translations]]
+Name = "repeat"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+
+[Strings]
+ping_pinging = "Pinging..."
+ping_pong = "Pong!"
+ping_latency = "Took %latency%ms to respond."
+ping_api_latency = "API latency: %latency%ms"
+
+avatar_user_avatar = "%username_full%'s avatar"
+
+interactive_repeat_send_message = "Send a message!"
