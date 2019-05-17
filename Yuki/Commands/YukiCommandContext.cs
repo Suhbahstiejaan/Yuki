@@ -34,6 +34,9 @@ namespace Yuki.Commands
         public Embed CreateEmbed(string content) => new EmbedBuilder().WithColor(Color.Green).WithAuthor(User)
             .WithDescription(content).Build();
 
+        public EmbedBuilder CreateImageEmbedBuilder(string title, string url) => new EmbedBuilder().WithColor(Color.Green)
+            .WithAuthor(new EmbedAuthorBuilder() { Name = title }).WithImageUrl(url);
+
         public EmbedBuilder CreateEmbedBuilder(string content = null) => new EmbedBuilder()
             .WithColor(Color.Green).WithAuthor(User).WithDescription(content ?? string.Empty);
 

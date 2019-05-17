@@ -1,5 +1,4 @@
 ﻿using Nett;
-using Qmmands;
 using System.Collections.Generic;
 using System.IO;
 using Yuki.Commands;
@@ -29,6 +28,11 @@ namespace Yuki.Services
                     languages.Add(lang.Code, lang);
                 }
             }
+
+            if(languages.Count < 1)
+            {
+                languages.Add("none", new Language());
+            }
         }
 
 
@@ -50,7 +54,7 @@ namespace Yuki.Services
             }
             else
             {
-                return null;
+                return languages["none"];
             }
         }
 

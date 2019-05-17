@@ -15,37 +15,8 @@ namespace Yuki.Events
     {
         public static Task ShardReady(DiscordSocketClient client)
         {
-            //used as a reference
-            List<YukiShard> shards = YukiBot.Services.GetRequiredService<YukiBot>().Shards;
-
-            if (shards != null && shards.FirstOrDefault(shard => shard.Id == client.ShardId).Equals(default(YukiShard)))
-            {
-                YukiShard shard = new YukiShard();
-
-                shard.Id = client.ShardId;
-                //shard.Members = client.Guilds.SelectMany(guild => guild.Users).Select(user => user.Id).ToList();
-                shard.Members = client.Guilds.SelectMany(guild => guild.Users).Select(user => user.Id).Where(user => shards.FirstOrDefault(sh => sh.Members.Contains(user)).Equals(default(YukiShard))).ToList();
-
-                shard.Playing = new Timer(Config.GetConfig().playing_seconds * 1000);
-                shard.Playing.Elapsed += new ElapsedEventHandler((EventHandler)delegate (object sender, EventArgs e)
-                {
-                    client.SetGameAsync("Shard " + shard.Id  + "  (" + shard.Members.Count  + " members)");
-                    //client.SetGameAsync(new YukiRandom().RandomGame()).GetAwaiter().GetResult();
-                });
-
-                client.SetGameAsync("Shard " + shard.Id + "  (" + shard.Members.Count + " members)");
-                //client.SetGameAsync(new YukiRandom().RandomGame()).GetAwaiter().GetResult();
-
-                SetClientEvents(client);
-
-                shard.Playing.Start();
-                
-                YukiBot.Services.GetRequiredService<YukiBot>().Shards.Add(shard);
-            }
-            else
-            {
-                LoggingService.Write(LogLevel.Warning, "SocketClient with ID " + client.ShardId + " already connected!");
-            }
+            client.SetGameAsync("Shard " + client.ShardId + "  (" + client.Guilds.Select(guild => guild.MemberCount).Sum() + " members)");
+            SetClientEvents(client);
 
             return Task.CompletedTask;
         }

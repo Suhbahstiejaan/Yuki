@@ -26,14 +26,10 @@ namespace Yuki
         
         public int ShardCount;
 
-        public List<YukiShard> Shards;
-
         public bool IsShuttingDown = false;
 
         public YukiBot()
         {
-            Shards = new List<YukiShard>();
-
             LoggingService.Write(LogLevel.Info, "Loading languages....");
             LocalizationService.LoadLanguages();
         }
@@ -64,7 +60,7 @@ namespace Yuki
                         TotalShards = ShardCount
                     });
 
-                    DiscordClient.Log += Log;
+                    DiscordClient.Log += LoggingService.Write;
 
                     SetupServices();
                     SetShardEvents();
@@ -95,13 +91,6 @@ namespace Yuki
             await Task.Delay(-1);
         }
 
-        private Task Log(LogMessage logMessage)
-        {
-            LoggingService.Write(LogLevel.DiscordNet, logMessage.Message);
-
-            return Task.CompletedTask;
-        }
-
         private void SetShardEvents()
         {
             DiscordClient.ShardReady += DiscordShardEventHandler.ShardReady;
@@ -120,6 +109,7 @@ namespace Yuki
             CommandService = new CommandService(new CommandServiceConfiguration()
             {
                 CaseSensitive = false,
+                DefaultRunMode = RunMode.Parallel
             });
 
             CommandService.AddModules(Assembly.GetEntryAssembly());

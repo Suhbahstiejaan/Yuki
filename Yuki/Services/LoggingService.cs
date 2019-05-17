@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Yuki.Services
 {
@@ -32,6 +34,13 @@ namespace Yuki.Services
             latestLogFile = FileDirectories.LogRoot + "latest.log";
 
             File.Create(latestLogFile).Dispose();
+        }
+
+        public static Task Write(LogMessage logMessage)
+        {
+            Write(LogLevel.DiscordNet, logMessage.Message);
+
+            return Task.CompletedTask;
         }
 
         public static void Write(LogLevel logLevel, object o)

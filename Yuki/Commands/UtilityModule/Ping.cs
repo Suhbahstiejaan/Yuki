@@ -6,8 +6,7 @@ using Yuki.Extensions;
 
 namespace Yuki.Commands.UtilityModule
 {
-    [Name("Utility")]
-    public partial class UtilityModule : YukiModule
+    public partial class UtilityModule
     {
         [Command("ping")]
         public async Task PingAsync()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Yuki.Data.Objects
 {
@@ -11,8 +12,23 @@ namespace Yuki.Data.Objects
 
         public string GetString(string stringName)
         {
-            return (string)Strings.GetType().GetProperty(stringName).GetValue(Strings, null)
-                ?? stringName;
+            string name;
+
+            try
+            {
+                name = (string)Strings.GetType().GetProperty(stringName).GetValue(Strings, null) ?? "";
+            }
+            catch (Exception)
+            {
+                name = stringName;
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return stringName;
+            }
+
+            return name;
         }
     }
 
@@ -25,30 +41,10 @@ namespace Yuki.Data.Objects
 
     public class TranslatedStrings
     {
-        public string created { get; set; }
-        public string days_ago { get; set; }
-        public string true_ { get; set; }
-        public string false_ { get; set; }
-        public string only_guild_channel { get; set; }
-
-        public string scramblr_title { get; set; }
-        public string scramblr_tos { get; set; }
-        public string scramblr_agreed { get; set; }
-        public string scramblr_opted_out { get; set; }
-
         public string ping_pong { get; set; }
         public string ping_waiting { get; set; }
         public string ping_response { get; set; }
 
-        public string avatar_title { get; set; }
-
-        public string coinflip_heads { get; set; }
-        public string coinflip_tails { get; set; }
-        public string coinflip_flipped { get; set; }
-
-        public string role_is_hoisted { get; set; }
-        public string role_is_mentionable { get; set; }
-        public string role_position { get; set; }
-        public string role_permissions { get; set; }
+        public string avatar_user_avatar { get; set; }
     }
 }
