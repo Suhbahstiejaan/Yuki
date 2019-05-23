@@ -1,6 +1,6 @@
 ﻿using Qmmands;
 
-namespace Yuki.Commands.UtilityModule
+namespace Yuki.Commands.Modules.UtilityModule
 {
     [Name("Utility")]
     public partial class UtilityModule : YukiModule { }

@@ -1,10 +1,9 @@
 ﻿using Discord.WebSocket;
 using InteractivityAddon;
 using Qmmands;
-using System;
 using System.Threading.Tasks;
 
-namespace Yuki.Commands.UtilityModule
+namespace Yuki.Commands.Modules.UtilityModule
 {
     public partial class UtilityModule
     {
@@ -13,7 +12,7 @@ namespace Yuki.Commands.UtilityModule
         {
             await ReplyAsync(Language.GetString("interactive_repeat_send_message"));
 
-            InteractivityResult<SocketMessage> result = await Interactivity.NextMessageAsync(x => x.Author == Context.User);
+            InteractivityResult<SocketMessage> result = await Interactivity.NextMessageAsync(x => x.Author == Context.User && x.Channel == Context.Channel);
 
             if (result.IsSuccess)
             {

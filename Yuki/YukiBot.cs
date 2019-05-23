@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Yuki.Commands.TypeParsers;
 using Yuki.Core;
 using Yuki.Data;
 using Yuki.Events;
@@ -113,6 +114,7 @@ namespace Yuki
             });
 
             CommandService.AddModules(Assembly.GetEntryAssembly());
+            CommandService.AddTypeParser(new UserTypeParser<IUser>());
         }
 
         public void Shutdown()

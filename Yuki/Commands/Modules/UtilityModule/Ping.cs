@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Yuki.Extensions;
 
-namespace Yuki.Commands.UtilityModule
+namespace Yuki.Commands.Modules.UtilityModule
 {
     public partial class UtilityModule
     {
