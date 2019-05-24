@@ -114,6 +114,7 @@ namespace Yuki
             });
 
             CommandService.AddModules(Assembly.GetEntryAssembly());
+            LoggingService.Write(LogLevel.Debug, $"Found {CommandService.GetAllCommands().Count} command(s)");
             CommandService.AddTypeParser(new UserTypeParser<IUser>());
         }
 
