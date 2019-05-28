@@ -2,7 +2,6 @@
 using Qmmands;
 using System.Threading.Tasks;
 using Yuki.API;
-using Yuki.Services;
 
 namespace Yuki.Commands.Modules.ImageModule
 {

@@ -34,19 +34,26 @@ namespace Yuki.API
 
         public static async Task SendImageAsync(YukiCommandContext context, Language lang, IUser mentionedUser, string imgType, bool isNsfw)
         {
-            string embedStringTitle = "rammoe_" + imgType;
-
-            if (mentionedUser == null && lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
+            try
             {
-                embedStringTitle += "_alt";
-                mentionedUser = context.Client.CurrentUser;
+                string embedStringTitle = "rammoe_" + imgType;
+
+                if (mentionedUser == null && lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
+                {
+                    embedStringTitle += "_alt";
+                    mentionedUser = context.Client.CurrentUser;
+                }
+
+                string translatedTitle = lang.GetString(embedStringTitle)
+                    .Replace("%executor%", context.User.Username)
+                    .Replace("%user%", (mentionedUser != null) ? mentionedUser.Username : "");
+
+                await context.ReplyAsync(context.CreateImageEmbedBuilder(translatedTitle, await GetImageAsync(imgType, isNsfw)));
             }
-
-            string translatedTitle = lang.GetString(embedStringTitle)
-                .Replace("%executor%", context.User.Username)
-                .Replace("%user%", mentionedUser.Username);
-
-            await context.ReplyAsync(context.CreateImageEmbedBuilder(translatedTitle, await GetImageAsync(imgType, isNsfw)));
+            catch(Exception e)
+            {
+                LoggingService.Write(LogLevel.Debug, e);
+            }
         }
     }
 }

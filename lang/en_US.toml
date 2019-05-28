@@ -1,22 +1,107 @@
 Code = "en_US"
 
-[[Translations]]
+
+#Commands
+[[Command]]
 Name = "avatar"
 Summary = "Fetch a user's avatar"
 Usage = "y!avatar | y!avatar @exampleuser#1234"
 
-[[Translations]]
+[[Command]]
 Name = "ping"
 Summary = "Pong! Find out the bot's latency"
 Usage = "y!ping"
 
-[[Translations]]
+[[Command]]
 Name = "repeat"
 Summary = "I repeat the next message you say!"
 Usage = "y!repeat"
 
+[[Command]]
+Name = "cry"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
 
+[[Command]]
+Name = "cuddle"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "hug"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "kiss"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "lewd"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "lick"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "nom"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "nyan"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "owo"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "pat"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "pout"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "rem"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "slap"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "smug"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "stare"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+[[Command]]
+Name = "tickle"
+Summary = "I repeat the next message you say!"
+Usage = "y!repeat"
+
+
+#Strings
 [Strings]
+only_dm_channel = "This command can only be executed in a DM channel."
+
 ping_pinging = "Pinging..."
 ping_pong = "Pong!"
 ping_latency = "Took %latency%ms to respond."
@@ -54,3 +139,30 @@ rammoe_stare_alt = "%executor% is staring :eyes:"
 rammoe_tickle = "%user% got tickled by %executor%!"
 rammoe_tickle_alt = "%executor% got tickled by %user%!"
 rammoe_nsfw_gtn = "nsfw"
+
+poll_not_found = "I couldn't find a poll with ID %id%!"
+poll_not_in_server = "Sorry! You can't vote for this poll because you're not in the server this poll was created in."
+poll_ended = "This poll has ended."
+poll_vote = "Please vote (item number or name) :\n%polltxt%"
+poll_unknown_item = "Poll item unknown!"
+poll_already_voted = "You've already voted for this poll! If you'd like to recase your vote, type \"yes\" and rerun this command."
+poll_response_recorded = "Your response has been recorded. Thank you for participating! To vote again, rerun the command with the poll ID."
+
+poll_create_creating = "Creating new poll..."
+poll_create_created = "Poll created!"
+poll_creating_title_str = "Title"
+poll_creating_items_str = "Items"
+poll_create_items_desc = "Items are separated by | and require at LEAST two choices. Example: option 1 | option 2 | option 3"
+poll_creating_deadline_str = "Deadline"
+poll_create_deadline_desc = "When the poll ends. Example: 2d 1h 3m (deadline will be 2 days, 1 hour, 3 minutes from now)"
+poll_create_show_vote_str = "Show votes"
+poll_create_show_vote_desc = "Should vote count on choices be shown to everyone? Answer y for yes, and n for no"
+poll_create_title = "What's the title of this poll?"
+poll_create_title_long = "Title too long! Has to be less than 300 characters."
+poll_create_items = "What are the items to choose from?"
+poll_create_items_short = "Too few choices! Must have at least two."
+poll_create_deadline = "When will this poll end?"
+poll_create_deadline_invalid = "Not a valid Date!"
+poll_create_deadline_long = "Date too long! Must be less than two weeks from now."
+poll_create_allow_view = "Should vote count on choices be shown to everyone?"
+poll_created_id = "Poll ID"

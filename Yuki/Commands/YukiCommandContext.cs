@@ -40,9 +40,23 @@ namespace Yuki.Commands
         public EmbedBuilder CreateEmbedBuilder(string content = null) => new EmbedBuilder()
             .WithColor(Color.Green).WithAuthor(User).WithDescription(content ?? string.Empty);
 
-        public Task ReplyAsync(string content) => Channel.SendMessageAsync(content);
-        public Task ReplyAsync(Embed embed) => embed.SendToAsync(Channel);
-        public Task ReplyAsync(EmbedBuilder embed) => embed.SendToAsync(Channel);
+        public async Task<bool> TryDeleteAsync(IUserMessage message)
+        {
+            try
+            {
+                await message.DeleteAsync();
+                return true;
+            }
+            catch (Exception) { return false; }
+        }
+
+        public async Task<bool> TryDeleteAsync(SocketMessage message)
+            => await TryDeleteAsync((IUserMessage)message);
+
+
+        public Task<IUserMessage> ReplyAsync(string content) => Channel.SendMessageAsync(content);
+        public Task<IUserMessage> ReplyAsync(Embed embed) => embed.SendToAsync(Channel);
+        public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => embed.SendToAsync(Channel);
         public Task ReactAsync(string unicode) => Message.AddReactionAsync(new Emoji(unicode));
     }
 }

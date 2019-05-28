@@ -6,7 +6,8 @@ namespace Yuki
     {
         internal static string DataRoot { get; } = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + "/data/";
         internal static string LangRoot { get; } = DataRoot + "lang/";
-        internal static string LogRoot { get; } = DataRoot + "log/";
+        internal static string LogRoot  { get; } = DataRoot + "log/";
+        internal static string PollRoot { get; } = DataRoot + "polls/";
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
 
