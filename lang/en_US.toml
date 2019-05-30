@@ -19,83 +19,83 @@ Usage = "y!repeat"
 
 [[Command]]
 Name = "cry"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Send a crying gif/image"
+Usage = "y!cry"
 
 [[Command]]
 Name = "cuddle"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Cuddle someone!"
+Usage = "y!cuddle"
 
 [[Command]]
 Name = "hug"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Give or get a hug!"
+Usage = "y!hug"
 
 [[Command]]
 Name = "kiss"
-Summary = "I repeat the next message you say!"
+Summary = "Give someone a kiss!"
 Usage = "y!repeat"
 
 [[Command]]
 Name = "lewd"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "I-Is someone being lewd...?"
+Usage = "y!lewd"
 
 [[Command]]
 Name = "lick"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "L-Lick someone?"
+Usage = "y!lick"
 
 [[Command]]
 Name = "nom"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Bite someone"
+Usage = "y!nom"
 
 [[Command]]
 Name = "nyan"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Neko!"
+Usage = "y!nyan"
 
 [[Command]]
 Name = "owo"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "OwO"
+Usage = "y!owo"
 
 [[Command]]
 Name = "pat"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Give or get a pat"
+Usage = "y!pat"
 
 [[Command]]
 Name = "pout"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Pout"
+Usage = "y!pout"
 
 [[Command]]
 Name = "rem"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Send an image of rem"
+Usage = "y!rem"
 
 [[Command]]
 Name = "slap"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Give a slap"
+Usage = "y!slap"
 
 [[Command]]
 Name = "smug"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Be smug"
+Usage = "y!smug"
 
 [[Command]]
 Name = "stare"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "Stare at someone"
+Usage = "y!stare"
 
 [[Command]]
 Name = "tickle"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+Summary = "T-Tickle someone!"
+Usage = "y!tickle"
 
 
 #Strings
@@ -143,7 +143,7 @@ rammoe_nsfw_gtn = "nsfw"
 poll_not_found = "I couldn't find a poll with ID %id%!"
 poll_not_in_server = "Sorry! You can't vote for this poll because you're not in the server this poll was created in."
 poll_ended = "This poll has ended."
-poll_vote = "Please vote (item number or name) :\n%polltxt%"
+poll_vote = "Please vote (item number or name) :"
 poll_unknown_item = "Poll item unknown!"
 poll_already_voted = "You've already voted for this poll! If you'd like to recase your vote, type \"yes\" and rerun this command."
 poll_response_recorded = "Your response has been recorded. Thank you for participating! To vote again, rerun the command with the poll ID."

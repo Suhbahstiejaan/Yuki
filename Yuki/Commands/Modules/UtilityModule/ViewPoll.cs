@@ -27,7 +27,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                     return;
                 }
 
-                await ReplyAsync(poll.CreateEmbed(!(Context.Channel is IDMChannel) && Context.User.GuildPermissions.ManageMessages));
+                await ReplyAsync(poll.CreateEmbed(!(Context.Channel is IDMChannel) && Context.UserHasPermission(GuildPermission.ManageMessages)));
             }
             catch(Exception e)
             {

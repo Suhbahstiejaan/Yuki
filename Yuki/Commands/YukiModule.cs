@@ -14,6 +14,8 @@ namespace Yuki.Commands
 
         public InteractivityService Interactivity { get; } = YukiBot.Services.GetRequiredService<InteractivityService>();
 
+        public Task<IUserMessage> ReplyAsync(string content, Embed embed) => Context.ReplyAsync(content, embed);
+        public Task<IUserMessage> ReplyAsync(string content, EmbedBuilder embed) => Context.ReplyAsync(content, embed);
         public Task<IUserMessage> ReplyAsync(string content) => Context.ReplyAsync(content);
         public Task<IUserMessage> ReplyAsync(Embed embed) => Context.ReplyAsync(embed);
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => Context.ReplyAsync(embed);

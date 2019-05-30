@@ -71,7 +71,12 @@ namespace Yuki.Services
             {
                 LiteCollection<GuildConfiguration> collection = db.GetCollection<GuildConfiguration>();
 
-                return collection.FindAll().FirstOrDefault(_conf => _conf.Id == guildId);
+                if(collection.FindAll().Any(config => config.Id == guildId))
+                {
+                    return collection.FindAll().FirstOrDefault(_conf => _conf.Id == guildId);
+                }
+
+                return default;
             }
         }
     }

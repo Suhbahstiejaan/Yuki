@@ -1,4 +1,5 @@
-﻿using Nett;
+﻿using Discord;
+using Nett;
 using System.Collections.Generic;
 using System.IO;
 using Yuki.Commands;
@@ -60,11 +61,11 @@ namespace Yuki.Services
 
         public static Language GetLanguage(YukiCommandContext context)
         {
-            string langCode = ConfigDB.GetConfiguration(context.Guild.Id).langCode;
+            string langCode = "en_US";
 
-            if (string.IsNullOrEmpty(langCode))
+            if(context.Channel is IGuildChannel)
             {
-                langCode = "en_US";
+                langCode = ConfigDB.GetConfiguration(context.Guild.Id).langCode;
             }
 
             return GetLanguage(langCode);

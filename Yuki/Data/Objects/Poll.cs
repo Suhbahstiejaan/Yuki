@@ -23,16 +23,33 @@ namespace Yuki.Data.Objects
 
         public int TotalVotes() => Items.Sum(item => item.GetVoteCount());
 
-        public bool ItemExists(string pollId, out PollItem item)
+        public bool ItemExists(string itemId, out PollItem item)
         {
             PollItem[] items = Items.ToArray();
 
-            for(int i = 0; i < items.Length; i++)
+
+            if (int.TryParse(itemId, out int index))
             {
-                if(items[i].Id.ToLower() == pollId.ToLower())
+                LoggingService.Write(LogLevel.Debug, index + " " + items.Length);
+
+                if(index > 0 && index <= items.Length)
                 {
-                    item = items[i];
-                    return true;
+                    if(index - 1 > 0)
+                    {
+                        item = items[--index];
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < items.Length; i++)
+                {
+                    if (items[i].Id.ToLower() == itemId.ToLower())
+                    {
+                        item = items[i];
+                        return true;
+                    }
                 }
             }
 
@@ -103,7 +120,7 @@ namespace Yuki.Data.Objects
             {
                 pollItems += $"**{Items.IndexOf(item) + 1}**. ";
 
-                if (ShowVotes && userAllowed)
+                if (ShowVotes || userAllowed)
                 {
                     pollItems += $"{item.Id} *({item.GetVoteCount()} votes)*";
                 }

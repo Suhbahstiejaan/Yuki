@@ -10,25 +10,22 @@ namespace Yuki.Commands
     public sealed class YukiCommandContext : ICommandContext
     {
 
-        public DiscordSocketClient Client { get; }
+        public DiscordShardedClient Client { get; }
         public IServiceProvider ServiceProvider { get; }
         public IGuild Guild { get; }
-        public ITextChannel Channel { get; }
-        public IGuildUser User { get; }
+        public IMessageChannel Channel { get; }
+        public IUser User { get; }
         public IUserMessage Message { get; }
 
-        public YukiCommandContext(IDiscordClient client, IUserMessage msg, IServiceProvider provider)
+        public YukiCommandContext(DiscordShardedClient client, IUserMessage msg, IServiceProvider provider)
         {
             ServiceProvider = provider;
-            Guild = (msg.Channel as ITextChannel)?.Guild;
-            Channel = msg.Channel as ITextChannel;
-            User = msg.Author as IGuildUser;
-            Message = msg;
 
-            if (client is DiscordShardedClient)
-            {
-                Client = ((DiscordShardedClient)client).GetShardFor(Guild);
-            }
+            Client = client;
+            Guild = (msg.Channel as IGuildChannel)?.Guild;
+            Channel = msg.Channel;
+            User = msg.Author;
+            Message = msg;
         }
 
         public Embed CreateEmbed(string content) => new EmbedBuilder().WithColor(Color.Green).WithAuthor(User)
@@ -50,10 +47,22 @@ namespace Yuki.Commands
             catch (Exception) { return false; }
         }
 
+        public bool UserHasPermission(GuildPermission permision)
+        {
+            if(Channel is IDMChannel)
+            {
+                return false;
+            }
+
+            return (User as IGuildUser).GuildPermissions.Has(permision);
+        }
+
         public async Task<bool> TryDeleteAsync(SocketMessage message)
             => await TryDeleteAsync((IUserMessage)message);
 
 
+        public Task<IUserMessage> ReplyAsync(string content, Embed embed) => Channel.SendMessageAsync(content, false, embed);
+        public Task<IUserMessage> ReplyAsync(string content, EmbedBuilder embed) => Channel.SendMessageAsync(content, false, embed.Build());
         public Task<IUserMessage> ReplyAsync(string content) => Channel.SendMessageAsync(content);
         public Task<IUserMessage> ReplyAsync(Embed embed) => embed.SendToAsync(Channel);
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => embed.SendToAsync(Channel);
