@@ -109,5 +109,40 @@ namespace Yuki.Data.Objects
         public string poll_create_deadline_long { get; set; }
         public string poll_create_allow_view { get; set; }
         public string poll_created_id { get; set; }
+
+        public string serverinfo_owner { get; set; }
+        public string serverinfo_verification_level { get; set; }
+        public string serverinfo_region { get; set; }
+        public string serverinfo_categories { get; set; }
+        public string serverinfo_channels { get; set; }
+        public string serverinfo_channels_text { get; set; }
+        public string serverinfo_channels_voice { get; set; }
+        public string serverinfo_members { get; set; }
+        public string serverinfo_online { get; set; }
+        public string serverinfo_roles { get; set; }
+        public string serverinfo_roles_view { get; set; }
+        public string serverinfo_created { get; set; }
+
+        public string eightball_response_title { get; set; }
+        public string eightball_response_1 { get; set; }
+        public string eightball_response_2 { get; set; }
+        public string eightball_response_3 { get; set; }
+        public string eightball_response_4 { get; set; }
+        public string eightball_response_5 { get; set; }
+        public string eightball_response_6 { get; set; }
+        public string eightball_response_7 { get; set; }
+        public string eightball_response_8 { get; set; }
+        public string eightball_response_9 { get; set; }
+        public string eightball_response_10 { get; set; }
+        public string eightball_response_11 { get; set; }
+        public string eightball_response_12 { get; set; }
+        public string eightball_response_13 { get; set; }
+        public string eightball_response_14 { get; set; }
+        public string eightball_response_15 { get; set; }
+        public string eightball_response_16 { get; set; }
+        public string eightball_response_17 { get; set; }
+        public string eightball_response_18 { get; set; }
+        public string eightball_response_19 { get; set; }
+        public string eightball_response_20 { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Qmmands;
 using System;
 using System.Threading.Tasks;
+using Yuki.Core;
 using Yuki.Extensions;
 
 namespace Yuki.Commands
@@ -28,14 +29,19 @@ namespace Yuki.Commands
             Message = msg;
         }
 
-        public Embed CreateEmbed(string content) => new EmbedBuilder().WithColor(Color.Green).WithAuthor(User)
-            .WithDescription(content).Build();
+        public EmbedAuthorBuilder Author
+            => new EmbedAuthorBuilder()
+                {
+                    IconUrl = User.GetAvatarUrl(),
+                    Name = User.Username
+                };
 
-        public EmbedBuilder CreateImageEmbedBuilder(string title, string url) => new EmbedBuilder().WithColor(Color.Green)
-            .WithAuthor(new EmbedAuthorBuilder() { Name = title }).WithImageUrl(url);
+        public Embed CreateEmbed(string content, EmbedAuthorBuilder author = null) => CreateEmbedBuilder(content, author).Build();
 
-        public EmbedBuilder CreateEmbedBuilder(string content = null) => new EmbedBuilder()
-            .WithColor(Color.Green).WithAuthor(User).WithDescription(content ?? string.Empty);
+        public EmbedBuilder CreateImageEmbedBuilder(string title, string url) => CreateEmbedBuilder("", new EmbedAuthorBuilder() { Name = title }).WithImageUrl(url);
+
+        public EmbedBuilder CreateEmbedBuilder(string content = null, EmbedAuthorBuilder author = null) => new EmbedBuilder()
+            .WithColor(Colors.Pink).WithAuthor(author ?? Author).WithDescription(content ?? string.Empty);
 
         public async Task<bool> TryDeleteAsync(IUserMessage message)
         {

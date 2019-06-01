@@ -30,8 +30,6 @@ namespace Yuki.Data.Objects
 
             if (int.TryParse(itemId, out int index))
             {
-                LoggingService.Write(LogLevel.Debug, index + " " + items.Length);
-
                 if(index > 0 && index <= items.Length)
                 {
                     if(index - 1 > 0)

@@ -68,6 +68,11 @@ namespace Yuki.Services
                 langCode = ConfigDB.GetConfiguration(context.Guild.Id).langCode;
             }
 
+            if(string.IsNullOrWhiteSpace(langCode))
+            {
+                langCode = "en_US";
+            }
+
             return GetLanguage(langCode);
         }
     }
