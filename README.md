@@ -32,6 +32,7 @@ Because 2.0 is a *complete* rewrite, work on adding commands might be a bit slow
 - Pokemon info
 - Steam status
 - Twitch live notifications
+- Advanced custom command system
 
 
 If you have any feature requests, please join the Discord and mention them!
