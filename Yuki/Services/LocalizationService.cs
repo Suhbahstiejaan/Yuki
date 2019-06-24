@@ -65,7 +65,7 @@ namespace Yuki.Services
 
             if(context.Channel is IGuildChannel)
             {
-                langCode = ConfigDB.GetConfiguration(context.Guild.Id).langCode;
+                langCode = GuildsDB.GetConfiguration(context.Guild.Id).langCode;
             }
 
             if(string.IsNullOrWhiteSpace(langCode))

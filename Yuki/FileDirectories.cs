@@ -1,17 +1,50 @@
 ﻿using System;
+using System.IO;
 
 namespace Yuki
 {
     public static class FileDirectories
     {
-        internal static string DataRoot { get; } = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + "/data/";
-        internal static string LangRoot { get; } = DataRoot + "lang/";
+        internal static string DataRoot { get; } = AppDomain.CurrentDomain.BaseDirectory.Replace("\\", "/") + "data/";
+        internal static string AssetRoot { get; } = DataRoot + "assets/";
+
+        internal static string LangRoot { get; } = AssetRoot + "lang/";
+        internal static string ImageRoot { get; } = AssetRoot + "images/";
         internal static string LogRoot  { get; } = DataRoot + "log/";
         internal static string PollRoot { get; } = DataRoot + "polls/";
+        internal static string DBRoot { get; } = DataRoot + "databases/";
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
 
-        internal static string ConfigDB { get; } = DataRoot + "configuration.db";
-        internal static string MessageDB { get; } = DataRoot + "messages.db";
+        internal static string GuildsDB { get; } = DBRoot + "guilds.db";
+        internal static string MessageDB { get; } = DBRoot + "messages.db";
+
+        public static void CheckCreateDirectories()
+        {
+            if(!Directory.Exists(LangRoot))
+            {
+                Directory.CreateDirectory(LangRoot);
+            }
+
+            if(!Directory.Exists(ImageRoot))
+            {
+                Directory.CreateDirectory(ImageRoot);
+            }
+
+            if(!Directory.Exists(LogRoot))
+            {
+                Directory.CreateDirectory(LogRoot);
+            }
+
+            if(!Directory.Exists(PollRoot))
+            {
+                Directory.CreateDirectory(PollRoot);
+            }
+
+            if(!Directory.Exists(DBRoot))
+            {
+                Directory.CreateDirectory(DBRoot);
+            }
+        }
     }
 }

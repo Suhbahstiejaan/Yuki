@@ -10,97 +10,97 @@ namespace Yuki.Commands.Modules.ImageModule
         [Command("cry")]
         public async Task CryAsync()
         {
-            await RamMoe.SendImageAsync(Context, Language, null, "cry", false);
+            await RamMoe.SendImageAsync(Context, Language, "cry", false, null);
         }
 
         [Command("cuddle")]
-        public async Task CuddleAsync(IUser user = null)
+        public async Task CuddleAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "cuddle", false);
+            await RamMoe.SendImageAsync(Context, Language, "cuddle", false, user);
         }
 
         [Command("hug")]
-        public async Task HugAsync(IUser user = null)
+        public async Task HugAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "hug", false);
+            await RamMoe.SendImageAsync(Context, Language, "hug", false, user);
         }
 
         [Command("kiss")]
-        public async Task KissAsync(IUser user = null)
+        public async Task KissAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "kiss", false);
+            await RamMoe.SendImageAsync(Context, Language, "kiss", false, user);
         }
 
         [Command("lewd")]
-        public async Task LewdAsync(IUser user = null)
+        public async Task LewdAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "lewd", false);
+            await RamMoe.SendImageAsync(Context, Language, "lewd", false, user);
         }
 
         [Command("lick")]
-        public async Task LickAsync(IUser user = null)
+        public async Task LickAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "lick", false);
+            await RamMoe.SendImageAsync(Context, Language, "lick", false, user);
         }
 
         [Command("nom")]
-        public async Task NomAsync(IUser user = null)
+        public async Task NomAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "nom", false);
+            await RamMoe.SendImageAsync(Context, Language, "nom", false, user);
         }
 
         [Command("nyan")]
         public async Task NyanAsync()
         {
-            await RamMoe.SendImageAsync(Context, Language, null, "nyan", false);
+            await RamMoe.SendImageAsync(Context, Language, "nyan", false, null);
         }
 
         [Command("owo")]
         public async Task OwoAsync()
         {
-            await RamMoe.SendImageAsync(Context, Language, null, "owo", false);
+            await RamMoe.SendImageAsync(Context, Language, "owo", false, null);
         }
 
         [Command("pat")]
-        public async Task PatAsync(IUser user = null)
+        public async Task PatAsync(params IUser[] user)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "pat", false);
+            await RamMoe.SendImageAsync(Context, Language, "pat", false, user);
         }
 
         [Command("pout")]
         public async Task PoutAsync()
         {
-            await RamMoe.SendImageAsync(Context, Language, null, "pout", false);
+            await RamMoe.SendImageAsync(Context, Language, "pout", false, null);
         }
 
         [Command("rem")]
         public async Task RemAsync()
         {
-            await RamMoe.SendImageAsync(Context, Language, null, "rem", false);
+            await RamMoe.SendImageAsync(Context, Language, "rem", false, null);
         }
 
         [Command("slap")]
         public async Task SlapAsync(IUser user = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "slap", false);
+            await RamMoe.SendImageAsync(Context, Language, "slap", false, user);
         }
 
         [Command("smug")]
         public async Task SmugAsync(IUser user = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "smug", false);
+            await RamMoe.SendImageAsync(Context, Language, "smug", false, user);
         }
 
         [Command("stare")]
         public async Task StareAsync(IUser user = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "stare", false);
+            await RamMoe.SendImageAsync(Context, Language, "stare", false, user);
         }
 
         [Command("tickle")]
         public async Task TickleAsync(IUser user = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, user, "tickle", false);
+            await RamMoe.SendImageAsync(Context, Language, "tickle", false, user);
         }
 
         /*[Command("nsfwgtn")]

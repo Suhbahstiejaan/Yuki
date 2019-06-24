@@ -1,11 +1,9 @@
 ﻿using Discord;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Data.Objects;
@@ -32,25 +30,28 @@ namespace Yuki.API
             }
         }
 
-        public static async Task SendImageAsync(YukiCommandContext context, Language lang, IUser mentionedUser, string imgType, bool isNsfw)
+        public static async Task SendImageAsync(YukiCommandContext context, Language lang, string imgType, bool isNsfw, params IUser[] mentionedUser)
         {
             try
             {
                 string embedStringTitle = "rammoe_" + imgType;
 
-                if (mentionedUser == null && lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
+                if ((mentionedUser == null || mentionedUser.Length == 0) && lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
                 {
                     embedStringTitle += "_alt";
-                    mentionedUser = context.Client.CurrentUser;
+                    mentionedUser = new IUser[]
+                    {
+                        context.Client.CurrentUser
+                    };
                 }
 
                 string translatedTitle = lang.GetString(embedStringTitle)
                     .Replace("%executor%", context.User.Username)
-                    .Replace("%user%", (mentionedUser != null) ? mentionedUser.Username : "");
+                    .Replace("%user%", ((mentionedUser != null) || mentionedUser.Length != 0) ? string.Join(", ", mentionedUser.Select(u => u.Username)) : "");
 
                 await context.ReplyAsync(context.CreateImageEmbedBuilder(translatedTitle, await GetImageAsync(imgType, isNsfw)));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LoggingService.Write(LogLevel.Debug, e);
             }

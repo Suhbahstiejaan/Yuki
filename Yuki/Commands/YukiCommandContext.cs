@@ -59,7 +59,7 @@ namespace Yuki.Commands
             {
                 return false;
             }
-
+            
             return (User as IGuildUser).GuildPermissions.Has(permision);
         }
 
@@ -70,8 +70,11 @@ namespace Yuki.Commands
         public Task<IUserMessage> ReplyAsync(string content, Embed embed) => Channel.SendMessageAsync(content, false, embed);
         public Task<IUserMessage> ReplyAsync(string content, EmbedBuilder embed) => Channel.SendMessageAsync(content, false, embed.Build());
         public Task<IUserMessage> ReplyAsync(string content) => Channel.SendMessageAsync(content);
+        public Task<IUserMessage> ReplyAsync(object content) => Channel.SendMessageAsync(content.ToString());
         public Task<IUserMessage> ReplyAsync(Embed embed) => embed.SendToAsync(Channel);
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => embed.SendToAsync(Channel);
+        public Task<IUserMessage> SendFileAsync(string fileName, EmbedBuilder embed) => SendFileAsync(fileName, embed.Build());
+        public Task<IUserMessage> SendFileAsync(string fileName, Embed embed) => Channel.SendFileAsync(fileName, null, false, embed, null, false);
         public Task ReactAsync(string unicode) => Message.AddReactionAsync(new Emoji(unicode));
     }
 }

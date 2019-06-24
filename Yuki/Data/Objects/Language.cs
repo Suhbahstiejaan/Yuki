@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Yuki.Data.Objects
 {
@@ -7,7 +6,6 @@ namespace Yuki.Data.Objects
     {
         public string Code { get; set; }
 
-        public List<CommandTranslation> Command { get; set; }
         public TranslatedStrings Strings { get; set; }
 
         public string GetString(string stringName)
@@ -41,6 +39,84 @@ namespace Yuki.Data.Objects
 
     public class TranslatedStrings
     {
+        /* Commands */
+        public string command_avatar_desc { get; set; }
+        public string command_avatar_usage { get; set; }
+
+        public string command_ping_desc { get; set; }
+        public string command_ping_usage { get; set; }
+
+        public string command_repeat_desc { get; set; }
+        public string command_repeat_usage { get; set; }
+
+        public string command_cry_desc { get; set; }
+        public string command_cry_usage { get; set; }
+
+        public string command_cuddle_desc { get; set; }
+        public string command_cuddle_usage { get; set; }
+
+        public string command_kiss_desc { get; set; }
+        public string command_kiss_usage { get; set; }
+
+        public string command_hug_desc { get; set; }
+        public string command_hug_usage { get; set; }
+
+        public string command_lewd_desc { get; set; }
+        public string command_lewd_usage { get; set; }
+
+        public string command_lick_desc { get; set; }
+        public string command_lick_usage { get; set; }
+
+        public string command_nom_desc { get; set; }
+        public string command_nom_usage { get; set; }
+
+        public string command_owo_desc { get; set; }
+        public string command_owo_usage { get; set; }
+
+        public string command_pat_desc { get; set; }
+        public string command_pat_usage { get; set; }
+
+        public string command_pout_desc { get; set; }
+        public string command_pout_usage { get; set; }
+
+        public string command_rem_desc { get; set; }
+        public string command_rem_usage { get; set; }
+
+        public string command_slap_desc { get; set; }
+        public string command_slap_usage { get; set; }
+
+        public string command_smug_desc { get; set; }
+        public string command_smug_usage { get; set; }
+
+        public string command_stare_desc { get; set; }
+        public string command_stare_usage { get; set; }
+
+        public string command_tickle_desc { get; set; }
+        public string command_tickle_usage { get; set; }
+
+        public string command_8ball_desc { get; set; }
+        public string command_8ball_usage { get; set; }
+
+        public string command_serverinfo_desc { get; set; }
+        public string command_serverinfo_usage { get; set; }
+
+        public string command_vote_desc { get; set; }
+        public string command_vote_usage { get; set; }
+
+        public string command_viewpoll_desc { get; set; }
+        public string command_viewpoll_usage { get; set; }
+
+        public string command_createpoll_desc { get; set; }
+        public string command_createpoll_usage { get; set; }
+
+        public string command_rroulette_desc { get; set; }
+        public string command_rroulette_usage { get; set; }
+
+        public string command_config_desc { get; set; }
+        public string command_config_usage { get; set; }
+
+
+        /* Strings */
         public string only_dm_channel { get; set; }
 
         public string ping_pinging { get; set; }
@@ -144,5 +220,16 @@ namespace Yuki.Data.Objects
         public string eightball_response_18 { get; set; }
         public string eightball_response_19 { get; set; }
         public string eightball_response_20 { get; set; }
+
+        public string config_title { get; set; }
+        public string config_setting_join_leave { get; set; }
+        public string config_setting_commands { get; set; }
+        public string config_setting_assignable_roles { get; set; }
+        public string config_setting_mute { get; set; }
+        public string config_setting_scramblr { get; set; }
+        public string config_setting_nsfw { get; set; }
+        public string config_setting_prefix { get; set; }
+        public string config_setting_warnings { get; set; }
+        public string config_setting_log { get; set; }
     }
 }

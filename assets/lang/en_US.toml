@@ -2,100 +2,62 @@ Code = "en_US"
 
 
 #Commands
-[[Command]]
-Name = "avatar"
-Summary = "Fetch a user's avatar"
-Usage = "y!avatar | y!avatar @exampleuser#1234"
+command_avatar_desc = "Fetch a user's avatar"
+command_avatar_usage = "y!avatar | y!avatar @exampleuser#1234"
 
-[[Command]]
-Name = "ping"
-Summary = "Pong! Find out the bot's latency"
-Usage = "y!ping"
+command_ping_desc = "Pong! Find out the bot's latency"
+command_ping_usage = "y!ping"
 
-[[Command]]
-Name = "repeat"
-Summary = "I repeat the next message you say!"
-Usage = "y!repeat"
+command_repeat_desc = "I repeat the next message you say!"
+command_repeat_usage = "y!repeat text"
 
-[[Command]]
-Name = "cry"
-Summary = "Send a crying gif/image"
-Usage = "y!cry"
+command_cry_desc = "Send a crying gif/image"
+command_cry_usage = "y!cry"
 
-[[Command]]
-Name = "cuddle"
-Summary = "Cuddle someone!"
-Usage = "y!cuddle"
+command_cuddle_desc = "Cuddle someone!"
+command_cuddle_usage = "y!cuddle"
 
-[[Command]]
-Name = "hug"
-Summary = "Give or get a hug!"
-Usage = "y!hug"
+command_hug_desc = "Give or get a hug!"
+command_hug_usage = "y!hug"
 
-[[Command]]
-Name = "kiss"
-Summary = "Give someone a kiss!"
-Usage = "y!repeat"
+command_kiss_desc = "Give someone a kiss!"
+command_kiss_usage = "y!repeat"
 
-[[Command]]
-Name = "lewd"
-Summary = "I-Is someone being lewd...?"
-Usage = "y!lewd"
+command_lewd_desc = "I-Is someone being lewd...?"
+command_lewd_usage = "y!lewd"
 
-[[Command]]
-Name = "lick"
-Summary = "L-Lick someone?"
-Usage = "y!lick"
+command_lick_desc = "L-Lick someone?"
+command_lick_usage = "y!lick"
 
-[[Command]]
-Name = "nom"
-Summary = "Bite someone"
-Usage = "y!nom"
+command_nom_desc = "Bite someone"
+command_nom_usage = "y!nom"
 
-[[Command]]
-Name = "nyan"
-Summary = "Neko!"
-Usage = "y!nyan"
+command_nyan_desc = "Neko!"
+command_nyan_usage = "y!nyan"
 
-[[Command]]
-Name = "owo"
-Summary = "OwO"
-Usage = "y!owo"
+command_owo_desc = "OwO"
+command_owo_usage = "y!owo"
 
-[[Command]]
-Name = "pat"
-Summary = "Give or get a pat"
-Usage = "y!pat"
+command_pat_desc = "Give or get a pat"
+command_pat_usage = "y!pat"
 
-[[Command]]
-Name = "pout"
-Summary = "Pout"
-Usage = "y!pout"
+command_pout_desc = "Pout"
+command_pout_usage = "y!pout"
 
-[[Command]]
-Name = "rem"
-Summary = "Send an image of rem"
-Usage = "y!rem"
+command_rem_desc = "Send an image of rem"
+command_rem_usage = "y!rem"
 
-[[Command]]
-Name = "slap"
-Summary = "Give a slap"
-Usage = "y!slap"
+command_slap_desc = "Give a slap"
+command_slap_usage = "y!slap"
 
-[[Command]]
-Name = "smug"
-Summary = "Be smug"
-Usage = "y!smug"
+command_smug_desc = "Be smug"
+command_smug_usage = "y!smug"
 
-[[Command]]
-Name = "stare"
-Summary = "Stare at someone"
-Usage = "y!stare"
+command_stare_desc = "Stare at someone"
+command_stare_usage = "y!stare"
 
-[[Command]]
-Name = "tickle"
-Summary = "T-Tickle someone!"
-Usage = "y!tickle"
+command_tickle_desc = "T-Tickle someone!"
+command_tickle_usage = "y!tickle"
 
 
 #Strings

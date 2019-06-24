@@ -33,6 +33,8 @@ namespace Yuki
         {
             LoggingService.Write(LogLevel.Info, "Loading languages....");
             LocalizationService.LoadLanguages();
+
+            FileDirectories.CheckCreateDirectories();
         }
 
         public async Task LoginAsync()

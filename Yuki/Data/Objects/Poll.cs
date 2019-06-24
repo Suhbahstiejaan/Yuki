@@ -99,11 +99,8 @@ namespace Yuki.Data.Objects
             poll.Deadline = deadline;
             poll.ShowVotes = showVotes;
 
-            LoggingService.Write(LogLevel.Debug, $"Poll has {items.Length} items");
-
             for (int i = 0; i < items.Length; i++)
             {
-                LoggingService.Write(LogLevel.Debug, items[i]);
                 poll.Items.Add(new PollItem(items[i]));
             }
 
