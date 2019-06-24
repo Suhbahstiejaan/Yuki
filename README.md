@@ -1,5 +1,7 @@
 This is the branch for Yuki v2.0, a WIP complete rewrite for Yuki.
 
+-----
+
 **Current Features**
 
 - Russian Roulette
