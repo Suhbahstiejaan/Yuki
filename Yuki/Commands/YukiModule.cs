@@ -14,6 +14,9 @@ namespace Yuki.Commands
 
         public InteractivityService Interactivity { get; } = YukiBot.Services.GetRequiredService<InteractivityService>();
 
+        public bool UserHasPriority(IUser executor, IUser otherUser) => Context.UserHasPriority(executor, otherUser);
+        public bool RoleHasPriority(IRole role, IRole otherRole) => Context.RoleHasPriority(role, otherRole);
+        
         public Task<IUserMessage> ReplyAsync(string content, Embed embed) => Context.ReplyAsync(content, embed);
         public Task<IUserMessage> ReplyAsync(string content, EmbedBuilder embed) => Context.ReplyAsync(content, embed);
         public Task<IUserMessage> ReplyAsync(string content) => Context.ReplyAsync(content);
@@ -22,6 +25,7 @@ namespace Yuki.Commands
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => Context.ReplyAsync(embed);
         public Task<IUserMessage> SendFileAsync(string file, EmbedBuilder embed) => Context.SendFileAsync(file, embed);
         public Task<IUserMessage> SendFileAsync(string file, Embed embed) => Context.SendFileAsync(file, embed);
+
         public Task ReactAsync(string unicode) => Context.ReactAsync(unicode);
     }
 }

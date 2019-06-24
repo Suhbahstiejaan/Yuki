@@ -60,9 +60,14 @@ command_tickle_desc = "T-Tickle someone!"
 command_tickle_usage = "y!tickle"
 
 
+
 #Strings
 [Strings]
+require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
+
 only_dm_channel = "This command can only be executed in a DM channel."
+
+success = "Success!"
 
 ping_pinging = "Pinging..."
 ping_pong = "Pong!"
@@ -163,3 +168,32 @@ eightball_response_17 = "My reply is no."
 eightball_response_18 = "My sources say no."
 eightball_response_19 = "Outlook not so good."
 eightball_response_20 = "Very doubtful."
+
+config_title = "Configuration"
+config_setting_join_leave = "Modify Greeting/Goodbye message"
+config_setting_commands = "Modify command settings"
+config_setting_data= "Modify server message cache settings"
+config_setting_warnings = "Modify settings for warnings"
+
+rolecol_bot_require_higher = "I can't modify this role! It's higher than my highest :("
+rolecol_user_require_higher = "I can't modify this role! It's higher than your highest :("
+rolecol_set = "Successfully changed the color of `%rolename%` from %oldcol% to %newcol%"
+
+roulette_killed = "Sorry, %user%! You were shot!"
+roulette_safe = "%user%, you're safe!"
+roulette_not_current_player = "Sorry, %user%, you're not the current player!"
+roulette_not_started = "This game hasn't started yet! To start it, run \"y!roulette start\""
+roulette_no_game = "No game has been created! To create one, run \"y!roulette join\""
+roulette_game_over = "Sorry, %user%, you were shot! Game Over!"
+roulette_error = "Oops, an error occurred! Please contact my owner as soon as you can!"
+roulette_playing = "The game has began!"
+roulette_not_enough_players = "There are not enough players to start this game"
+roulette_not_game_master = "I'm sorry, but you can't do that! You must be the game master."
+roulette_next_player = "%nuser%, there are %bullets% chambers left."
+roulette_winner = "%nuser%, you win!"
+roulette_trigger_pulled = "%user% pulls the trigger..."
+roulette_join_success = "Successfully joined the game! **%spotsleft%** more players can join this game."
+roulette_join_fail = "You can't join this game!"
+roulette_quit = "%user% left the game"
+roulette_player_kicked = "%user%, you were kicked from the game"
+roulette_starting = "The game is starting"

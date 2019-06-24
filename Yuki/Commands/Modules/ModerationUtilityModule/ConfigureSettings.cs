@@ -15,13 +15,8 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
             {
                 "config_setting_join_leave",
                 "config_setting_commands",
-                "config_setting_assignable_roles",
-                "config_setting_mute",
-                "config_setting_scramblr",
-                "config_setting_nsfw",
-                "config_setting_prefix",
-                "config_setting_warnings",
-                "config_setting_log"
+                "config_setting_data",
+                "config_setting_warnings"
             };
 
             EmbedBuilder embed = Context.CreateEmbedBuilder()

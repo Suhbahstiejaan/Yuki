@@ -34,7 +34,7 @@ namespace Yuki.Services
 
     public static class RussianRouletteService
     {
-        private static List<RouletteGuild> Guilds = new List<RouletteGuild>();
+        public static List<RouletteGuild> Guilds { get; private set; } = new List<RouletteGuild>();
 
         public static RouletteGuild GetGuild(ulong guildId)
         {
@@ -44,6 +44,21 @@ namespace Yuki.Services
             }
 
             return Guilds.FirstOrDefault(g => g.Id == guildId);
+        }
+
+        public static bool GameExists(ulong guildId, ulong channelId)
+        {
+            if(!Guilds.Any(g => g.Id == guildId))
+            {
+                return false;
+            }
+
+            return !GetGuild(guildId).GetGame(channelId).Equals(default);
+        }
+
+        public static RouletteGame GetGame(ulong guildId, ulong channelId)
+        {
+            return GetGuild(guildId).GetGame(channelId);
         }
     }
 
@@ -90,6 +105,11 @@ namespace Yuki.Services
 
 
             return result;
+        }
+
+        public RouletteGame GetGame(ulong channelId)
+        {
+            return Games[Games.IndexOf(Games.FirstOrDefault(g => g.Id == channelId))];
         }
 
         public void RemovePlayerFromGame(ulong channelId, ulong userId)
@@ -164,10 +184,13 @@ namespace Yuki.Services
 
     public struct RouletteGame
     {
+        public const int CHAMBER_COUNT = 6;
+
         public ulong Id;
 
         public int BulletLocation;
         public int CurrentChamber;
+        public int CurrentPlayer;
 
         public RouletteGameState GameState;
 
@@ -179,6 +202,7 @@ namespace Yuki.Services
             Id = channelId;
             BulletLocation = new YukiRandom().Next(6);
             CurrentChamber = 0;
+            CurrentPlayer = 0;
             GameState = RouletteGameState.Waiting;
             Players = new List<RoulettePlayer>();
         }
@@ -190,7 +214,12 @@ namespace Yuki.Services
 
         public bool IsCurrentPlayer(ulong userId)
         {
-            return Players[CurrentChamber].Id == userId;
+            return Players[CurrentPlayer].Id == userId;
+        }
+
+        public RoulettePlayer GetNextPlayer()
+        {
+            return Players[CurrentPlayer];
         }
 
         public RouletteStartResult Start(ulong userId)
@@ -216,7 +245,7 @@ namespace Yuki.Services
 
         public bool AddPlayer(ulong userId)
         {
-            if(!Players.Any(p => p.Id == userId) && Players.Count < 6)
+            if(!Players.Any(p => p.Id == userId) && Players.Count < CHAMBER_COUNT)
             {
                 Players.Add(new RoulettePlayer()
                 {
@@ -240,6 +269,8 @@ namespace Yuki.Services
                 Players.Remove(Players.FirstOrDefault(p => p.Id == userId));
                 //CheckSetGameMaster();
             }
+
+            NextPlayer();
         }
 
         /* Game Logic */
@@ -267,12 +298,14 @@ namespace Yuki.Services
                     else
                     {
                         CurrentChamber++;
-
+                        
                         /* Just to be safe */
-                        if(CurrentChamber > 5)
+                        if(CurrentChamber >= CHAMBER_COUNT)
                         {
                             CurrentChamber = 0;
                         }
+
+                        NextPlayer();
 
                         return RouletteResult.Safe;
                     }
@@ -285,6 +318,16 @@ namespace Yuki.Services
             else
             {
                 return RouletteResult.Not_Started;
+            }
+        }
+
+        private void NextPlayer()
+        {
+            CurrentPlayer++;
+
+            if (CurrentPlayer == Players.Count)
+            {
+                CurrentPlayer = 0;
             }
         }
     }

@@ -117,7 +117,10 @@ namespace Yuki.Data.Objects
 
 
         /* Strings */
+        public string require_permission_manage_roles { get; set; }
+
         public string only_dm_channel { get; set; }
+        public string success { get; set; }
 
         public string ping_pinging { get; set; }
         public string ping_pong { get; set; }
@@ -224,12 +227,29 @@ namespace Yuki.Data.Objects
         public string config_title { get; set; }
         public string config_setting_join_leave { get; set; }
         public string config_setting_commands { get; set; }
-        public string config_setting_assignable_roles { get; set; }
-        public string config_setting_mute { get; set; }
-        public string config_setting_scramblr { get; set; }
-        public string config_setting_nsfw { get; set; }
-        public string config_setting_prefix { get; set; }
+        public string config_setting_data { get; set; }
         public string config_setting_warnings { get; set; }
-        public string config_setting_log { get; set; }
+        
+        public string rolecol_bot_require_higher { get; set; }
+        public string rolecol_user_require_higher { get; set; }
+        public string rolecol_set { get; set; }
+
+        public string roulette_killed { get; set; }
+        public string roulette_safe { get; set; }
+        public string roulette_not_current_player { get; set; }
+        public string roulette_not_started { get; set; }
+        public string roulette_no_game { get; set; }
+        public string roulette_game_over { get; set; }
+        public string roulette_error { get; set; }
+        public string roulette_starting { get; set; }
+        public string roulette_not_enough_players { get; set; }
+        public string roulette_not_game_master { get; set; }
+        public string roulette_next_player { get; set; }
+        public string roulette_winner { get; set; }
+        public string roulette_trigger_pulled { get; set; }
+        public string roulette_join_success { get; set; }
+        public string roulette_join_fail { get; set; }
+        public string roulette_game_quit { get; set; }
+        public string roulette_player_kicked { get; set; }
     }
 }

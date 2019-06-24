@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using Qmmands;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Core;
 using Yuki.Extensions;
@@ -43,6 +44,9 @@ namespace Yuki.Commands
         public EmbedBuilder CreateEmbedBuilder(string content = null, EmbedAuthorBuilder author = null) => new EmbedBuilder()
             .WithColor(Colors.Pink).WithAuthor(author ?? Author).WithDescription(content ?? string.Empty);
 
+        public EmbedBuilder CreateColoredEmbed(Color color, EmbedAuthorBuilder author, string text) => new EmbedBuilder()
+            .WithColor(color).WithAuthor(author).WithDescription(text);
+
         public async Task<bool> TryDeleteAsync(IUserMessage message)
         {
             try
@@ -60,7 +64,28 @@ namespace Yuki.Commands
                 return false;
             }
             
-            return (User as IGuildUser).GuildPermissions.Has(permision);
+            return (User as IGuildUser).GuildPermissions.Has(permision) || (User as IGuildUser).GuildPermissions.Administrator;
+        }
+
+        public bool UserHasPriority(IUser executor, IUser otherUser)
+        {
+            if(Channel is IDMChannel)
+            {
+                return false;
+            }
+
+            return ((IGuildUser)executor).HighestRole(Guild).Position >
+                   ((IGuildUser)otherUser).HighestRole(Guild).Position;
+        }
+
+        public bool RoleHasPriority(IRole role, IRole otherRole)
+        {
+            if(Channel is IDMChannel)
+            {
+                return false;
+            }
+
+            return role.Position > otherRole.Position;
         }
 
         public async Task<bool> TryDeleteAsync(SocketMessage message)
