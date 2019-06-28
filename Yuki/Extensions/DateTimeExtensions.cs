@@ -8,7 +8,7 @@ namespace Yuki.Extensions
 {
     public static class DateTimeExtensions
     {
-        public static string ToPrettyTime(this DateTime dateTime, bool getTimeLeft)
+        public static string ToPrettyTime(this DateTime dateTime, bool getTimeLeft, bool showTime)
         {
             string prettyTime = string.Empty;
 
@@ -43,7 +43,14 @@ namespace Yuki.Extensions
             }
             else
             {
-                return $"{dateTime.DayOfWeek} {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dateTime.Month)} {dateTime.Day}, {dateTime.Year}";
+                string end = $"{dateTime.DayOfWeek} {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dateTime.Month)} {dateTime.Day}, {dateTime.Year}";
+
+                if(showTime)
+                {
+                    return $"{end} @ {dateTime.ToUniversalTime().TimeOfDay}";
+                }
+
+                return end;
             }
         }
 

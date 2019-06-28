@@ -41,7 +41,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                     .AddField(Language.GetString("serverinfo_channels") + $"[{textCount + voiceCount}]", channels, true)
                     .AddField(Language.GetString("serverinfo_members") + $"[{(await guild.GetUsersAsync()).Count}]", $"{(await guild.GetUsersAsync()).Where(user => user.Status != UserStatus.Offline).Count()} {Language.GetString("serverinfo_online")}", true)
                     .AddField(Language.GetString("serverinfo_roles") + $"[{guild.Roles.Count}]", Language.GetString("serverinfo_roles_view"), true)
-                    .WithFooter(Language.GetString("serverinfo_created") + ": " + guild.CreatedAt.DateTime.ToPrettyTime(false))
+                    .WithFooter(Language.GetString("serverinfo_created") + ": " + guild.CreatedAt.DateTime.ToPrettyTime(false, false))
                     .Build();
 
                 await ReplyAsync(embed);

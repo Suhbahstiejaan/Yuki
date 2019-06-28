@@ -74,8 +74,8 @@ namespace Yuki.Commands
                 return false;
             }
 
-            return ((IGuildUser)executor).HighestRole(Guild).Position >
-                   ((IGuildUser)otherUser).HighestRole(Guild).Position;
+            return ((IGuildUser)executor).HighestRole().Position >
+                   ((IGuildUser)otherUser).HighestRole().Position;
         }
 
         public bool RoleHasPriority(IRole role, IRole otherRole)

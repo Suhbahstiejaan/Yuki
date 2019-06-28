@@ -59,6 +59,56 @@ command_stare_usage = "y!stare"
 command_tickle_desc = "T-Tickle someone!"
 command_tickle_usage = "y!tickle"
 
+command_vote_desc = "Vote for a poll"
+command_vote_usage = "y!vote pollid\ny!vote pollid option"
+
+command_createpoll_desc = "Create a new poll for your users to vote in!"
+command_createpoll_usage = "y!createpoll\ny!createpoll title"
+
+command_serverinfo_desc = "Get information on a server"
+command_serverinfo_usage = "y!serverinfo"
+
+command_8ball_desc = "Shake an 8ball!"
+command_8ball_usage = "y!8ball\ny!8ball Will I ever get doughnuts?"
+
+command_config_desc = "Modify settings in your server"
+command_config_usage = "y!config"
+
+command_roulette_desc = "Pull the trigger in russian roulette"
+command_roulette_usage = "y!roulette"
+
+command_roulette_join_desc = "Join or start a game of Russian Roulette"
+command_roulette_join_usage = "y!roulette join"
+
+command_roulette_start_desc = "Start a game of russian roulette"
+command_roulette_start_usage = "y!roulette start"
+
+command_roulette_kick_desc = "Kick a player from a game of russuan roulette"
+command_roulette_kick_usage = "y!roulette kick @JoeCool777#1337"
+
+command_roulette_quit_desc = "Leave a game of russian roulette"
+command_roulette_quit_usage = "y!roulette quit"
+
+command_roulette_players_desc = "View current players"
+command_roulette_players_usage = "y!roulette players"
+
+command_toss_desc = "Toss a coin"
+command_toss_usage = "y!toss"
+
+command_roll_desc = "Roll the dice!"
+command_roll_usage = "y!roll"
+
+command_rolecol_desc = "Change a role's color"
+command_rolecol_usage = "y!rolecol role name hexcode"
+
+command_userinfo_desc = "Get information on a user"
+command_userinfo_usage = "y!userinfo\ny!userinfo @I_AM_AWESOME@6969"
+
+command_ban_desc = "Ban someone"
+command_ban_usage = "y!ban @genericuser#1234"
+
+command_kick_desc = "Kick someone from your server"
+command_kick_usage = "y!kick @genericuser2#3456"
 
 
 #Strings
@@ -66,8 +116,20 @@ command_tickle_usage = "y!tickle"
 require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
 
 only_dm_channel = "This command can only be executed in a DM channel."
-
 success = "Success!"
+none = "None"
+activity= "Activity"
+
+invisible = "Invisible"
+offline = "Offline"
+away = "Away"
+donotdisturb = "Do Not Disturb"
+
+listening = "Listening To"
+playing = "Playing"
+streaming = "Streaming"
+watching = "Watching"
+
 
 ping_pinging = "Pinging..."
 ping_pong = "Pong!"
@@ -197,3 +259,16 @@ roulette_join_fail = "You can't join this game!"
 roulette_quit = "%user% left the game"
 roulette_player_kicked = "%user%, you were kicked from the game"
 roulette_starting = "The game is starting"
+
+coin_heads = "heads"
+coin_tails = "tails"
+coin_flipped = "%user%, you flipped a coin!"
+
+roll_rolled = "You rolled a %dice%!"
+
+uinf_id = "Id"
+uinf_status = "Status"
+uinf_acc_create = "Account Created"
+uinf_acc_join = "Join Date"
+uinf_permissions = "Guild Permissions"
+uinf_roles = "Roles [%count%]"

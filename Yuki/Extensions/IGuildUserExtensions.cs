@@ -6,9 +6,9 @@ namespace Yuki.Extensions
 {
     public static class IGuildUserExtensions
     {
-        public static IRole HighestRole(this IGuildUser user, IGuild guild)
+        public static IRole HighestRole(this IGuildUser user)
         {
-            return guild.Roles.Where(role => guild.GetUserAsync(user.Id).Result.RoleIds.Contains(role.Id)).OrderByDescending(role => role.Position).First();
+            return user.Guild.Roles.Where(role => user.Guild.GetUserAsync(user.Id).Result.RoleIds.Contains(role.Id)).OrderByDescending(role => role.Position).First();
         }
 
         public static bool UserHasPermission(this IGuildUser user, GuildPermission permission)

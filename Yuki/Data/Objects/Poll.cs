@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yuki.Extensions;
-using Yuki.Services;
 
 namespace Yuki.Data.Objects
 {
@@ -131,7 +130,7 @@ namespace Yuki.Data.Objects
                 .WithTitle(Title)
                 .WithColor(Color.Green)
                 .WithDescription(PollItemsString(userAllowed))
-                .WithFooter(((Deadline - DateTime.Now).Days > 1) ? Deadline.ToPrettyTime(getTimeLeft: false) : Deadline.ToPrettyTime(getTimeLeft: true))
+                .WithFooter(((Deadline - DateTime.Now).Days > 1) ? Deadline.ToPrettyTime(getTimeLeft: false, showTime: true) + " UTC" : Deadline.ToPrettyTime(getTimeLeft: true, showTime: false))
                 .Build();
     }
 }

@@ -115,12 +115,57 @@ namespace Yuki.Data.Objects
         public string command_config_desc { get; set; }
         public string command_config_usage { get; set; }
 
+        public string command_roulette_desc { get; set; }
+        public string command_roulette_usage { get; set; }
+
+        public string command_roulette_join_desc { get; set; }
+        public string command_roulette_join_usage { get; set; }
+
+        public string command_roulette_start_desc { get; set; }
+        public string command_roulette_start_usage { get; set; }
+        
+        public string command_roulette_kick_desc { get; set; }
+        public string command_roulette_kick_usage { get; set; }
+        
+        public string command_roulette_quit_desc { get; set; }
+        public string command_roulette_quit_usage { get; set; }
+        
+        public string command_roulette_players_desc { get; set; }
+        public string command_roulette_players_usage { get; set; }
+        
+        public string command_toss_desc { get; set; }
+        public string command_toss_usage { get; set; }
+        
+        public string command_rolecol_desc { get; set; }
+        public string command_rolecol_usage { get; set; }
+        
+        public string command_userinfo_desc { get; set; }
+        public string command_userinfo_usage { get; set; }
+
+        public string command_ban_desc { get; set; }
+        public string command_ban_usage { get; set; }
+        
+        public string command_kick_desc { get; set; }
+        public string command_kick_usage { get; set; }
+
 
         /* Strings */
         public string require_permission_manage_roles { get; set; }
 
         public string only_dm_channel { get; set; }
         public string success { get; set; }
+        public string none { get; set; }
+        public string activity { get; set; }
+
+        public string invisible { get; set; }
+        public string offline { get; set; }
+        public string away { get; set; }
+        public string donotdisturb { get; set; }
+
+        public string listening { get; set; }
+        public string playing { get; set; }
+        public string streaming { get; set; }
+        public string watching { get; set; }
 
         public string ping_pinging { get; set; }
         public string ping_pong { get; set; }
@@ -251,5 +296,18 @@ namespace Yuki.Data.Objects
         public string roulette_join_fail { get; set; }
         public string roulette_game_quit { get; set; }
         public string roulette_player_kicked { get; set; }
+
+        public string coin_heads { get; set; }
+        public string coin_tails { get; set; }
+        public string coin_flipped { get; set; }
+
+        public string roll_rolled { get; set; }
+
+        public string uinf_id { get; set; }
+        public string uinf_status { get; set; }
+        public string uinf_acc_create { get; set; }
+        public string uinf_acc_join { get; set; }
+        public string uinf_permissions { get; set; }
+        public string uinf_roles { get; set; }
     }
 }

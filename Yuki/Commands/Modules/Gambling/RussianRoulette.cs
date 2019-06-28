@@ -1,5 +1,6 @@
 ﻿using Qmmands;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Services;
 
@@ -90,6 +91,35 @@ namespace Yuki.Commands.Modules.Gambling
                 {
                     await ReplyAsync(Language.GetString("roulette_not_game_master"));
                 }
+            }
+
+            [Command("players")]
+            public async Task RoulettePlayerListAsync()
+            {
+                string[] players = RussianRouletteService.GetGuild(Context.Guild.Id).GetGame(Context.Channel.Id).Players.Select(player 
+                                        => Context.Guild.GetUserAsync(player.Id).Result.Username + "#" + Context.Guild.GetUserAsync(player.Id).Result.Discriminator).ToArray();
+
+                int currPIndex = RussianRouletteService.GetGuild(Context.Guild.Id).GetGame(Context.Channel.Id).CurrentPlayer;
+                players[currPIndex] = "-> " + players[currPIndex];
+
+                for(int i = 0; i < players.Length; i++)
+                {
+                    string concat;
+
+                    if(i != currPIndex)
+                    {
+                        concat = "    ";
+                    }
+                    else
+                    {
+                        concat = " -> ";
+                    }
+
+
+                    players[i] = concat + players[i];
+                }
+
+                await ReplyAsync($"`{string.Join("\n", players)}`");
             }
         }
     }

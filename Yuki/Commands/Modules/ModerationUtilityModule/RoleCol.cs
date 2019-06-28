@@ -17,8 +17,8 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
 
             Color newCol = lastString.AsColor();
 
-            IRole yukiHighestRole = (await Context.Guild.GetUserAsync(Context.Client.CurrentUser.Id)).HighestRole(Context.Guild);
-            IRole executorHighestRole = ((IGuildUser)Context.User).HighestRole(Context.Guild);
+            IRole yukiHighestRole = (await Context.Guild.GetUserAsync(Context.Client.CurrentUser.Id)).HighestRole();
+            IRole executorHighestRole = ((IGuildUser)Context.User).HighestRole();
             IRole roleToChange = Context.Guild.Roles.FirstOrDefault(role => role.Name.ToLower() == args.Replace(lastString, "").Replace(" ", "").ToLower());
 
             Color oldCol = roleToChange.Color;

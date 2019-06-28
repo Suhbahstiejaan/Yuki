@@ -1,14 +1,8 @@
 ﻿using Discord;
 using Qmmands;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.Core;
-using Yuki.Extensions;
-using Yuki.Services;
 
 namespace Yuki.Commands.Modules.UtilityModule
 {

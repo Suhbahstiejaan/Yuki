@@ -128,7 +128,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
 
                 await message.ModifyAsync(emb =>
                 {
-                    builder.Fields.Find(field => field.Name == Language.GetString("poll_creating_deadline_str")).WithValue(deadline.ToPrettyTime(false));
+                    builder.Fields.Find(field => field.Name == Language.GetString("poll_creating_deadline_str")).WithValue(deadline.ToPrettyTime(false, true) + " UTC");
 
                     emb.Embed = builder.Build();
                 });
