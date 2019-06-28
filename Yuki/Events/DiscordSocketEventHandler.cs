@@ -22,28 +22,10 @@ namespace Yuki.Events
         
         public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
-            YukiMessage msg = new YukiMessage()
-            {
-                Id = current.Id,
-                ChannelId = channel.Id,
-                Content = current.Content
-            };
-
-            MessageDB.Edit(msg, current.Author.Id);
-
             return Task.CompletedTask;
         }
         public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
-            YukiMessage msg = new YukiMessage()
-            {
-                Id = message.Id,
-                ChannelId = channel.Id,
-                Content = message.GetOrDownloadAsync().Result.Content
-            };
-
-            MessageDB.Delete(msg);
-
             return Task.CompletedTask;
         }
 

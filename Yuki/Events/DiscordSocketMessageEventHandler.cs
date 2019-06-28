@@ -26,31 +26,7 @@ namespace Yuki.Events
                                             YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShard(0);
 
 
-            YukiUser currentUser = MessageDB.GetUser(message.Author.Id);
-
             bool hasPrefix = HasPrefix(message, out string output);
-
-            if (!currentUser.Equals(default(YukiUser)) && currentUser.CanGetMsgs) /* Check to make sure the user exists in the db */
-            {
-                if(!hasPrefix)
-                {
-                    MessageDB.Add(
-                        new YukiUser()
-                        {
-                            Id = message.Author.Id,
-                            Messages = new List<YukiMessage>()
-                            {
-                                new YukiMessage()
-                                {
-                                    Id = message.Id,
-                                    ChannelId = message.Channel.Id,
-                                    Content = message.Content
-                                }
-                            }
-                        }
-                    );
-                }
-            }
 
             if (!hasPrefix)
                 return;
