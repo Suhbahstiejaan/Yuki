@@ -157,6 +157,9 @@ namespace Yuki.Data.Objects
         public string none { get; set; }
         public string activity { get; set; }
 
+        public string _true { get; set; }
+        public string _false { get; set; }
+
         public string invisible { get; set; }
         public string offline { get; set; }
         public string away { get; set; }
@@ -309,5 +312,13 @@ namespace Yuki.Data.Objects
         public string uinf_acc_join { get; set; }
         public string uinf_permissions { get; set; }
         public string uinf_roles { get; set; }
+
+        public string roleinfo_id { get; set; }
+        public string roleinfo_position { get; set; }
+        public string roleinfo_created { get; set; }
+        public string roleinfo_hoisted { get; set; }
+        public string roleinfo_mentionable { get; set; }
+        public string roleinfo_managed { get; set; }
+        public string roleinfo_permissions { get; set; }
     }
 }

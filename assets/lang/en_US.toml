@@ -110,6 +110,18 @@ command_ban_usage = "y!ban @genericuser#1234"
 command_kick_desc = "Kick someone from your server"
 command_kick_usage = "y!kick @genericuser2#3456"
 
+command_calculate_desc = "Perform simple calculations"
+command_calculate_usage = "y!calculate 2+2"
+
+command_choose_desc = "Pick between a set of options"
+command_choose_usage = "y!choose apple | banana"
+
+command_roleinfo_desc = "Get information on a role"
+command_roleinfo_usage = "y!roleinfo Admin"
+
+command_viewpoll_desc = "View a poll"
+command_viewpoll_usage = "y!viewpoll pollid"
+
 
 #Strings
 [Strings]
@@ -119,6 +131,9 @@ only_dm_channel = "This command can only be executed in a DM channel."
 success = "Success!"
 none = "None"
 activity= "Activity"
+
+_true = "Yes"
+_false = "No"
 
 invisible = "Invisible"
 offline = "Offline"
@@ -272,3 +287,12 @@ uinf_acc_create = "Account Created"
 uinf_acc_join = "Join Date"
 uinf_permissions = "Guild Permissions"
 uinf_roles = "Roles [%count%]"
+
+
+roleinfo_id = "ID"
+roleinfo_position = "Position"
+roleinfo_created = "Role Created"
+roleinfo_hoisted = "Listed Separately"
+roleinfo_mentionable = "Mentionable"
+roleinfo_managed = "Managed by Discord"
+roleinfo_permissions = "Permissions"

@@ -16,8 +16,6 @@ namespace Yuki.Data
         public string cat_api { get; set; }
         public string encryption_key { get; set; }
         
-        public List<string> blacklist { get; set; }
-
         private static Config Instance;
 
         public static Config GetConfig(bool reload = false)
