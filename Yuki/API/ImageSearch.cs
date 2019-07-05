@@ -136,7 +136,7 @@ namespace Yuki.API
             return await search.GetImage(tags, blacklist.ToArray(), forceExplicit);
         }
 
-        public async Task<YukiImage> GetHentaiImage(string[] searchedTags, string[] blacklistedTags, bool forceExplicit)
+        public async Task<YukiImage> GetAnimeImage(string[] searchedTags, string[] blacklistedTags, bool forceExplicit)
         {
             List<string> blacklist = new List<string>();
 
@@ -157,7 +157,7 @@ namespace Yuki.API
                 await GetImage(ImageType.Danbooru, searchedTags, blacklistedTags, forceExplicit);
                 await GetImage(ImageType.Gelbooru, searchedTags, blacklistedTags, forceExplicit);
 
-                await GetHentaiImage(searchedTags, blacklistedTags, forceExplicit);
+                await GetAnimeImage(searchedTags, blacklistedTags, forceExplicit);
             }
 
             images = CachedImages.Where(img => (img.type == ImageType.Danbooru || img.type == ImageType.Gelbooru) &&

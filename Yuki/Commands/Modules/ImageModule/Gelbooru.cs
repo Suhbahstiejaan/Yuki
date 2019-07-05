@@ -1,21 +1,18 @@
 ﻿using Discord;
 using Qmmands;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.API;
 using Yuki.Data.Objects;
 
-namespace Yuki.Commands.Modules.NsfwModule
+namespace Yuki.Commands.Modules.ImageModule
 {
-    public partial class NsfwModule
+    public partial class ImageModule
     {
-        [Command("hentai")]
-        public async Task HentaiAsync(params string[] tags)
+        [Command("gelbooru")]
+        public async Task GelbooruAsync(string[] tags = null)
         {
-            YukiImage image = await new ImageSearch().GetAnimeImage(tags, null, forceExplicit: true);
+            YukiImage image = await new ImageSearch().GetImage(ImageType.Gelbooru, tags, null, forceExplicit: false);
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()
