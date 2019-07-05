@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Yuki.Core;
 
-namespace Yuki.Commands.Modules.Gambling
+namespace Yuki.Commands.Modules.GamblingModule
 {
     public partial class GamlingModule
     {

@@ -1,4 +1,4 @@
-﻿namespace Yuki.Commands.Modules.Owner
+﻿namespace Yuki.Commands.Modules.OwnerModule
 {
     public partial class OwnerModule : YukiModule { }
 }

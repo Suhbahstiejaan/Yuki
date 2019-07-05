@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Services;
 
-namespace Yuki.Commands.Modules.Gambling
+namespace Yuki.Commands.Modules.GamblingModule
 {
     public partial class GamlingModule
     {

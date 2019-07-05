@@ -1,4 +1,4 @@
-﻿namespace Yuki.Commands.Modules.Gambling
+﻿namespace Yuki.Commands.Modules.GamblingModule
 {
     public partial class GamlingModule : YukiModule
     {
