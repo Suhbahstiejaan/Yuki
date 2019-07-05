@@ -42,4 +42,6 @@ If you have any feature requests, please join the Discord and mention them!
 
 
 Feel generous?
+
+
 [Paypal](https://www.paypal.me/veenus2247) | [Patreon page](https://www.patreon.com/veethree)
