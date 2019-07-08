@@ -1,6 +1,7 @@
 Code = "en_US"
 
 
+[Strings]
 #Commands
 command_avatar_desc = "Fetch a user's avatar"
 command_avatar_usage = "y!avatar | y!avatar @exampleuser#1234"
@@ -124,7 +125,6 @@ command_viewpoll_usage = "y!viewpoll pollid"
 
 
 #Strings
-[Strings]
 require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
 
 only_dm_channel = "This command can only be executed in a DM channel."
@@ -288,7 +288,6 @@ uinf_acc_join = "Join Date"
 uinf_permissions = "Guild Permissions"
 uinf_roles = "Roles [%count%]"
 
-
 roleinfo_id = "ID"
 roleinfo_position = "Position"
 roleinfo_created = "Role Created"
@@ -296,3 +295,18 @@ roleinfo_hoisted = "Listed Separately"
 roleinfo_mentionable = "Mentionable"
 roleinfo_managed = "Managed by Discord"
 roleinfo_permissions = "Permissions"
+
+
+modules_title = "List of Modules"
+modules_help = "To view commands in a module, use the command y!commands moduleName"
+modules_count = "%cmds% command(s)"
+
+commands_title = "List of Commands"
+commands_help = "To view information on a command, use the command y!help commandName"
+commands_no_alias = "No aliases"
+
+help_info_title = "Looking for help?"
+help_aliases = "Aliases"
+help_usage = "Usage"
+help_info_description = "TODO: fill this out lol"
+help_description = "Description"

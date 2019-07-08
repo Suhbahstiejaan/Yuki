@@ -37,11 +37,32 @@ namespace Yuki.Commands
                     Name = User.Username
                 };
 
+        public Embed CreateEmbed(string title, bool addUserName) => CreateEmbedBuilder(title, addUserName).Build();
         public Embed CreateEmbed(string content, EmbedAuthorBuilder author = null) => CreateEmbedBuilder(content, author).Build();
 
         public EmbedBuilder CreateImageEmbedBuilder(string title, string url) => CreateEmbedBuilder("", new EmbedAuthorBuilder() { Name = title }).WithImageUrl(url);
 
-        public EmbedBuilder CreateEmbedBuilder(string content = null, EmbedAuthorBuilder author = null) => new EmbedBuilder()
+        public EmbedBuilder CreateEmbedBuilder(string title, bool addUserName)
+        {
+            EmbedBuilder embed = new EmbedBuilder().WithColor(Colors.Pink);
+
+            if (addUserName)
+            {
+                embed.WithAuthor(new EmbedAuthorBuilder()
+                {
+                    IconUrl = User.GetAvatarUrl(),
+                    Name = $"{User.Username}#{User.Discriminator} | {title}"
+                });
+            }
+            else
+            {
+                embed.WithAuthor(title);
+            }
+
+            return embed;
+        }
+
+        public EmbedBuilder CreateEmbedBuilder(string content, EmbedAuthorBuilder author) => new EmbedBuilder()
             .WithColor(Colors.Pink).WithAuthor(author ?? Author).WithDescription(content ?? string.Empty);
 
         public EmbedBuilder CreateColoredEmbed(Color color, EmbedAuthorBuilder author, string text) => new EmbedBuilder()

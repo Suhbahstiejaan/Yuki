@@ -19,12 +19,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
                 "config_setting_warnings"
             };
 
-            EmbedBuilder embed = Context.CreateEmbedBuilder()
-                .WithAuthor(new EmbedAuthorBuilder()
-                {
-                    IconUrl = Context.User.GetAvatarUrl(),
-                    Name = Language.GetString("config_title")
-                })
+            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("config_title"), true)
                 .AddField(Language.GetString("config_what_do"), string.Join("\n", settings));
 
             await ReplyAsync(embed);

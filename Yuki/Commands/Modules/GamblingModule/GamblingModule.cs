@@ -1,6 +1,7 @@
-﻿namespace Yuki.Commands.Modules.GamblingModule
+﻿using Qmmands;
+
+namespace Yuki.Commands.Modules.GamblingModule
 {
-    public partial class GamlingModule : YukiModule
-    {
-    }
+    [Name("Gambling")]
+    public partial class GamlingModule : YukiModule { }
 }

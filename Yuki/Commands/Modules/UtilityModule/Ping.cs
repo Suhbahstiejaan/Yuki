@@ -11,7 +11,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Command("ping")]
         public async Task PingAsync()
         {
-            EmbedBuilder embedBuilder = Context.CreateEmbedBuilder(Language.GetString("ping_pinging"));
+            EmbedBuilder embedBuilder = Context.CreateEmbedBuilder(Language.GetString("ping_pinging"), true);
 
             Stopwatch watch = Stopwatch.StartNew();
             IUserMessage msg = await embedBuilder.SendToAsync(Context.Channel);

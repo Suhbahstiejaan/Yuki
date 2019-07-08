@@ -24,16 +24,11 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
                 DateTime deadline = default;
                 bool? showVotes = null;
 
-                EmbedBuilder builder = Context.CreateEmbedBuilder()
+                EmbedBuilder builder = Context.CreateEmbedBuilder(Language.GetString("poll_create_creating"), true)
                     .AddField(Language.GetString("poll_creating_title_str"), string.IsNullOrEmpty(pollName) ? "none" : pollName)
                     .AddField(Language.GetString("poll_creating_items_str"), Language.GetString("poll_create_items_desc"))
                     .AddField(Language.GetString("poll_creating_deadline_str"), Language.GetString("poll_create_deadline_desc"))
-                    .AddField(Language.GetString("poll_create_show_vote_str"), Language.GetString("poll_create_show_vote_desc"))
-                    .WithAuthor(new EmbedAuthorBuilder()
-                    {
-                        IconUrl = Context.User.GetAvatarUrl(),
-                        Name = Context.User.Username + " | " + Language.GetString("poll_create_creating")
-                    });
+                    .AddField(Language.GetString("poll_create_show_vote_str"), Language.GetString("poll_create_show_vote_desc"));
 
                 IUserMessage message = await builder.SendToAsync(Context.Channel);
                 InteractivityResult<SocketMessage> result;

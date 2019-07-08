@@ -320,5 +320,19 @@ namespace Yuki.Data.Objects
         public string roleinfo_mentionable { get; set; }
         public string roleinfo_managed { get; set; }
         public string roleinfo_permissions { get; set; }
+
+        public string modules_title { get; set; }
+        public string modules_help { get; set; }
+        public string modules_count { get; set; }
+
+        public string commands_title { get; set; }
+        public string commands_help { get; set; }
+        public string commands_no_alias { get; set; }
+
+        public string help_title { get; set; }
+        public string help_aliases { get; set; }
+        public string help_description { get; set; }
+        public string help_info_description { get; set; }
+        public string help_usage { get; set; }
     }
 }
