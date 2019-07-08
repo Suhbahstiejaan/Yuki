@@ -17,7 +17,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             try
             {
                 EmbedBuilder helpEmbed = Context.CreateEmbedBuilder(Language.GetString("help_title"), false)
-                    .WithDescription(Language.GetString("help_description"));
+                    .WithDescription(Language.GetString("help_info_description"));
 
                 if (commandStr == "")
                 {

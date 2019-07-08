@@ -20,9 +20,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             foreach(Command command in commands)
             {
                 string embedValue = string.Join(", ", command.Aliases.Where(alias => alias != command.Name));
-
-
-
+                
                 embed.AddField(command.Name, (!string.IsNullOrWhiteSpace(embedValue) ? embedValue : Language.GetString("commands_no_alias")), true);
             }
 

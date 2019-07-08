@@ -123,6 +123,49 @@ command_roleinfo_usage = "y!roleinfo Admin"
 command_viewpoll_desc = "View a poll"
 command_viewpoll_usage = "y!viewpoll pollid"
 
+command_commands_desc = "View commands in a module"
+command_commands_desc = "y!commands moduleName (example: y!commands utility)"
+
+command_roleinfo_desc = "Get information on a role"
+command_roleinfo_usage = "y!roleinfo RoleName"
+
+command_calculate_desc = "Perform simple calculations"
+command_calculate_usage = "y!calculate 2+2"
+
+command_modules_desc = "View a list of modules"
+command_modules_usage = "y!modules"
+
+command_help_desc = "Learn a bit about how to use the bot, or get help on a command"
+command_help_usage = "y!help\ny!help commandName"
+
+command_roll_desc = "Roll a dice"
+command_roll_usage = "y!roll"
+
+command_boobs_desc = "Get a random boobs image"
+command_boobs_usage = "y!boobs"
+
+command_butts_desc = "Get a random butts image"
+command_butts_usage = "y!butts"
+
+command_hentai_desc = "Search for hentai"
+command_hentai_usage = "y!hentai\ny!hentai terms"
+
+command_rule34_desc = "Search rule34.xxx"
+command_rule34_usage = "y!rule34\ny!rule34 terms"
+
+command_e621_desc = "Search e621"
+command_e621_usage = "y!e621\ny!e621 terms"
+
+command_booru_desc = "Search gelbooru and danbooru for an SFW image"
+command_booru_usage = "y!booru\ny!booru terms"
+
+command_gelbooru_desc = "Search gelbooru for an SFW image"
+command_gelbooru_usage = "y!gelbooru\ny!gelbooru terms"
+
+command_danbooru_desc = "Search danbooru for an SFW image"
+command_danbooru_usage = "y!danbooru\ny!danbooru terms"
+
+
 
 #Strings
 require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
@@ -305,8 +348,8 @@ commands_title = "List of Commands"
 commands_help = "To view information on a command, use the command y!help commandName"
 commands_no_alias = "No aliases"
 
-help_info_title = "Looking for help?"
+help_title = "Looking for help?"
 help_aliases = "Aliases"
 help_usage = "Usage"
-help_info_description = "TODO: fill this out lol"
+help_info_description = "To add me to your own server, [click here!](https://discordapp.com/oauth2/authorize?client_id=338887651677700098&scope=bot&permissions=271690950)\n\n\n• For a list of modules, use `y!modules`\n• To view commands in a module, use `y!commands moduleName`\n\nInterested in supporting my development and getting some perks? Use `y!donate`!\n\nNeed to report a bug or want to request a feature? Join my [support server!](https://discord.gg/qA4c4f3)"
 help_description = "Description"

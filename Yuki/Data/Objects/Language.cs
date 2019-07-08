@@ -148,6 +148,48 @@ namespace Yuki.Data.Objects
         public string command_kick_desc { get; set; }
         public string command_kick_usage { get; set; }
 
+        public string command_calculate_desc { get; set; }
+        public string command_calculate_usage { get; set; }
+
+        public string command_choose_desc { get; set; }
+        public string command_choose_usage { get; set; }
+
+        public string command_roleinfo_desc { get; set; }
+        public string command_roleinfo_usage { get; set; }
+
+        public string command_modules_desc { get; set; }
+        public string command_modules_usage { get; set; }
+
+        public string command_help_desc { get; set; }
+        public string command_help_usage { get; set; }
+
+        public string command_roll_desc { get; set; }
+        public string command_roll_usage { get; set; }
+
+        public string command_boobs_desc { get; set; }
+        public string command_boobs_usage { get; set; }
+
+        public string command_butts_desc { get; set; }
+        public string command_butts_usage { get; set; }
+
+        public string command_hentai_desc { get; set; }
+        public string command_hentai_usage { get; set; }
+
+        public string command_rule34_desc { get; set; }
+        public string command_rule34_usage { get; set; }
+
+        public string command_e621_desc { get; set; }
+        public string command_e621_usage { get; set; }
+
+        public string command_booru_desc { get; set; }
+        public string command_booru_usage { get; set; }
+
+        public string command_gelbooru_desc { get; set; }
+        public string command_gelbooru_usage { get; set; }
+
+        public string command_danbooru_desc { get; set; }
+        public string command_danbooru_usage { get; set; }
+
 
         /* Strings */
         public string require_permission_manage_roles { get; set; }
