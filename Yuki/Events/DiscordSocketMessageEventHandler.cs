@@ -9,6 +9,7 @@ using Yuki.Commands;
 using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Services;
+using Yuki.Services.Database;
 
 namespace Yuki.Events
 {
@@ -29,7 +30,17 @@ namespace Yuki.Events
             bool hasPrefix = HasPrefix(message, out string output);
 
             if (!hasPrefix)
+            {
+                Messages.InsertOrUpdate(new YukiMessage()
+                {
+                    Id = message.Id,
+                    AuthorId = message.Author.Id,
+                    ChannelId = message.Channel.Id,
+                    Content = message.Content
+                });
+
                 return;
+            }
 
             IResult result = await YukiBot.Services.GetRequiredService<YukiBot>().CommandService.ExecuteAsync(output, new YukiCommandContext(YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient, socketMessage as IUserMessage, YukiBot.Services));
 

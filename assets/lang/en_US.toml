@@ -123,23 +123,11 @@ command_roleinfo_usage = "y!roleinfo Admin"
 command_viewpoll_desc = "View a poll"
 command_viewpoll_usage = "y!viewpoll pollid"
 
-command_commands_desc = "View commands in a module"
-command_commands_desc = "y!commands moduleName (example: y!commands utility)"
-
-command_roleinfo_desc = "Get information on a role"
-command_roleinfo_usage = "y!roleinfo RoleName"
-
-command_calculate_desc = "Perform simple calculations"
-command_calculate_usage = "y!calculate 2+2"
-
 command_modules_desc = "View a list of modules"
 command_modules_usage = "y!modules"
 
 command_help_desc = "Learn a bit about how to use the bot, or get help on a command"
 command_help_usage = "y!help\ny!help commandName"
-
-command_roll_desc = "Roll a dice"
-command_roll_usage = "y!roll"
 
 command_boobs_desc = "Get a random boobs image"
 command_boobs_usage = "y!boobs"
@@ -188,6 +176,8 @@ playing = "Playing"
 streaming = "Streaming"
 watching = "Watching"
 
+error_occurred = "An error occurred! Contact my owner ASAP so this can get fixed"
+incorrect_response_string = "Incorrect response string!"
 
 ping_pinging = "Pinging..."
 ping_pong = "Pong!"
@@ -353,3 +343,6 @@ help_aliases = "Aliases"
 help_usage = "Usage"
 help_info_description = "To add me to your own server, [click here!](https://discordapp.com/oauth2/authorize?client_id=338887651677700098&scope=bot&permissions=271690950)\n\n\n• For a list of modules, use `y!modules`\n• To view commands in a module, use `y!commands moduleName`\n\nInterested in supporting my development and getting some perks? Use `y!donate`!\n\nNeed to report a bug or want to request a feature? Join my [support server!](https://discord.gg/qA4c4f3)"
 help_description = "Description"
+
+remindme_success = ":thumbsup: Got it, %user%! I'll remember to remind you about this:\n\n%reminder%"
+remindme_datetime_short = "Sorry! The time must be greater than or equal to 1 minute."

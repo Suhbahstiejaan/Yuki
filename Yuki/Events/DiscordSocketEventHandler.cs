@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Yuki.Data.Objects;
 using Yuki.Services;
+using Yuki.Services.Database;
 
 namespace Yuki.Events
 {
@@ -22,10 +23,26 @@ namespace Yuki.Events
         
         public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
+            Messages.InsertOrUpdate(new YukiMessage()
+            {
+                Id = current.Id,
+                AuthorId = current.Author.Id,
+                ChannelId = current.Channel.Id,
+                Content = current.Content
+            });
+
             return Task.CompletedTask;
         }
         public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
+            Messages.Remove(new YukiMessage()
+            {
+                Id = message.Value.Id,
+                AuthorId = message.Value.Author.Id,
+                ChannelId = message.Value.Channel.Id,
+                Content = message.Value.Content
+            });
+
             return Task.CompletedTask;
         }
 

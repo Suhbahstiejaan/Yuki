@@ -13,8 +13,10 @@ using System.Threading.Tasks;
 using Yuki.Commands.TypeParsers;
 using Yuki.Core;
 using Yuki.Data;
+using Yuki.Data.Objects;
 using Yuki.Events;
 using Yuki.Services;
+using Yuki.Services.Database;
 
 namespace Yuki
 {
@@ -118,6 +120,33 @@ namespace Yuki
             CommandService.AddModules(Assembly.GetEntryAssembly());
             LoggingService.Write(LogLevel.Debug, $"Found {CommandService.GetAllCommands().Count} command(s)");
             CommandService.AddTypeParser(new UserTypeParser<IUser>());
+
+            /* Reminder */
+            System.Timers.Timer t = new System.Timers.Timer();
+
+            t.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
+
+            t.Elapsed += new System.Timers.ElapsedEventHandler((EventHandler)async delegate (object sender, EventArgs e)
+            {
+               try
+                {
+                    List<YukiReminder> reminders = UserSettings.GetReminders(DateTime.UtcNow);
+
+
+                    foreach (YukiReminder reminder in reminders.ToArray())
+                    {
+                        await DiscordClient.GetUser(reminder.AuthorId).SendMessageAsync(reminder.Message);
+
+                        UserSettings.RemoveReminder(reminder);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            });
+
+            t.Start();
         }
 
         public void Shutdown()

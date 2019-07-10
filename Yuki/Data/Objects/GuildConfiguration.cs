@@ -14,7 +14,7 @@ namespace Yuki.Data.Objects
         public string WelcomeMessage { get; set; }
         public string GoodbyeMessage { get; set; }
 
-        public string langCode { get; set; }
+        public string LangCode { get; set; }
 
         public string Prefix { get; set; } /* Custom prefix for server */
 

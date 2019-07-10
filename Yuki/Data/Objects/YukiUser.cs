@@ -8,9 +8,11 @@ namespace Yuki.Data.Objects
         [BsonId]
         public ulong Id { get; set; }
 
+        public string langCode { get; set; }
+
         public bool IsPatron { get; set; }
         public bool CanGetMsgs { get; set; }
 
-        public List<YukiMessage> Messages { get; set; }
+        public List<YukiReminder> Reminders { get; set; }
     }
 }

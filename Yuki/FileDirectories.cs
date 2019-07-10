@@ -16,8 +16,8 @@ namespace Yuki
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
 
-        internal static string GuildsDB { get; } = DBRoot + "guilds.db";
-        internal static string MessageDB { get; } = DBRoot + "messages.db";
+        internal static string SettingsDB { get; } = DBRoot + "settings.db";
+        internal static string CacheDB { get; } = DBRoot + "cache.db";
 
         public static void CheckCreateDirectories()
         {

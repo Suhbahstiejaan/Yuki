@@ -190,6 +190,10 @@ namespace Yuki.Data.Objects
         public string command_danbooru_desc { get; set; }
         public string command_danbooru_usage { get; set; }
 
+        public string command_remindme_desc { get; set; }
+        public string command_remindme_usage { get; set; }
+
+
 
         /* Strings */
         public string require_permission_manage_roles { get; set; }
@@ -211,6 +215,9 @@ namespace Yuki.Data.Objects
         public string playing { get; set; }
         public string streaming { get; set; }
         public string watching { get; set; }
+
+        public string error_occurred { get; set; }
+        public string incorrect_response_string { get; set; }
 
         public string ping_pinging { get; set; }
         public string ping_pong { get; set; }
@@ -376,5 +383,8 @@ namespace Yuki.Data.Objects
         public string help_description { get; set; }
         public string help_info_description { get; set; }
         public string help_usage { get; set; }
+
+        public string remindme_success { get; set; }
+        public string remindme_datetime_short { get; set; }
     }
 }
