@@ -4,9 +4,9 @@ using System;
 using System.Threading.Tasks;
 using Yuki.Core;
 
-namespace Yuki.Commands.Modules.UtilityModule
+namespace Yuki.Commands.Modules.FunModule
 {
-    public partial class UtilityModule
+    public partial class FunModule
     {
         [Command("8ball")]
         public async Task MagicEightBall([Remainder] string args = "")

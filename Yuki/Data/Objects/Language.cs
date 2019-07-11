@@ -321,12 +321,6 @@ namespace Yuki.Data.Objects
         public string eightball_response_19 { get; set; }
         public string eightball_response_20 { get; set; }
 
-        public string config_title { get; set; }
-        public string config_setting_join_leave { get; set; }
-        public string config_setting_commands { get; set; }
-        public string config_setting_data { get; set; }
-        public string config_setting_warnings { get; set; }
-        
         public string rolecol_bot_require_higher { get; set; }
         public string rolecol_user_require_higher { get; set; }
         public string rolecol_set { get; set; }
@@ -386,5 +380,23 @@ namespace Yuki.Data.Objects
 
         public string remindme_success { get; set; }
         public string remindme_datetime_short { get; set; }
+
+        public string config_title { get; set; }
+        public string config_setting_welcome { get; set; }
+        public string config_setting_nsfw { get; set; }
+        public string config_setting_log { get; set; }
+        public string config_setting_cache { get; set; }
+        public string config_setting_mute { get; set; }
+        public string config_setting_prefix { get; set; }
+        public string config_setting_roles { get; set; }
+        public string config_setting_warnings { get; set; }
+
+        public string pokemon_weight { get; set; }
+        public string pokemon_height { get; set; }
+        public string pokemon_base_exp { get; set; }
+        public string pokemon_abilities { get; set; }
+        public string pokemon_types { get; set; }
+        public string pokemon_evolution_chain { get; set; }
+        public string pokemon_not_found { get; set; }
     }
 }

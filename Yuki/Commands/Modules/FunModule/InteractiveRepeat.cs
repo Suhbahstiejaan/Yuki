@@ -3,9 +3,9 @@ using InteractivityAddon;
 using Qmmands;
 using System.Threading.Tasks;
 
-namespace Yuki.Commands.Modules.UtilityModule
+namespace Yuki.Commands.Modules.FunModule
 {
-    public partial class UtilityModule
+    public partial class FunModule
     {
         [Command("repeat")]
         public async Task ExampleReplyNextMessageAsync()

@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Yuki.Core;
 
-namespace Yuki.Commands.Modules.UtilityModule
+namespace Yuki.Commands.Modules.FunModule
 {
-    public partial class UtilityModule
+    public partial class FunModule
     {
         [Command("choose")]
         public async Task ChooseItemAsync([Remainder] string args)
