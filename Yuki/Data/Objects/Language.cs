@@ -206,6 +206,10 @@ namespace Yuki.Data.Objects
         public string _true { get; set; }
         public string _false { get; set; }
 
+        public string back { get; set; }
+        public string exit { get; set; }
+
+
         public string invisible { get; set; }
         public string offline { get; set; }
         public string away { get; set; }
@@ -398,5 +402,8 @@ namespace Yuki.Data.Objects
         public string pokemon_types { get; set; }
         public string pokemon_evolution_chain { get; set; }
         public string pokemon_not_found { get; set; }
+
+        public string donate_title { get; set; }
+        public string donate_desc { get; set; }
     }
 }

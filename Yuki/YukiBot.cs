@@ -11,9 +11,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Yuki.Commands.TypeParsers;
-using Yuki.Core;
 using Yuki.Data;
-using Yuki.Data.Objects;
+using Yuki.Data.Objects.Database;
 using Yuki.Events;
 using Yuki.Services;
 using Yuki.Services.Database;
@@ -22,6 +21,12 @@ namespace Yuki
 {
     public class YukiBot
     {
+        public const string PatronUrl = "https://www.patreon.com/user?u=7361846";
+        public const string PayPalUrl = "https://paypal.me/veenus2247";
+        public const string ServerUrl = "https://discord.gg/qA4c4f3";
+        public const string BotInvUrl = "https://discordapp.com/oauth2/authorize?client_id=338887651677700098&scope=bot&permissions=271690950";
+        public const string GithubUrl = "https://github.com/VeeThree/Yuki/";
+
         public static IServiceProvider Services { get; private set; }
 
         public DiscordShardedClient DiscordClient;

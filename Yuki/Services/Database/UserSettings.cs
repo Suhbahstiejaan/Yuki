@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yuki.Data.Objects;
+using Yuki.Data.Objects.Database;
 
 namespace Yuki.Services.Database
 {
@@ -10,11 +11,13 @@ namespace Yuki.Services.Database
     {
         public const string path = "data/settings.db";
 
+        private const string collection = "user_settings";
+
         public static void AddOrUpdate(YukiUser user)
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == user.Id))
                 {
@@ -31,7 +34,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -44,7 +47,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -59,7 +62,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -74,7 +77,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == reminder.AuthorId))
                 {
@@ -101,7 +104,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == reminder.AuthorId))
                 {
@@ -117,7 +120,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(path))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>("user_settings");
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Reminders.Count > 0))
                 {

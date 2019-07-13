@@ -1,11 +1,8 @@
 ﻿using Discord;
-using Discord.WebSocket;
-using InteractivityAddon;
 using Qmmands;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
-using Yuki.Extensions;
 using Yuki.Services;
 
 namespace Yuki.Commands.Modules.ModerationUtilityModule
@@ -18,16 +15,17 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
         {
             SettingsConfigurator settings = new SettingsConfigurator(this, Context);
 
-            InteractivityResult<SocketMessage> result;
-
             while (settings.Running)
             {
-                settings.Run();
-                result = await Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
-
-                if (result.IsSuccess)
+                try
                 {
 
+                    Console.WriteLine("h");
+                    await Task.Run(settings.Run);
+                }
+                catch(Exception e)
+                {
+                    await ReplyAsync(e);
                 }
             }
         }

@@ -17,7 +17,9 @@ namespace Yuki.Commands.Modules.UtilityModule
             try
             {
                 EmbedBuilder helpEmbed = Context.CreateEmbedBuilder(Language.GetString("help_title"), false)
-                    .WithDescription(Language.GetString("help_info_description"));
+                    .WithDescription(Language.GetString("help_info_description")
+                        .Replace("%botinvite%", YukiBot.BotInvUrl).Replace("%serverinvite%", YukiBot.ServerUrl)
+                        .Replace("%github%", YukiBot.GithubUrl));
 
                 if (commandStr == "")
                 {

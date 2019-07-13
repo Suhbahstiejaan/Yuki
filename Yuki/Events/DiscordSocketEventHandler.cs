@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Yuki.Data.Objects;
+using Yuki.Data.Objects.Database;
 using Yuki.Services;
 using Yuki.Services.Database;
 

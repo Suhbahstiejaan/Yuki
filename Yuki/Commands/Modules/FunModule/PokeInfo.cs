@@ -49,14 +49,14 @@ namespace Yuki.Commands.Modules.FunModule
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(pokeInf.name)
-                .WithThumbnailUrl(pokeInf.sprites.front_default);
-            embed.WithDescription(PokeApi.GetPokemonSpeciesInfo(pokemonName).flavor_text_entries.Find(entry => entry.language.name == "en").flavor_text);
-            embed.AddField(Language.GetString("pokemon_weight"), pokeInf.weight.ToString(), true);
-            embed.AddField(Language.GetString("pokemon_height"), pokeInf.height, true);
-            embed.AddField(Language.GetString("pokemon_base_exp"), pokeInf.base_experience, true);
-            embed.AddField(Language.GetString("pokemon_abilities"), string.Join(", ", pokeInf.abilities.Select(ability => ability.ability.name)), true);
-            embed.AddField(Language.GetString("pokemon_types"), string.Join(", ", pokeInf.types.Select(type => type.type.name)), true);
-            embed.AddField(Language.GetString("pokemon_evolution_chain"), string.Join(" -> ", evolutions), true);
+                .WithThumbnailUrl(pokeInf.sprites.front_default)
+                .WithDescription(PokeApi.GetPokemonSpeciesInfo(pokemonName).flavor_text_entries.Find(entry => entry.language.name == "en").flavor_text)
+                .AddField(Language.GetString("pokemon_weight"), pokeInf.weight.ToString(), true)
+                .AddField(Language.GetString("pokemon_height"), pokeInf.height, true)
+                .AddField(Language.GetString("pokemon_base_exp"), pokeInf.base_experience, true)
+                .AddField(Language.GetString("pokemon_abilities"), string.Join(", ", pokeInf.abilities.Select(ability => ability.ability.name)), true)
+                .AddField(Language.GetString("pokemon_types"), string.Join(", ", pokeInf.types.Select(type => type.type.name)), true)
+                .AddField(Language.GetString("pokemon_evolution_chain"), string.Join(" -> ", evolutions), true);
 
             await ReplyAsync(embed);
         }

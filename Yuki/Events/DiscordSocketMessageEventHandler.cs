@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Data;
 using Yuki.Data.Objects;
+using Yuki.Data.Objects.Database;
 using Yuki.Services;
 using Yuki.Services.Database;
 

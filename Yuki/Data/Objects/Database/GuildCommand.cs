@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 
-namespace Yuki.Data.Objects
+namespace Yuki.Data.Objects.Database
 {
     public struct GuildCommand
     {

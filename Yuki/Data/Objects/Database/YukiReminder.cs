@@ -1,9 +1,6 @@
-﻿using LiteDB;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace Yuki.Data.Objects
+namespace Yuki.Data.Objects.Database
 {
     public struct YukiReminder
     {

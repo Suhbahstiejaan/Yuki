@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Yuki.Data.Objects
+namespace Yuki.Data.Objects.Database
 {
     public struct GuildConfiguration
     {
