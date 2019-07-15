@@ -18,8 +18,6 @@ namespace Yuki.Services
 
         public bool Running = true;
 
-        private IUserMessage message;
-
         private Dictionary<string, List<string>> SettingsRootOrder = new Dictionary<string, List<string>>()
         {
             {
@@ -52,8 +50,7 @@ namespace Yuki.Services
                 {
                     "nsfw_toggle",
                     "nsfw_add_channel",
-                    "nsfw_rem_channel",
-                    "nsfw_add_all"
+                    "nsfw_rem_channel"
                 }
             },
             {
@@ -70,8 +67,7 @@ namespace Yuki.Services
                 {
                     "cache_toggle",
                     "cache_add_channel",
-                    "cache_rem_channel",
-                    "cache_add_all"
+                    "cache_rem_channel"
                 }
             },
             {
@@ -114,9 +110,39 @@ namespace Yuki.Services
 
         private List<ISettingPage> SettingPages = new List<ISettingPage>()
         {
-            /* TODO: add settings here */
+            /* welcome */
             new SettingSetGoodbye(),
-            new SettingSetWelcome()
+            new SettingSetWelcome(),
+            new SettingToggleWelcome(),
+            new SettingToggleGoodbye(),
+
+            /* nsfw */
+            new SettingToggleNsfw(),
+            new SettingAddChannelNsfw(),
+            new SettingRemChannelNsfw(),
+
+            /* log */
+            new SettingToggleLogging(),
+            new SettingAddChannelLogging(),
+
+            /* cache */
+            new SettingToggleCache(),
+            new SettingAddChannelCache(),
+            new SettingRemChannelCache(),
+
+            /* mute */
+            new SettingToggleMute(),
+            new SettingSetMute(),
+
+            new SettingTogglePrefix(),
+            new SettingToggleRoles(),
+            new SettingToggleWarnings(),
+            new SettingAddWarningAction(),
+            new SettingAddPrefix(),
+            new SettingAddRole(),
+
+            new SettingRemWarningAction(),
+            new SettingRemRole(),
         };
 
         private ISettingPage currentPage;
@@ -133,24 +159,18 @@ namespace Yuki.Services
         public async Task Run()
         {
 
-            EmbedBuilder embed = Context.CreateEmbedBuilder(Module.Language.GetString("config_title"), true)
+            EmbedBuilder embed = Context.CreateEmbedBuilder(Module.Language.GetString("config_title"))
                 .WithDescription(string.Join("\n", SettingsRootOrder[SettingStack.Peek()]
                         .Select(str => "[" + (SettingsRootOrder[SettingStack.Peek()].IndexOf(str) + 1) + "] " + Module.Language.GetString(str))))
                 .WithFooter(Module.Language.GetString("config_footer"));
 
-            if (message != null)
-            {
-                await Context.Channel.DeleteMessageAsync(message);
-            }
 
-            message = await embed.SendToAsync(Context.Channel);
+            await embed.SendToAsync(Context.Channel);
 
             InteractivityResult<SocketMessage> result = await Module.Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
 
             if(result.IsSuccess)
             {
-                await Context.Channel.DeleteMessageAsync(result.Value);
-
                 if (int.TryParse(result.Value.Content, out int index))
                 {
                     if(index > 0 && index < SettingsRootOrder[SettingStack.Peek()].Count)
@@ -160,22 +180,17 @@ namespace Yuki.Services
                         if(currentPage == null)
                         {
                             SettingStack.Push(SettingsRootOrder.ElementAt(index).Key);
-                            Console.WriteLine(SettingStack.Peek() + " = " + SettingsRootOrder.ElementAt(index).Key);
-
+                            
                             return;
                         }
 
-                        await message.ModifyAsync(msg =>
-                        {
-                            msg.Embed = (Embed)(currentPage.Display(Module, Context, message).Result.Embeds.FirstOrDefault());
-                        });
+                        currentPage.Display(Module, Context);
 
                         await currentPage.Run(Module, Context);
                     }
                 }
                 if (result.Value.Content.ToLower() == Module.Language.GetString("back").ToLower())
                 {
-                    Console.WriteLine(result.Value.Content.ToLower() + " = " + Module.Language.GetString("back").ToLower());
                     if (SettingStack.Count > 1)
                     {
                         SettingStack.Pop();
@@ -187,10 +202,5 @@ namespace Yuki.Services
                 }
             }
         }
-    }
-
-    public struct Setting
-    {
-        public List<string> Settings;
     }
 }

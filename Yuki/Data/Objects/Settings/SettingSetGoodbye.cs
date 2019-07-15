@@ -11,17 +11,11 @@ namespace Yuki.Data.Objects.Settings
     {
         public string Name { get; set; } = "welcome_set_goodbye";
 
-        public async Task<IUserMessage> Display(YukiModule Module, YukiCommandContext Context, IUserMessage message)
+        public async void Display(YukiModule Module, YukiCommandContext Context)
         {
-            await message.ModifyAsync(emb =>
-            {
-                emb.Embed = new EmbedBuilder()
+            await Module.ReplyAsync(new EmbedBuilder()
                     .WithAuthor(Module.Language.GetString(Name))
-                    .WithDescription("setting_goodbye_set_desc")
-                    .Build();
-            });
-
-            return message;
+                    .WithDescription("setting_goodbye_set_desc"));
         }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)
@@ -31,6 +25,7 @@ namespace Yuki.Data.Objects.Settings
             if (result.IsSuccess)
             {
                 GuildSettings.SetGoodbye(result.Value.Content, Context.Guild.Id);
+                await Module.ReplyAsync(Module.Language.GetString("goodbye_set_to") + ": " + result.Value.Content);
             }
         }
     }

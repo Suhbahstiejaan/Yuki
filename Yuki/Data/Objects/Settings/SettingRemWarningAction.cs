@@ -1,31 +1,34 @@
-﻿using Discord;
+﻿using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 using InteractivityAddon;
-using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Services.Database;
 
 namespace Yuki.Data.Objects.Settings
 {
-    public class SettingSetWelcome : ISettingPage
+    public class SettingRemWarningAction : ISettingPage
     {
-        public string Name { get; set; } = "welcome_set_welcome";
+        public string Name { get; set; } = "warning_rem";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {
             await Module.ReplyAsync(new EmbedBuilder()
                     .WithAuthor(Module.Language.GetString(Name))
-                    .WithDescription("setting_welcome_set_desc"));
+                    .WithDescription("setting_warning_rem_desc"));
         }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)
         {
             InteractivityResult<SocketMessage> result = await Module.Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
-                GuildSettings.SetWelcome(result.Value.Content, Context.Guild.Id);
-                await Module.ReplyAsync(Module.Language.GetString("goodbye_set_to") + ": " + result.Value.Content);
+                if (int.TryParse(result.Value.Content, out int num))
+                {
+                    GuildSettings.RemWarningAction(num, Context.Guild.Id);
+                    await Module.ReplyAsync(Module.Language.GetString("warningaction_removed") + ": " + result.Value.Content);
+                }
             }
         }
     }

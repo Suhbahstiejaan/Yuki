@@ -15,7 +15,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             IReadOnlyList<Command> commands = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules()
                                         .FirstOrDefault(mod => mod.Name.ToLower() == moduleName.ToLower()).Commands;
 
-            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("commands_title"), false).WithFooter(Language.GetString("commands_help"));
+            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("commands_title")).WithFooter(Language.GetString("commands_help"));
 
             foreach(Command command in commands)
             {

@@ -14,7 +14,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         {
             IEnumerable<Module> modules = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules().Where(mod => mod.Parent == null);
 
-            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("modules_title"), false).WithFooter(Language.GetString("modules_help"));
+            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("modules_title")).WithFooter(Language.GetString("modules_help"));
 
             foreach (Module module in modules)
             {

@@ -1,13 +1,5 @@
-﻿using Discord;
-using Discord.WebSocket;
-using InteractivityAddon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Yuki.Commands;
-using Yuki.Extensions;
 
 namespace Yuki.Data.Objects.Settings
 {
@@ -16,6 +8,6 @@ namespace Yuki.Data.Objects.Settings
         string Name { get; set; }
         
         Task Run(YukiModule Module, YukiCommandContext Context);
-        Task<IUserMessage> Display(YukiModule Module, YukiCommandContext Context, IUserMessage message);
+        void Display(YukiModule Module, YukiCommandContext Context);
     }
 }

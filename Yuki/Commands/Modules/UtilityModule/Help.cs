@@ -16,7 +16,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         {
             try
             {
-                EmbedBuilder helpEmbed = Context.CreateEmbedBuilder(Language.GetString("help_title"), false)
+                EmbedBuilder helpEmbed = Context.CreateEmbedBuilder(Language.GetString("help_title"))
                     .WithDescription(Language.GetString("help_info_description")
                         .Replace("%botinvite%", YukiBot.BotInvUrl).Replace("%serverinvite%", YukiBot.ServerUrl)
                         .Replace("%github%", YukiBot.GithubUrl));
@@ -44,7 +44,7 @@ namespace Yuki.Commands.Modules.UtilityModule
 
                         string aliases = string.Join(", ", commands[0].Aliases.Where(alias => alias != commands[0].Name));
 
-                        EmbedBuilder embed = Context.CreateEmbedBuilder(name, false)
+                        EmbedBuilder embed = Context.CreateEmbedBuilder(name)
                             .AddField(Language.GetString("help_aliases"), (string.IsNullOrWhiteSpace(aliases) ? Language.GetString("commands_no_alias") : aliases))
                             .AddField(Language.GetString("help_description"), Language.GetString("command_" + name.ToLower() + "_desc"))
                             .AddField(Language.GetString("help_usage"), Language.GetString("command_" + name.ToLower() + "_usage"));

@@ -24,7 +24,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
                 DateTime deadline = default;
                 bool? showVotes = null;
 
-                EmbedBuilder builder = Context.CreateEmbedBuilder(Language.GetString("poll_create_creating"), true)
+                EmbedBuilder builder = Context.CreateEmbedBuilder(Language.GetString("poll_create_creating"))
                     .AddField(Language.GetString("poll_creating_title_str"), string.IsNullOrEmpty(pollName) ? "none" : pollName)
                     .AddField(Language.GetString("poll_creating_items_str"), Language.GetString("poll_create_items_desc"))
                     .AddField(Language.GetString("poll_creating_deadline_str"), Language.GetString("poll_create_deadline_desc"))
