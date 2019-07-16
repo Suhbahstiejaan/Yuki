@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleRoles : ISettingPage
     {
-        public string Name { get; set; } = "role_toggle_roles";
+        public string Name { get; set; } = "roles_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

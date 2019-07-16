@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
         public async Task BanAsync(IUser user)
         {
             await Context.Guild.AddBanAsync(user);
+            await ReplyAsync(Language.GetString("user_banned"));
         }
     }
 }

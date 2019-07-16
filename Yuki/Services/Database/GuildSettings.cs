@@ -196,6 +196,27 @@ namespace Yuki.Services.Database
                 configs.Update(config);
             }
         }
+
+        public static void SetWelcomeChannel(ulong channelId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    AddOrUpdate(DefaultConfig(guildId));
+
+                    SetWelcomeChannel(channelId, guildId);
+                }
+
+
+                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+                config.WelcomeChannel = channelId;
+
+                configs.Update(config);
+            }
+        }
         #endregion
 
         #region Toggles

@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingTogglePrefix : ISettingPage
     {
-        public string Name { get; set; } = "prefix_toggle_prefix";
+        public string Name { get; set; } = "prefix_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

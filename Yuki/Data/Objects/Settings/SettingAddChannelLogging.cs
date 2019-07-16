@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingAddChannelLogging : ISettingPage
     {
-        public string Name { get; set; } = "log_add_channel";
+        public string Name { get; set; } = "log_set";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

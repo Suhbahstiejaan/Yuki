@@ -20,8 +20,8 @@ namespace Yuki.Commands.Modules.ImageModule
                     Name = string.Join(", ", image.tags.Take(5))
                 })
                 .WithImageUrl(image.url)
-                .WithDescription($"[Source]({image.source}) | [Page]({image.page})")
-                .WithFooter($"{image.type.ToString()} | {(image.isExplicit ? "Explicit" : "Safe")}");
+                .WithDescription($"[{Language.GetString("source")}]({image.source}) | [{Language.GetString("page")}]({image.page})")
+                .WithFooter($"{image.type.ToString()} | {(image.isExplicit ? Language.GetString("_explicit") : Language.GetString("safe"))}");
 
 
             await ReplyAsync(embed);

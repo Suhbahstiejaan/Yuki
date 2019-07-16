@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleWarnings : ISettingPage
     {
-        public string Name { get; set; } = "warning_toggle_warnings";
+        public string Name { get; set; } = "warnings_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

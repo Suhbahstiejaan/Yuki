@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleCache : ISettingPage
     {
-        public string Name { get; set; } = "log_toggle_cache";
+        public string Name { get; set; } = "cache_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

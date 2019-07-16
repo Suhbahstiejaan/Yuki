@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleMute : ISettingPage
     {
-        public string Name { get; set; } = "mute_toggle_mute";
+        public string Name { get; set; } = "mute_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

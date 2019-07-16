@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingRemWarningAction : ISettingPage
     {
-        public string Name { get; set; } = "warning_rem";
+        public string Name { get; set; } = "warnings_remove";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

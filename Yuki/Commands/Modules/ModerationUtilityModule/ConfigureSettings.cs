@@ -19,7 +19,6 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
             {
                 try
                 {
-                    Console.WriteLine("h");
                     await Task.Run(settings.Run);
                 }
                 catch(Exception e)

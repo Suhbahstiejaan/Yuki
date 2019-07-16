@@ -31,7 +31,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                 "https://b.catgirlsare.sexy/lrTe.gif"
             };
 
-            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("goodnight_title"))
+            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("goodnight_title").Replace("%user%", Context.User.Username))
                 .WithImageUrl(gn[new YukiRandom().Next(gn.Length)]);
 
             await ReplyAsync(embed);

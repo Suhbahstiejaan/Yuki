@@ -10,7 +10,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingAddWarningAction : ISettingPage
     {
-        public string Name { get; set; } = "warning_add";
+        public string Name { get; set; } = "warnings_add";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

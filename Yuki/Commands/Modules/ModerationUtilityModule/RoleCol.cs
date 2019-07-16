@@ -35,12 +35,6 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
                 return;
             }
 
-            if (!(await Context.Guild.GetUserAsync(Context.Client.CurrentUser.Id)).UserHasPermission(GuildPermission.ManageRoles))
-            {
-                await ReplyAsync(Language.GetString("permission_require_manage_roles"));
-                return;
-            }
-
             await roleToChange.ModifyAsync(role => role.Color = newCol);
 
             await ReplyAsync(Context.CreateColoredEmbed(newCol, new EmbedAuthorBuilder()

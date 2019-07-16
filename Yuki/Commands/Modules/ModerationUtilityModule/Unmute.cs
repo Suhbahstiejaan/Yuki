@@ -18,6 +18,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
             if (config.EnableMute)
             {
                 await user.RemoveRoleAsync(Context.Guild.GetRole(config.MuteRole));
+                await ReplyAsync(Language.GetString("user_unmuted"));
             }
             else
             {

@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingSetMute : ISettingPage
     {
-        public string Name { get; set; } = "mute_set_mute";
+        public string Name { get; set; } = "mute_set_role";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {
@@ -27,7 +27,7 @@ namespace Yuki.Data.Objects.Settings
                 if (MentionUtils.TryParseRole(result.Value.Content, out ulong roleId))
                 {
                     GuildSettings.SetMuteRole(roleId, Context.Guild.Id);
-                    await Module.ReplyAsync(Module.Language.GetString("log_added") + ": " + Context.Guild.GetRole(roleId).Name);
+                    await Module.ReplyAsync(Module.Language.GetString("mute_set") + ": " + Context.Guild.GetRole(roleId).Name);
                 }
             }
         }

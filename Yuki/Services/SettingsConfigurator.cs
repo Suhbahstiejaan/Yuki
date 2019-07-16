@@ -24,29 +24,30 @@ namespace Yuki.Services
                 "root",
                 new List<string>()
                 {
-                    "welcome",
-                    "nsfw",
-                    "log",
-                    "cache",
-                    "mute",
-                    "prefix",
-                    "roles",
-                    "warnings",
+                    "setting_welcome",
+                    "setting_nsfw",
+                    "setting_log",
+                    "setting_cache",
+                    "setting_mute",
+                    "setting_prefix",
+                    "setting_roles",
+                    "setting_warnings",
                     "set_language"
                 }
             },
             {
-                "welcome",
+                "setting_welcome",
                 new List<string>()
                 {
                     "welcome_set_welcome",
                     "welcome_set_goodbye",
+                    "welcome_set_channel",
                     "welcome_toggle_welcome",
                     "welcome_toggle_goodbye",
                 }
             },
             {
-                "nsfw",
+                "setting_nsfw",
                 new List<string>()
                 {
                     "nsfw_toggle",
@@ -55,7 +56,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "log",
+                "setting_log",
                 new List<string>()
                 {
                     "log_toggle",
@@ -63,7 +64,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "cache",
+                "setting_cache",
                 new List<string>()
                 {
                     "cache_toggle",
@@ -72,7 +73,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "mute",
+                "setting_mute",
                 new List<string>()
                 {
                     "mute_toggle",
@@ -88,7 +89,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "roles",
+                "setting_roles",
                 new List<string>()
                 {
                     "roles_toggle",
@@ -99,7 +100,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "warnings",
+                "setting_warnings",
                 new List<string>()
                 {
                     "warnings_toggle",
@@ -108,7 +109,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "roles_moderator",
+                "setting_roles_moderator",
                 new List<string>()
                 {
                     "roles_moderator_add",
@@ -116,7 +117,7 @@ namespace Yuki.Services
                 }
             },
             {
-                "roles_administrator",
+                "setting_roles_administrator",
                 new List<string>()
                 {
                     "roles_administrator_add",
@@ -132,6 +133,7 @@ namespace Yuki.Services
             /* welcome */
             new SettingSetGoodbye(),
             new SettingSetWelcome(),
+            new SettingSetWelcomeChannel(),
             new SettingToggleWelcome(),
             new SettingToggleGoodbye(),
 

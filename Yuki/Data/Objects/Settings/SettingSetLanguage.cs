@@ -1,8 +1,5 @@
 ﻿using Discord.WebSocket;
 using InteractivityAddon;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Services;

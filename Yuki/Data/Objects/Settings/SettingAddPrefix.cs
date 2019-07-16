@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingAddPrefix : ISettingPage
     {
-        public string Name { get; set; } = "prefix_add";
+        public string Name { get; set; } = "prefix_set";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

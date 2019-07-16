@@ -23,7 +23,7 @@ namespace Yuki.Commands.Modules.UtilityModule
 
                 if(commands.Count > 0)
                 {
-                    await ReplyAsync(Context.CreateEmbedBuilder(Language.GetString("commandlist_title"))
+                    await ReplyAsync(Context.CreateEmbedBuilder(Language.GetString("commands_title"))
                             .WithDescription(string.Join("\n", commands.Select(c => $"{commands.IndexOf(c) + 1}. {c.Name}"))));
                 }
                 else

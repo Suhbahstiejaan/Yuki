@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleLogging : ISettingPage
     {
-        public string Name { get; set; } = "welcome_toggle_logging";
+        public string Name { get; set; } = "log_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

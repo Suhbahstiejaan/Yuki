@@ -16,7 +16,7 @@ namespace Yuki.Commands.Modules.FunModule
 
             if (result.IsSuccess)
             {
-                await ReplyAsync(Context.CreateEmbed(result.Value.Content));
+                await ReplyAsync(result.Value.Content);
             }
         }
     }

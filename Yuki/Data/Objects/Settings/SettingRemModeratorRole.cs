@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingRemModeratorRole : ISettingPage
     {
-        public string Name { get; set; } = "roles_moderator_rem";
+        public string Name { get; set; } = "roles_moderator_remove";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

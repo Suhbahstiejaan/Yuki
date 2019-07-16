@@ -7,7 +7,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingToggleNsfw : ISettingPage
     {
-        public string Name { get; set; } = "nsfw_toggle_nsfw";
+        public string Name { get; set; } = "nsfw_toggle";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {

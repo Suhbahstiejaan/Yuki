@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
         public async Task KickAsync(IUser user)
         {
             await (await Context.Guild.GetUserAsync(user.Id)).KickAsync();
+            await ReplyAsync(Language.GetString("user_kicked"));
         }
     }
 }

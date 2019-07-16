@@ -9,7 +9,7 @@ namespace Yuki.Data.Objects.Settings
 {
     public class SettingAddRole : ISettingPage
     {
-        public string Name { get; set; } = "role_add";
+        public string Name { get; set; } = "role_set";
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {
