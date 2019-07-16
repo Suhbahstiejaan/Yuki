@@ -104,7 +104,8 @@ namespace Yuki.Events
                 Id = current.Id,
                 AuthorId = current.Author.Id,
                 ChannelId = current.Channel.Id,
-                Content = current.Content
+                SendDate = DateTime.UtcNow,
+                Content = (current as SocketUserMessage).Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
             });
 
             return Task.CompletedTask;
@@ -112,13 +113,7 @@ namespace Yuki.Events
 
         public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
-            Messages.Remove(new YukiMessage()
-            {
-                Id = message.Value.Id,
-                AuthorId = message.Value.Author.Id,
-                ChannelId = message.Value.Channel.Id,
-                Content = message.Value.Content
-            });
+            Messages.Remove(message.Value.Id);
 
             Language lang = GetLanguage(channel);
 
@@ -254,7 +249,9 @@ namespace Yuki.Events
                     Id = message.Id,
                     AuthorId = message.Author.Id,
                     ChannelId = message.Channel.Id,
-                    Content = message.Content
+                    SendDate = DateTime.UtcNow,
+                    Content = (socketMessage as SocketUserMessage)
+                            .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
                 });
 
                 return;

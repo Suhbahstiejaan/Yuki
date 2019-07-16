@@ -31,7 +31,8 @@ namespace Yuki.Services
                     "mute",
                     "prefix",
                     "roles",
-                    "warnings"
+                    "warnings",
+                    "set_language"
                 }
             },
             {
@@ -173,6 +174,8 @@ namespace Yuki.Services
             /* roles_administrator */
             new SettingAddAdministratorRole(),
             new SettingRemAdministratorRole(),
+
+            new SettingSetLanguage(),
         };
 
         private ISettingPage currentPage;

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using Yuki.Commands;
 using Yuki.Data.Objects;
+using Yuki.Services.Database;
 
 namespace Yuki.Services
 {
     public static class LocalizationService
     {
-        private static Dictionary<string, Language> languages = new Dictionary<string, Language>();
+        public static Dictionary<string, Language> Languages { get; private set; } = new Dictionary<string, Language>();
 
         public static void LoadLanguages()
         {
@@ -18,7 +19,7 @@ namespace Yuki.Services
                 Directory.CreateDirectory(FileDirectories.LangRoot);
             }
 
-            if(languages.Count < 1)
+            if(Languages.Count < 1)
             {
                 string[] langFiles = Directory.GetFiles(FileDirectories.LangRoot);
 
@@ -26,13 +27,13 @@ namespace Yuki.Services
                 {
                     Language lang = Toml.ReadFile<Language>(langFiles[i]);
 
-                    languages.Add(lang.Code, lang);
+                    Languages.Add(lang.Code, lang);
                 }
             }
 
-            if(languages.Count < 1)
+            if(Languages.Count < 1)
             {
-                languages.Add("none", new Language());
+                Languages.Add("none", new Language());
             }
         }
 
@@ -40,22 +41,22 @@ namespace Yuki.Services
 
         public static void Reload()
         {
-            if(languages.Count > 0)
+            if(Languages.Count > 0)
             {
-                languages.Clear();
+                Languages.Clear();
                 LoadLanguages();
             }
         }
 
         public static Language GetLanguage(string code)
         {
-            if(languages.ContainsKey(code))
+            if(Languages.ContainsKey(code))
             {
-                return languages[code];
+                return Languages[code];
             }
             else
             {
-                return languages["none"];
+                return Languages["none"];
             }
         }
 
@@ -63,10 +64,10 @@ namespace Yuki.Services
         {
             string langCode = "en_US";
 
-            //if(context.Channel is IGuildChannel)
-            //{
-                
-            //}
+            if(context.Channel is IGuildChannel)
+            {
+                langCode = GuildSettings.GetGuild(context.Guild.Id).LangCode;
+            }
 
             if(string.IsNullOrWhiteSpace(langCode))
             {

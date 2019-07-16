@@ -8,6 +8,8 @@ namespace Yuki.Services.Database
 {
     public static class Messages
     {
+        public static readonly int MaxMessages = 100;
+
         public static void InsertOrUpdate(YukiMessage message)
         {
             if(UserSettings.CanGetMsgs(message.AuthorId))
@@ -24,22 +26,27 @@ namespace Yuki.Services.Database
                     }
                     else
                     {
+                        List<YukiMessage> msgs = messages.FindAll().Where(msg => msg.AuthorId == message.AuthorId).OrderBy(msg => msg.SendDate).ToList();
+
+                        if (msgs.Count > MaxMessages)
+                        {
+                            foreach(YukiMessage m in msgs.Take(msgs.Count - MaxMessages))
+                            {
+                                Remove(m);
+                            }
+                        }
                         messages.Insert(message);
                     }
                 }
             }
         }
 
-        public static bool Remove(YukiMessage message)
+        public static bool Remove(ulong messageId)
         {
-            if (UserSettings.CanGetMsgs(message.AuthorId))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.CacheDB))
             {
-                using (LiteDatabase db = new LiteDatabase(FileDirectories.CacheDB))
-                {
-                    return db.GetCollection<YukiMessage>("messages").Delete(message.Id);
-                }
+                return db.GetCollection<YukiMessage>("messages").Delete(messageId);
             }
-            return false;
         }
 
         public static List<YukiMessage> GetFrom(ulong userId)

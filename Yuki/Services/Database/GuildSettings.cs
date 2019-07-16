@@ -175,6 +175,27 @@ namespace Yuki.Services.Database
                 configs.Update(config);
             }
         }
+
+        public static void SetLanguage(string langCode, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    AddOrUpdate(DefaultConfig(guildId));
+
+                    SetLanguage(langCode, guildId);
+                }
+
+
+                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+                config.LangCode = langCode;
+
+                configs.Update(config);
+            }
+        }
         #endregion
 
         #region Toggles

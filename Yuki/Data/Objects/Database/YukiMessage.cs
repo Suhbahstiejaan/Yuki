@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System;
 
 namespace Yuki.Data.Objects.Database
 {
@@ -6,6 +7,8 @@ namespace Yuki.Data.Objects.Database
     {
         [BsonId]
         public ulong Id { get; set; }
+
+        public DateTime SendDate { get; set; }
 
         public ulong AuthorId { get; set; }
         public ulong ChannelId { get; set; }
