@@ -419,6 +419,42 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static void AddWarning(ulong userId, string reason, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
+
+                    int index = config.WarnedUsers.IndexOf(user);
+
+                    if (user.Equals(default))
+                    {
+                        user = new GuildWarnedUser()
+                        {
+                            Id = userId,
+                            Warning = 0,
+                            WarningReasons = new List<string>()
+                        };
+                        config.WarnedUsers.Add(user);
+                        index = config.WarnedUsers.IndexOf(user);
+                    }
+
+                    user.Warning++;
+                    user.WarningReasons.Add(reason);
+
+                    config.WarnedUsers[index] = user;
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Removes
@@ -499,6 +535,63 @@ namespace Yuki.Services.Database
 
                     configs.Update(config);
                 }
+            }
+        }
+
+        public static void RemWarning(ulong userId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
+
+                    int index = config.WarnedUsers.IndexOf(user);
+
+                    if (!user.Equals(default))
+                    {
+                        if(user.Warning > 0)
+                        {
+                            user.Warning--;
+                            user.WarningReasons.Remove(user.WarningReasons[user.Warning++]);
+
+                            config.WarnedUsers[index] = user;
+
+                            configs.Update(config);
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Gets
+
+        public static GuildWarnedUser GetWarnedUser(ulong userId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
+
+                    int index = config.WarnedUsers.IndexOf(user);
+
+                    if (!user.Equals(default))
+                    {
+                        return user;
+                    }
+                }
+
+                return default;
             }
         }
 
