@@ -15,8 +15,6 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
 
             if (config.EnableWarnings)
             {
-                await user.AddRoleAsync(Context.Guild.GetRole(config.MuteRole));
-
                 GuildWarnedUser wUser = GuildSettings.GetWarnedUser(user.Id, Context.Guild.Id);
 
                 string warn = "";
