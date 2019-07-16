@@ -12,7 +12,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Group("clear")]
-        [RequireUserPermission(GuildPermission.ManageMessages)]
+        [RequireModerator]
         public class ClearCommand : YukiModule
         {
             [Command]

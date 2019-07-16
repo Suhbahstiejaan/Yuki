@@ -1,9 +1,8 @@
 ﻿using Discord;
 using Qmmands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Yuki.Commands.Preconditions;
 using Yuki.Extensions;
 
 namespace Yuki.Commands.Modules.ModerationUtilityModule
@@ -11,12 +10,13 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("slowmode")]
+        [RequireModerator]
         public async Task SlowmodeAsync(string timeString = null)
         {
             if (!(Context.Channel is IDMChannel))
             {
                 int seconds = 0;
-
+                
                 DateTime time = timeString.ToDateTime();
 
                 if(time.TimeOfDay.TotalHours > 6)

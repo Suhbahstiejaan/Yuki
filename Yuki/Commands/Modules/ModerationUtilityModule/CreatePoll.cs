@@ -15,7 +15,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("createpoll")]
-        [RequireUserPermission(GuildPermission.ManageMessages)]
+        [RequireModerator]
         public async Task CreatePollAsync(string pollName = "")
         {
             try

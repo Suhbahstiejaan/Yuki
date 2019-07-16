@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Qmmands;
 using System.Threading.Tasks;
+using Yuki.Commands.Preconditions;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
@@ -9,6 +10,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("warnings")]
+        [RequireModerator]
         public async Task GetWarningsAsync(IGuildUser user)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

@@ -2,6 +2,7 @@
 using Qmmands;
 using System;
 using System.Threading.Tasks;
+using Yuki.Commands.Preconditions;
 using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
 using Yuki.Services.Database;
@@ -11,6 +12,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("mute")]
+        [RequireModerator]
         public async Task MuteUserAsync(IGuildUser user, string time, [Remainder] string reason = null)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

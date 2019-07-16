@@ -15,7 +15,7 @@
     <PackageReference Include="Discord.Net.WebSocket" Version="2.1.1" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Nett" Version="0.12.0" />
+    <PackageReference Include="Nett" Version="0.13.0" />
     <PackageReference Include="Qmmands" Version="2.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>

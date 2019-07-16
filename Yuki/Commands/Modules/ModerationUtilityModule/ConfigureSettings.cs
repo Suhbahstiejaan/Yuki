@@ -10,7 +10,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("config", "settings")]
-        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireAdministrator]
         public async Task ConfigureGuildSettingsAsync()
         {
             SettingsConfigurator settings = new SettingsConfigurator(this, Context);

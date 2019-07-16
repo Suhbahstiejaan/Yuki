@@ -34,6 +34,7 @@ namespace Yuki.Data.Objects.Database
         
         public List<GuildSetting> Settings { get; set; }
         public List<GuildCommand> Commands { get; set; }
+        public List<GuildMutedUser> MutedUsers { get; set; }
         public List<GuildWarnedUser> WarnedUsers { get; set; }
         public List<GuildWarningAction> WarningActions { get; set; }
 
@@ -42,5 +43,7 @@ namespace Yuki.Data.Objects.Database
         public List<ulong> AutoBanUsers { get; set; }    /* Users to ban when they join */
         public List<ulong> NsfwChannels { get; set; }
         public List<ulong> AssignableRoles { get; set; }
+        public List<ulong> ModeratorRoles { get; set; }
+        public List<ulong> AdministratorRoles { get; set; }
     }
 }

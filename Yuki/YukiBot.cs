@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Qmmands;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -135,8 +136,10 @@ namespace Yuki
             {
                try
                 {
-                    List<YukiReminder> reminders = UserSettings.GetReminders(DateTime.UtcNow);
+                    DateTime now = DateTime.UtcNow;
 
+                    List<YukiReminder> reminders = UserSettings.GetReminders(now);
+                    List<GuildConfiguration> configs = GuildSettings.GetGuilds();
 
                     foreach (YukiReminder reminder in reminders.ToArray())
                     {
@@ -144,8 +147,18 @@ namespace Yuki
 
                         UserSettings.RemoveReminder(reminder);
                     }
+
+                    foreach (GuildConfiguration config in configs)
+                    {
+                        foreach (GuildMutedUser muted in config.MutedUsers.Where(m => m.Time <= now))
+                        {
+                            await DiscordClient.GetGuild(config.Id).GetUser(muted.Id).RemoveRoleAsync(DiscordClient.GetGuild(config.Id).GetRole(config.MuteRole));
+                            
+                            GuildSettings.RemMute(muted, config.Id);
+                        }
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                 }

@@ -10,7 +10,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("rolecol")]
-        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [RequireModerator]
         public async Task SetRoleColorAsync([Remainder] string args)
         {
             string lastString = args.Split(' ').LastOrDefault();

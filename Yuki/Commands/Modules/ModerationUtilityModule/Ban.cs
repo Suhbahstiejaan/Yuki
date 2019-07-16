@@ -8,7 +8,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     public partial class ModerationUtilityModule
     {
         [Command("ban")]
-        [RequireUserPermission(GuildPermission.BanMembers)]
+        [RequireAdministrator]
         public async Task BanAsync(IUser user)
         {
             await Context.Guild.AddBanAsync(user);

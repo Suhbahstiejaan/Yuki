@@ -92,7 +92,9 @@ namespace Yuki.Services
                 {
                     "roles_toggle",
                     "roles_set",
-                    "roles_remove"
+                    "roles_remove",
+                    "roles_moderator",
+                    "roles_administrator"
                 }
             },
             {
@@ -103,7 +105,23 @@ namespace Yuki.Services
                     "warnings_add",
                     "warnings_remove"
                 }
-            }
+            },
+            {
+                "roles_moderator",
+                new List<string>()
+                {
+                    "roles_moderator_add",
+                    "roles_moderator_remove",
+                }
+            },
+            {
+                "roles_administrator",
+                new List<string>()
+                {
+                    "roles_administrator_add",
+                    "roles_administrator_remove",
+                }
+            },
         };
 
         private Stack<string> SettingStack = new Stack<string>();
@@ -134,15 +152,27 @@ namespace Yuki.Services
             new SettingToggleMute(),
             new SettingSetMute(),
 
+            /* prefix */
             new SettingTogglePrefix(),
+            new SettingAddPrefix(),
+            
+            /* roles */
             new SettingToggleRoles(),
+            new SettingAddRole(),
+            new SettingRemRole(),
+
+            /* warnings */
             new SettingToggleWarnings(),
             new SettingAddWarningAction(),
-            new SettingAddPrefix(),
-            new SettingAddRole(),
-
             new SettingRemWarningAction(),
-            new SettingRemRole(),
+
+            /* roles_moderator */
+            new SettingAddModeratorRole(),
+            new SettingRemModeratorRole(),
+
+            /* roles_administrator */
+            new SettingAddAdministratorRole(),
+            new SettingRemAdministratorRole(),
         };
 
         private ISettingPage currentPage;
@@ -198,6 +228,7 @@ namespace Yuki.Services
                 }
                 else if (result.Value.Content.ToLower() == Module.Language.GetString("exit").ToLower())
                 {
+                    await Context.Channel.SendMessageAsync(Module.Language.GetString("settings_exit"));
                     Running = false;
                 }
             }

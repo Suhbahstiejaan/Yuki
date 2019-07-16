@@ -27,15 +27,24 @@ namespace Yuki.Services.Database
                 EnableNsfw = false,
                 EnableCache = false,
                 EnableLogging = false,
+                EnableMute = false,
+                EnablePrefix = false,
+                EnableRoles = false,
+                EnableWarnings = false,
 
                 AssignableRoles = new List<ulong>(),
                 AutoBanUsers = new List<ulong>(),
                 CacheIgnoredChannels = new List<ulong>(),
                 LevelIgnoredChannels = new List<ulong>(),
                 NsfwChannels = new List<ulong>(),
+                ModeratorRoles = new List<ulong>(),
+                AdministratorRoles = new List<ulong>(),
+
                 Commands = new List<GuildCommand>(),
                 Settings = new List<GuildSetting>(),
                 WarnedUsers = new List<GuildWarnedUser>(),
+                WarningActions = new List<GuildWarningAction>(),
+                MutedUsers = new List<GuildMutedUser>(),
 
                 WelcomeChannel = 0,
                 LogChannel = 0,
@@ -60,6 +69,16 @@ namespace Yuki.Services.Database
                 {
                     return configs.FindAll().FirstOrDefault(conf => conf.Id == id);
                 }
+            }
+        }
+
+        public static List<GuildConfiguration> GetGuilds()
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                return configs.FindAll().ToList();
             }
         }
 
@@ -455,6 +474,66 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static void AddRoleModerator(ulong roleId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (!config.ModeratorRoles.Contains(roleId))
+                    {
+                        config.ModeratorRoles.Add(roleId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void AddRoleAdministrator(ulong roleId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (!config.AdministratorRoles.Contains(roleId))
+                    {
+                        config.AdministratorRoles.Add(roleId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void AddMute(GuildMutedUser user, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (!config.MutedUsers.Any(u => u.Id == user.Id))
+                    {
+                        config.MutedUsers.Add(user);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Removes
@@ -564,6 +643,66 @@ namespace Yuki.Services.Database
                             configs.Update(config);
                         }
                     }
+                }
+            }
+        }
+
+        public static void RemRoleModerator(ulong roleId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.ModeratorRoles.Contains(roleId))
+                    {
+                        config.ModeratorRoles.Remove(roleId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void RemRoleAdministrator(ulong roleId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.AdministratorRoles.Contains(roleId))
+                    {
+                        config.AdministratorRoles.Remove(roleId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void RemMute(GuildMutedUser user, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(path))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.MutedUsers.Any(u => u.Id == user.Id))
+                    {
+                        config.MutedUsers.Remove(user);
+                    }
+
+                    configs.Update(config);
                 }
             }
         }
