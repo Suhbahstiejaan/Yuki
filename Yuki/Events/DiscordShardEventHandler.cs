@@ -43,7 +43,7 @@ namespace Yuki.Events
 
         private static void SetClientEvents(DiscordSocketClient client)
         {
-            /*client.JoinedGuild += DiscordSocketEventHandler.JoinedGuild;
+            client.JoinedGuild += DiscordSocketEventHandler.JoinedGuild;
             client.LeftGuild += DiscordSocketEventHandler.LeftGuild;
 
             client.ChannelCreated += DiscordSocketEventHandler.ChannelCreated;
@@ -52,10 +52,10 @@ namespace Yuki.Events
 
             client.GuildMemberUpdated += DiscordSocketEventHandler.GuildMemberUpdated;
 
-            client.GuildUpdated += DiscordSocketEventHandler.GuildUpdated;*/
+            client.GuildUpdated += DiscordSocketEventHandler.GuildUpdated;
 
-            client.MessageReceived += DiscordSocketMessageEventHandler.MessageReceived;
-            /*client.MessageUpdated += DiscordSocketEventHandler.MessageUpdated;
+            client.MessageReceived += DiscordSocketEventHandler.MessageReceived;
+            client.MessageUpdated += DiscordSocketEventHandler.MessageUpdated;
             client.MessageDeleted += DiscordSocketEventHandler.MessageDeleted;
 
             client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
@@ -71,7 +71,7 @@ namespace Yuki.Events
             client.UserLeft += DiscordSocketEventHandler.UserLeft;
             client.UserUnbanned += DiscordSocketEventHandler.UserUnbanned;
 
-            client.VoiceServerUpdated += DiscordSocketEventHandler.VoiceServerUpdated;*/
+            client.VoiceServerUpdated += DiscordSocketEventHandler.VoiceServerUpdated;
         }
     }
 }
