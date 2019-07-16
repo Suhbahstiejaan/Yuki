@@ -2,6 +2,7 @@
 using Qmmands;
 using System.Linq;
 using System.Threading.Tasks;
+using Yuki.Commands.Preconditions;
 using Yuki.Extensions;
 
 namespace Yuki.Commands.Modules.UtilityModule
@@ -9,16 +10,12 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("roleinfo", "rinfo")]
+        [RequireGuild]
         public async Task GetRoleInfoAsync([Remainder] string roleName)
         {
-            if(Context.Channel is IDMChannel)
-            {
-                return;
-            }
-
             IRole role = Context.Guild.Roles.Where(r => r.Name.ToLower() == roleName.ToLower()).FirstOrDefault();
-            
-            if(!role.Equals(default))
+
+            if (!role.Equals(default))
             {
                 EmbedBuilder embed = new EmbedBuilder()
                     .WithColor(role.Color)
