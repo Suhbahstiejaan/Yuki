@@ -127,6 +127,16 @@ namespace Yuki
             LoggingService.Write(LogLevel.Debug, $"Found {CommandService.GetAllCommands().Count} command(s)");
             CommandService.AddTypeParser(new UserTypeParser<IUser>());
 
+            foreach(Command c in CommandService.GetAllCommands())
+            {
+                string cmd = $"command_{c.Name.ToLower().Replace(' ', '_')}_desc";
+
+                if(LocalizationService.Languages["en_US"].GetString(cmd) == cmd)
+                {
+                    LoggingService.Write(LogLevel.Warning, $"No translation found for {cmd}");
+                }
+            }
+
             /* Reminder */
             System.Timers.Timer t = new System.Timers.Timer();
 

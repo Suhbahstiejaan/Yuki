@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Yuki.ColoredConsole;
 
 namespace Yuki.Services
 {
@@ -51,7 +52,32 @@ namespace Yuki.Services
                 return;
             }
 
+            ColoredConsoleColor color = ConsoleColors.Gray;
+
+            switch(logLevel)
+            {
+                case LogLevel.Debug:
+                    color = ConsoleColors.Cyan;
+                    break;
+                case LogLevel.DiscordNet:
+                    color = ConsoleColors.Blurple;
+                    break;
+                case LogLevel.Error:
+                    color = ConsoleColors.Red;
+                    break;
+                case LogLevel.Info:
+                    color = ConsoleColors.Gray;
+                    break;
+                case LogLevel.Status:
+                    color = ConsoleColors.Green;
+                    break;
+                case LogLevel.Warning:
+                    color = ConsoleColors.Orange;
+                    break;
+            }
+
             string line = $"[{DateTime.Now.ToShortTimeString()}] [{logLevel.ToString()}] {o.ToString()}";
+            string lineColored = $"[{DateTime.Now.ToShortTimeString()}] {color.ToString()}[{logLevel.ToString()}] {o.ToString()}";
 
             using (FileStream file = new FileStream(latestLogFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -62,7 +88,8 @@ namespace Yuki.Services
                 }
             }
 
-            Console.WriteLine(line);
+
+            Console.WriteLine(lineColored + ConsoleColors.Gray);
 
             if(logLevel == LogLevel.Error)
             {
@@ -70,7 +97,7 @@ namespace Yuki.Services
 
                 if(Version.ReleaseType != ReleaseType.Development)
                 {
-                    //Do something
+                    throw new Exception(o.ToString());
                 }
             }
         }

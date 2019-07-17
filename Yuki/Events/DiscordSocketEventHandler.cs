@@ -120,8 +120,12 @@ namespace Yuki.Events
             EmbedBuilder embed = new EmbedBuilder()
                 .WithColor(Color.Red)
                 .WithAuthor(lang.GetString("event_message_deleted"))
-                .AddField(lang.GetString("message_author"), $"{message.Value.Author.Username}#{message.Value.Author.Discriminator} ({message.Value.Author.Id})")
-                .AddField(lang.GetString("event_message_text"), message.Value.Content ?? lang.GetString("none"));
+                .AddField(lang.GetString("message_author"), $"{message.Value.Author.Username}#{message.Value.Author.Discriminator} ({message.Value.Author.Id})");
+
+            if (message.Value.Content != null)
+            { 
+                embed.AddField(lang.GetString("event_message_text"), message.Value.Content ?? lang.GetString("none"));
+            }
 
             if(message.Value.Attachments.Count > 0)
             {

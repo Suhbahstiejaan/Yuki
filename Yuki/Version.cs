@@ -7,13 +7,12 @@ namespace Yuki
         public static int Major  { get; } = 2;
         public static int Minor  { get; } = 0;
         public static int Hotfix { get; } = 0;
-        public static int Patch  { get; } = 0;
-
+        
         public static ReleaseType ReleaseType { get; } = ReleaseType.Development;
 
         public static string DiscordNetVersion { get; } = DiscordConfig.Version + $" (API v{DiscordConfig.APIVersion}, Voice API v{DiscordConfig.VoiceAPIVersion})";
 
-        public static string Get() => $"{Major}.{Minor}.{Hotfix}.{Patch}";
+        public static string Get() => $"{Major}.{Minor}.{Hotfix}";
 
         public static string GetFull() => Get() + $"-{ReleaseType}";
 

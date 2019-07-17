@@ -193,6 +193,68 @@ namespace Yuki.Data.Objects
         public string command_remindme_desc { get; set; }
         public string command_remindme_usage { get; set; }
 
+        public string command_commands_desc { get; set; }
+        public string command_commands_usage { get; set; }
+
+        public string command_commandlist_desc { get; set; }
+        public string command_commandlist_usage { get; set; }
+
+        public string command_donate_desc { get; set; }
+        public string command_donate_usage { get; set; }
+
+        public string command_goodnight_desc { get; set; }
+        public string command_goodnight_usage { get; set; }
+
+        public string command_langs_desc { get; set; }
+        public string command_langs_usage { get; set; }
+
+        public string command_role_desc { get; set; }
+        public string command_role_usage { get; set; }
+
+        public string command_remwarn_desc { get; set; }
+        public string command_remwarn_usage { get; set; }
+
+        public string command_slowmode_desc { get; set; }
+        public string command_slowmode_usage { get; set; }
+
+        public string command_unmute_desc { get; set; }
+        public string command_unmute_usage { get; set; }
+
+        public string command_warn_desc { get; set; }
+        public string command_warn_usage { get; set; }
+
+        public string command_mute_desc { get; set; }
+        public string command_mute_usage { get; set; }
+
+        public string command_warnings_desc { get; set; }
+        public string command_warnings_usage { get; set; }
+
+        public string command_roles_desc { get; set; }
+        public string command_roles_usage { get; set; }
+
+        public string command_clear_desc { get; set; }
+        public string command_clear_usage { get; set; }
+
+        public string command_clear_from_desc { get; set; }
+        public string command_clear_from_usage { get; set; }
+
+        public string command_clear_with_desc { get; set; }
+        public string command_clear_with_usage { get; set; }
+
+        public string command_nyan_desc { get; set; }
+        public string command_nyan_usage { get; set; }
+
+        public string command_emojify_desc { get; set; }
+        public string command_emojify_usage { get; set; }
+
+        public string command_pokeinfo_desc { get; set; }
+        public string command_pokeinfo_usage { get; set; }
+
+        public string command_reverse_desc { get; set; }
+        public string command_reverse_usage { get; set; }
+
+        public string command_scramblr_desc { get; set; }
+        public string command_scramblr_usage { get; set; }
 
 
         /* Strings */

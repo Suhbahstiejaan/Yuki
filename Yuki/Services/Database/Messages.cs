@@ -32,7 +32,7 @@ namespace Yuki.Services.Database
                         {
                             foreach(YukiMessage m in msgs.Take(msgs.Count - MaxMessages))
                             {
-                                Remove(m);
+                                Remove(m.Id);
                             }
                         }
                         messages.Insert(message);

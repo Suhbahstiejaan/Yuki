@@ -153,6 +153,69 @@ command_gelbooru_usage = "y!gelbooru\ny!gelbooru terms"
 command_danbooru_desc = "Search danbooru for an SFW image"
 command_danbooru_usage = "y!danbooru\ny!danbooru terms"
 
+command_commands_desc = "View commands in a module"
+command_commands_usage = "y!commands utility"
+
+command_commandlist_desc = "View a list of custom commands for a server"
+command_commandlist_usage = "y!commandlist"
+
+command_donate_desc = "Get links to donate to the developer"
+command_donate_usage = "y!donate"
+
+command_goodnight_desc = "Feeling sleepy?"
+command_goodnight_usage = "y!goodnight"
+
+command_langs_desc = "View a list of available languages"
+command_langs_usage = "y!langs"
+
+command_remindme_desc = "Create a reminder!"
+command_remindme_usage = "y!remindme Bake cookies in 30m"
+
+command_role_desc = "Assign a custom role set in a server"
+command_role_usage = "y!role WaterBuffalo"
+
+command_remwarn_desc = "Remove a warning from someone"
+command_remwarn_usage = "y!remwarn @JoeyWowey#4665"
+
+command_slowmode_desc = "Enable slowmdoe in a channel"
+command_slowmode_usage = "y!slowmode 5m"
+
+command_unmute_desc = "Unmute a member"
+command_unmute_usage = "y!unmute @JoeyWowey#4665"
+
+command_warn_desc = "Warn a member"
+command_warn_usage = "y!warn @JoeyWowey#4665 Stealing the cookies"
+
+command_mute_desc = "Mute a member"
+command_mute_usage = "y!mute @JoeyWowey#4665 30m Spam"
+
+command_warnings_desc = "View the warnings a member has"
+command_warnings_usage = "y!warnings @JoeyWowey#4665"
+
+command_roles_desc = "View the custom roles set in a server"
+command_roles_usage = "y!roles"
+
+command_clear_desc = "Clear messages in a channel"
+command_clear_usage = "y!clear 30"
+
+command_clear_from_desc = "Clear messages from a user in a channel"
+command_clear_from_usage = "y!clear from @JoeyWowey#4665 20"
+
+command_clear_with_desc = "Clear messages with a specified phrase"
+command_clear_with_usage = "y!clear with 30 LOL"
+
+command_emojify_desc = "Turn text into emojis"
+command_emojify_usage = "y!emojify hello world!"
+
+command_pokeinfo_desc = "Get info on a pokemon"
+command_pokeinfo_usage = "y!pokeinfo bulbasaur"
+
+command_reverse_desc = "Reverse txet"
+command_reverse_usage = "y!reverse text"
+
+command_scramblr_desc = "Tweet Mashup, but for Discord!"
+command_scramblr_usage = "y!scramblr\ny!scramblr @JoeyWowey#4665"
+
 
 
 #Strings
@@ -366,8 +429,6 @@ donate_title = "Wanna support me? Donate!"
 donate_desc = "If you're interested in supporting me, you can become a patron or send some some money to my creator through PayPal!\n\n[Become a patron](%patreon%)\n[Donate through PayPal](%paypal%)\n\nTo get donator perks, include your discord name and tag in your donation message (ie Vee#0003). You can donate any amount, but please keep in mind that donations under $1.00 will not be considered for the donator's rank."
 
 
-back = "back"
-exit = "exit"
 
 source = "Source"
 page = "Page"
