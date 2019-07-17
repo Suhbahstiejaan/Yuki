@@ -13,9 +13,7 @@ namespace Yuki.Data.Objects.Settings
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {
-            await Module.ReplyAsync(new EmbedBuilder()
-                    .WithAuthor(Module.Language.GetString(Name))
-                    .WithDescription("setting_welcome_set_desc"));
+            await Module.ReplyAsync(Module.Language.GetString("setting_welcome_set_desc"));
         }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)
@@ -25,7 +23,7 @@ namespace Yuki.Data.Objects.Settings
             if(result.IsSuccess)
             {
                 GuildSettings.SetWelcome(result.Value.Content, Context.Guild.Id);
-                await Module.ReplyAsync(Module.Language.GetString("goodbye_set_to") + ": " + result.Value.Content);
+                await Module.ReplyAsync(Module.Language.GetString("welcome_set_to") + ": " + result.Value.Content);
             }
         }
     }

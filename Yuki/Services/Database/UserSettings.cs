@@ -9,13 +9,11 @@ namespace Yuki.Services.Database
 {
     public static class UserSettings
     {
-        public const string path = "data/settings.db";
-
         private const string collection = "user_settings";
 
         public static void AddOrUpdate(YukiUser user)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -32,7 +30,7 @@ namespace Yuki.Services.Database
 
         public static void Remove(ulong userId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -45,7 +43,7 @@ namespace Yuki.Services.Database
 
         public static bool IsPatron(ulong userId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -60,7 +58,7 @@ namespace Yuki.Services.Database
 
         public static bool CanGetMsgs(ulong userId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -75,7 +73,7 @@ namespace Yuki.Services.Database
 
         public static void AddReminder(YukiReminder reminder)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -102,7 +100,7 @@ namespace Yuki.Services.Database
 
         public static void RemoveReminder(YukiReminder reminder)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
@@ -118,7 +116,7 @@ namespace Yuki.Services.Database
 
         public static List<YukiReminder> GetReminders(DateTime dateTime)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 

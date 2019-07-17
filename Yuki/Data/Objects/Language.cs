@@ -608,5 +608,6 @@ namespace Yuki.Data.Objects
         public string administrator_added { get; set; }
         public string set_welcomechannel_text { get; set; }
         public string welcome_added { get; set; }
+        public string welcome_set_to { get; set; }
     }
 }

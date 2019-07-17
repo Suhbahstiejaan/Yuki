@@ -9,12 +9,7 @@ namespace Yuki.Data.Objects.Settings
     {
         public string Name { get; set; } = "welcome_toggle_welcome";
 
-        public async void Display(YukiModule Module, YukiCommandContext Context)
-        {
-            await Module.ReplyAsync(new EmbedBuilder()
-                    .WithAuthor(Module.Language.GetString(Name))
-                    .WithDescription("setting_welcome_toggle_desc"));
-        }
+        public void Display(YukiModule Module, YukiCommandContext Context) { }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)
         {

@@ -571,3 +571,4 @@ setting_administrator_add_role_desc = "Please enter the name of the role you'd l
 administrator_added = "Role set as administrator"
 set_welcomechannel_text = "Please enter the name of the channel you'd like to set as the welcome/goodbye channel"
 welcome_added = "Welcome/goodbye channel set to"
+welcome_set_to = "Welcome message set to"

@@ -24,6 +24,14 @@ namespace Yuki.Commands.Preconditions
                 }
             }
 
+            if(!result.IsSuccessful)
+            {
+                if(context.Guild.OwnerId == context.User.Id)
+                {
+                    result = CheckResult.Successful;
+                }
+            }
+
             return Task.FromResult(result);
         }
     }

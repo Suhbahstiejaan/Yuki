@@ -13,9 +13,7 @@ namespace Yuki.Data.Objects.Settings
 
         public async void Display(YukiModule Module, YukiCommandContext Context)
         {
-            await Module.ReplyAsync(new EmbedBuilder()
-                    .WithAuthor(Module.Language.GetString(Name))
-                    .WithDescription("setting_mute_set_desc"));
+            await Module.ReplyAsync(Module.Language.GetString("setting_mute_set_desc"));
         }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)

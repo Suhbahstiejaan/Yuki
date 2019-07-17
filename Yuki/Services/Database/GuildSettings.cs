@@ -9,8 +9,6 @@ namespace Yuki.Services.Database
 {
     public static class GuildSettings
     {
-        public const string path = "data/settings.db";
-
         private const string collection = "guild_settings";
 
         private static GuildConfiguration DefaultConfig(ulong guildId)
@@ -56,7 +54,7 @@ namespace Yuki.Services.Database
 
         public static GuildConfiguration GetGuild(ulong id)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -74,7 +72,7 @@ namespace Yuki.Services.Database
 
         public static List<GuildConfiguration> GetGuilds()
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -84,7 +82,7 @@ namespace Yuki.Services.Database
 
         public static void AddOrUpdate(GuildConfiguration config)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -101,7 +99,7 @@ namespace Yuki.Services.Database
 
         public static void Remove(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -115,7 +113,7 @@ namespace Yuki.Services.Database
         #region Sets
         public static void SetWelcome(string message, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -136,7 +134,7 @@ namespace Yuki.Services.Database
 
         public static void SetGoodbye(string message, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -157,7 +155,7 @@ namespace Yuki.Services.Database
 
         public static void SetMuteRole(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -178,7 +176,7 @@ namespace Yuki.Services.Database
 
         public static void SetLanguage(string langCode, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -199,7 +197,7 @@ namespace Yuki.Services.Database
 
         public static void SetWelcomeChannel(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -222,7 +220,7 @@ namespace Yuki.Services.Database
         #region Toggles
         public static void ToggleWelcome(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -239,7 +237,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleGoodbye(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -255,7 +253,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleNsfw(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -271,7 +269,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleLogging(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -287,7 +285,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleCache(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -303,7 +301,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleMute(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -319,7 +317,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleWarnings(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -335,7 +333,7 @@ namespace Yuki.Services.Database
 
         public static void ToggleRoles(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -351,7 +349,7 @@ namespace Yuki.Services.Database
 
         public static void TogglePrefix(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -369,7 +367,7 @@ namespace Yuki.Services.Database
         #region Adds
         public static void AddChannelNsfw(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -389,7 +387,7 @@ namespace Yuki.Services.Database
 
         public static void AddChannelLog(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -406,7 +404,7 @@ namespace Yuki.Services.Database
 
         public static void AddChannelCache(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -426,7 +424,7 @@ namespace Yuki.Services.Database
 
         public static void AddWarningAction(GuildWarningAction action, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -446,7 +444,7 @@ namespace Yuki.Services.Database
 
         public static void AddRole(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -466,7 +464,7 @@ namespace Yuki.Services.Database
 
         public static void AddPrefix(string prefix, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -483,7 +481,7 @@ namespace Yuki.Services.Database
 
         public static void AddWarning(ulong userId, string reason, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -519,7 +517,7 @@ namespace Yuki.Services.Database
 
         public static void AddRoleModerator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -539,7 +537,7 @@ namespace Yuki.Services.Database
 
         public static void AddRoleAdministrator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -559,7 +557,7 @@ namespace Yuki.Services.Database
 
         public static void AddMute(GuildMutedUser user, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -581,7 +579,7 @@ namespace Yuki.Services.Database
         #region Removes
         public static void RemChannelNsfw(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -601,7 +599,7 @@ namespace Yuki.Services.Database
 
         public static void RemChannelCache(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -621,7 +619,7 @@ namespace Yuki.Services.Database
 
         public static void RemWarningAction(int num, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -641,7 +639,7 @@ namespace Yuki.Services.Database
 
         public static void RemRole(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -661,7 +659,7 @@ namespace Yuki.Services.Database
 
         public static void RemWarning(ulong userId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -691,7 +689,7 @@ namespace Yuki.Services.Database
 
         public static void RemRoleModerator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -711,7 +709,7 @@ namespace Yuki.Services.Database
 
         public static void RemRoleAdministrator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -731,7 +729,7 @@ namespace Yuki.Services.Database
 
         public static void RemMute(GuildMutedUser user, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -754,7 +752,7 @@ namespace Yuki.Services.Database
 
         public static GuildWarnedUser GetWarnedUser(ulong userId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(path))
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -776,6 +774,10 @@ namespace Yuki.Services.Database
             }
         }
 
+        #endregion
+
+        #region Info
+        
         #endregion
     }
 }

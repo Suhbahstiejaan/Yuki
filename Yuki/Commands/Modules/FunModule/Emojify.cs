@@ -32,6 +32,10 @@ namespace Yuki.Commands.Modules.FunModule
                     {
                         value += ":exclamation:";
                     }
+                    else if(text[i] == '?')
+                    {
+                        value += ":question:";
+                    }
                     else if (text[i] >= '0' && text[i] <= '9')
                     {
                         text += $":{numbers[text[i] - '0']}:";
@@ -42,7 +46,6 @@ namespace Yuki.Commands.Modules.FunModule
                     }
                 }
             }
-            //string.Join("\t", txt.Where(y => y != ' ').Select(x => ":regional_indicator_" + x + ":"))
             await ReplyAsync(value);
         }
     }
