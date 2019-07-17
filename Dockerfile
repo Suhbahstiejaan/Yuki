@@ -2,7 +2,7 @@ FROM microsoft/dotnet:2.2-sdk
 WORKDIR /yuki
 
 # copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY yuki/*.csproj ./
 RUN dotnet restore
 
 # copy and build everything else
