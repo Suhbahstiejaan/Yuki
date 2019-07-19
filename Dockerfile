@@ -1,6 +1,8 @@
 FROM microsoft/dotnet:2.2-sdk
 WORKDIR /yuki
 
+chmod 
+
 # copy csproj and restore as distinct layers
 COPY Yuki/*.csproj ./
 RUN dotnet restore
@@ -8,4 +10,4 @@ RUN dotnet restore
 # copy and build everything else
 COPY . ./
 RUN dotnet publish -c Release -o out
-ENTRYPOINT ["dotnet", "out/Yuki.dll"]
+ENTRYPOINT["dotnet", "Yuki/out/Yuki.dll"]
