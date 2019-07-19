@@ -8,4 +8,4 @@ RUN dotnet restore
 # copy and build everything else
 COPY . ./
 RUN dotnet publish -c Release -o out
-ENTRYPOINT["dotnet", "Yuki/out/Yuki.dll"]
+ENTRYPOINT ["dotnet", "Yuki/out/Yuki.dll"]
