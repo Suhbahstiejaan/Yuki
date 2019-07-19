@@ -1,8 +1,6 @@
 FROM microsoft/dotnet:2.2-sdk
 WORKDIR /yuki
 
-chmod 
-
 # copy csproj and restore as distinct layers
 COPY Yuki/*.csproj ./
 RUN dotnet restore
