@@ -304,7 +304,7 @@ namespace Yuki.Events
 
         private static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
         {
-            embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
+            /*embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
 
             GuildConfiguration config = GuildSettings.GetGuild(guildId);
 
@@ -312,7 +312,7 @@ namespace Yuki.Events
             {
                 await YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetGuild(guildId)
                     .GetTextChannel(config.LogChannel).SendMessageAsync("", false, embed.Build());
-            }
+            }*/
         }
     }
 }
