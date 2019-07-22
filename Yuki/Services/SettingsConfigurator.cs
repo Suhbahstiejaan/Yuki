@@ -193,48 +193,50 @@ namespace Yuki.Services
 
         public async Task Run()
         {
-
-            EmbedBuilder embed = Context.CreateEmbedBuilder(Module.Language.GetString("config_title"))
+            while (Running)
+            {
+                EmbedBuilder embed = Context.CreateEmbedBuilder(Module.Language.GetString("config_title"))
                 .WithDescription(string.Join("\n", SettingsRootOrder[SettingStack.Peek()]
                         .Select(str => "[" + (SettingsRootOrder[SettingStack.Peek()].IndexOf(str) + 1) + "] " + Module.Language.GetString(str))))
                 .WithFooter(Module.Language.GetString("config_footer"));
 
 
-            await embed.SendToAsync(Context.Channel);
+                await embed.SendToAsync(Context.Channel);
 
-            InteractivityResult<SocketMessage> result = await Module.Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
+                InteractivityResult<SocketMessage> result = await Module.Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
 
-            if(result.IsSuccess)
-            {
-                if (int.TryParse(result.Value.Content, out int index))
+                if (result.IsSuccess)
                 {
-                    if(index > 0 && index < SettingsRootOrder[SettingStack.Peek()].Count)
+                    if (int.TryParse(result.Value.Content, out int index))
                     {
-                        currentPage = SettingPages.FirstOrDefault(page => page.Name == SettingsRootOrder[SettingStack.Peek()][index - 1]);
-
-                        if(currentPage == null)
+                        if (index > 0 && index < SettingsRootOrder[SettingStack.Peek()].Count)
                         {
-                            SettingStack.Push(SettingsRootOrder.ElementAt(index).Key);
-                            
-                            return;
+                            currentPage = SettingPages.FirstOrDefault(page => page.Name == SettingsRootOrder[SettingStack.Peek()][index - 1]);
+
+                            if (currentPage == null)
+                            {
+                                SettingStack.Push(SettingsRootOrder.ElementAt(index).Key);
+
+                                return;
+                            }
+
+                            currentPage.Display(Module, Context);
+
+                            await currentPage.Run(Module, Context);
                         }
-
-                        currentPage.Display(Module, Context);
-
-                        await currentPage.Run(Module, Context);
                     }
-                }
-                if (result.Value.Content.ToLower() == Module.Language.GetString("back").ToLower())
-                {
-                    if (SettingStack.Count > 1)
+                    if (result.Value.Content.ToLower() == Module.Language.GetString("back").ToLower())
                     {
-                        SettingStack.Pop();
+                        if (SettingStack.Count > 1)
+                        {
+                            SettingStack.Pop();
+                        }
                     }
-                }
-                else if (result.Value.Content.ToLower() == Module.Language.GetString("exit").ToLower())
-                {
-                    await Context.Channel.SendMessageAsync(Module.Language.GetString("settings_exit"));
-                    Running = false;
+                    else if (result.Value.Content.ToLower() == Module.Language.GetString("exit").ToLower())
+                    {
+                        await Context.Channel.SendMessageAsync(Module.Language.GetString("settings_exit"));
+                        Running = false;
+                    }
                 }
             }
         }
