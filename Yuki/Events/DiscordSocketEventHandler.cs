@@ -45,7 +45,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_channel_create"))
                 .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
 
-            LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
+            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
         }
 
         public static async Task ChannelDestroyed(SocketChannel channel)
@@ -57,7 +57,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_channel_delete"))
                 .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
 
-            LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
+            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
         }
 
         public static async Task ChannelUpdated(SocketChannel channelOld, SocketChannel channel)
@@ -69,7 +69,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_channel_update"))
                 .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
 
-            LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
+            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
         }
 
         public static async Task GuildMemberUpdated(SocketGuildUser userOld, SocketGuildUser user)
@@ -81,8 +81,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_member_update"))
                 .AddField(lang.GetString("event_member_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
-            LogMessageAsync(embed, user.Guild.Id);
-
+            await LogMessageAsync(embed, user.Guild.Id);
         }
 
         public static async Task GuildUpdated(SocketGuild guildOld, SocketGuild guild)
@@ -94,7 +93,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_guild_update"))
                 .AddField(lang.GetString("event_guild_name"), guild.Name);
 
-            LogMessageAsync(embed, guild.Id);
+            await LogMessageAsync(embed, guild.Id);
         }
         
         public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
@@ -111,7 +110,7 @@ namespace Yuki.Events
             return Task.CompletedTask;
         }
 
-        public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
+        public static async Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
             Messages.Remove(message.Value.Id);
 
@@ -132,7 +131,7 @@ namespace Yuki.Events
                 embed.AddField(lang.GetString("event_message_attachments"), string.Join("\n", message.Value.Attachments.Select(a => $"[{a.Filename}]({a.Url})")));
             }
 
-            LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);
+            await LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);
 
             return Task.CompletedTask;
         }
@@ -152,7 +151,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_role_created"))
                 .AddField(lang.GetString("event_role_name"), role.Name);
 
-            LogMessageAsync(embed, role.Guild.Id);
+            await LogMessageAsync(embed, role.Guild.Id);
         }
 
         public static async Task RoleDeleted(SocketRole role)
@@ -164,7 +163,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_role_deleted"))
                 .AddField(lang.GetString("event_role_name"), role.Name);
 
-            LogMessageAsync(embed, role.Guild.Id);
+            await LogMessageAsync(embed, role.Guild.Id);
         }
 
         public static async Task RoleUpdated(SocketRole roleOld, SocketRole role)
@@ -176,7 +175,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_role_updated"))
                 .AddField(lang.GetString("event_role_name"), role.Name);
 
-            LogMessageAsync(embed, role.Guild.Id);
+            await LogMessageAsync(embed, role.Guild.Id);
         }
 
 
@@ -189,7 +188,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_user_banned"))
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
-            LogMessageAsync(embed, guild.Id);
+            await LogMessageAsync(embed, guild.Id);
         }
 
         public static async Task UserJoined(SocketGuildUser user)
@@ -201,7 +200,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_user_join"))
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
-            LogMessageAsync(embed, user.Guild.Id);
+            await LogMessageAsync(embed, user.Guild.Id);
         }
 
         public static async Task UserLeft(SocketGuildUser user)
@@ -213,7 +212,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_user_leave"))
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
-            LogMessageAsync(embed, user.Guild.Id);
+            await LogMessageAsync(embed, user.Guild.Id);
         }
 
         public static async Task UserUnbanned(SocketUser user, SocketGuild guild)
@@ -225,7 +224,7 @@ namespace Yuki.Events
                 .WithAuthor(lang.GetString("event_user_unban"))
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
-            LogMessageAsync(embed, guild.Id);
+            await LogMessageAsync(embed, guild.Id);
         }
 
         public static async Task VoiceServerUpdated(SocketVoiceServer voiceServer) { }
@@ -289,7 +288,7 @@ namespace Yuki.Events
             return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
         }
 
-        private static async void LogMessageAsync(EmbedBuilder embed, ulong guildId)
+        private static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
         {
             /*embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
 
