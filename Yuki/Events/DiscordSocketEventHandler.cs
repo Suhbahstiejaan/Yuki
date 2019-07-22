@@ -132,8 +132,6 @@ namespace Yuki.Events
             }
 
             await LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);
-
-            return Task.CompletedTask;
         }
 
 
@@ -201,6 +199,14 @@ namespace Yuki.Events
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
             await LogMessageAsync(embed, user.Guild.Id);
+
+            GuildConfiguration guild = GuildSettings.GetGuild(user.Guild.Id);
+
+            if(guild.EnableWelcome && !string.IsNullOrWhiteSpace(guild.WelcomeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
+            {
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(
+                    guild.WelcomeMessage.Replace("%muser%", user.Mention).Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+            }
         }
 
         public static async Task UserLeft(SocketGuildUser user)
@@ -213,6 +219,14 @@ namespace Yuki.Events
                 .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
 
             await LogMessageAsync(embed, user.Guild.Id);
+
+            GuildConfiguration guild = GuildSettings.GetGuild(user.Guild.Id);
+
+            if (guild.EnableGoodbye && !string.IsNullOrWhiteSpace(guild.GoodbyeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
+            {
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(
+                    guild.GoodbyeMessage.Replace("%muser%", user.Mention).Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+            }
         }
 
         public static async Task UserUnbanned(SocketUser user, SocketGuild guild)
@@ -290,15 +304,15 @@ namespace Yuki.Events
 
         private static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
         {
-            /*embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
+            embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
 
             GuildConfiguration config = GuildSettings.GetGuild(guildId);
 
-            if(config.EnableLogging)
+            if(!config.Equals(null) && config.EnableLogging)
             {
                 await YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetGuild(guildId)
                     .GetTextChannel(config.LogChannel).SendMessageAsync("", false, embed.Build());
-            }*/
+            }
         }
     }
 }
