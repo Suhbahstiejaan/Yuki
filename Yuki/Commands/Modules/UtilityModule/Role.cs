@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     {
         [Command("role", "r")]
         [RequireGuild]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GiveRoleAsync(string roleString)
         {
             List<ulong> roles = GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles;

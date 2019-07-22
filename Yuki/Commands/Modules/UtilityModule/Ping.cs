@@ -9,6 +9,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("ping")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task PingAsync()
         {
             EmbedBuilder embedBuilder = Context.CreateEmbedBuilder(Language.GetString("ping_pinging"));

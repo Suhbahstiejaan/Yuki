@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("userinfo")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetUserInfoAsync(IUser userParam = default)
         {
             try

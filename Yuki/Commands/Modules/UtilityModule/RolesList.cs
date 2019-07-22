@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("roles")]
         [RequireGuild]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetRolesAsync()
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

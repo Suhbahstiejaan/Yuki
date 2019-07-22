@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("unmute")]
         [RequireModerator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task UnmuteUserAsync(IGuildUser user, [Remainder] string reason = null)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

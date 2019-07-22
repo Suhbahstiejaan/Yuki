@@ -9,6 +9,7 @@ namespace Yuki.Commands.Modules.FunModule
     public partial class FunModule
     {
         [Command("scramblr", "scrambler")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ScramblrAsync(IUser user = null)
         {
             Scramblr scramblr = new Scramblr();

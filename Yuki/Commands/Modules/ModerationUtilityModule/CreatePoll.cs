@@ -16,6 +16,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("createpoll")]
         [RequireModerator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task CreatePollAsync(string pollName = "")
         {
             try

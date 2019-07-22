@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("vote")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task VoteAsync(string pollId, string choice = "")
         {
             try

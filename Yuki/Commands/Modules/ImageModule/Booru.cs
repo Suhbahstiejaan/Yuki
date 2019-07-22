@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.ImageModule
     public partial class ImageModule
     {
         [Command("booru")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task BooruAsync(string[] tags = null)
         {
             YukiImage image = await new ImageSearch().GetAnimeImage(tags, null, forceExplicit: false);

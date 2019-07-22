@@ -7,6 +7,7 @@ namespace Yuki.Commands.Modules.GamblingModule
     public partial class GamlingModule
     {
         [Command("toss")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task CoinTossAsync([Remainder] string text = "")
         {
             string face = (new YukiRandom().Next(1, 100)) > 50 ?

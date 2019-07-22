@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.ImageModule
     public partial class ImageModule
     {
         [Command("gelbooru")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GelbooruAsync(string[] tags = null)
         {
             YukiImage image = await new ImageSearch().GetImage(ImageType.Gelbooru, tags, null, forceExplicit: false);

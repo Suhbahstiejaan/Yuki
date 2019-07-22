@@ -16,6 +16,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("remindme", "remind")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task RemindMeAsync([Remainder] string reminder)
         {
             string[] data = Regex.Split(reminder, @"\s*[in]\s*").Where(str => !string.IsNullOrWhiteSpace(str)).ToArray();

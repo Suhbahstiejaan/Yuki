@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("rolecol")]
         [RequireModerator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task SetRoleColorAsync([Remainder] string args)
         {
             string lastString = args.Split(' ').LastOrDefault();

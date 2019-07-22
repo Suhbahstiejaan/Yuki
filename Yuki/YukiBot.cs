@@ -11,8 +11,10 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Yuki.Commands;
 using Yuki.Commands.TypeParsers;
 using Yuki.Data;
+using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Events;
 using Yuki.Services;
@@ -68,7 +70,7 @@ namespace Yuki
                     {
                         AlwaysDownloadUsers = true,
                         MessageCacheSize = ShardCount * 1000,
-                        TotalShards = ShardCount
+                        TotalShards = ShardCount,
                     });
 
                     DiscordClient.Log += LoggingService.Write;
@@ -120,20 +122,40 @@ namespace Yuki
             CommandService = new CommandService(new CommandServiceConfiguration()
             {
                 CaseSensitive = false,
-                DefaultRunMode = RunMode.Parallel
+                DefaultRunMode = RunMode.Parallel,
+                CooldownBucketKeyGenerator = GenerateBucketKey
             });
 
             CommandService.AddModules(Assembly.GetEntryAssembly());
             LoggingService.Write(LogLevel.Debug, $"Found {CommandService.GetAllCommands().Count} command(s)");
             CommandService.AddTypeParser(new UserTypeParser<IUser>());
 
-            foreach(Command c in CommandService.GetAllCommands())
+            foreach(KeyValuePair<string, Language> lang in LocalizationService.Languages)
             {
-                string cmd = $"command_{c.Name.ToLower().Replace(' ', '_')}_desc";
+                LoggingService.Write(LogLevel.Info, $"Checking translations for language {lang.Key}...");
 
-                if(LocalizationService.Languages["en_US"].GetString(cmd) == cmd)
+                int invalidTranslations = 0;
+
+                foreach (Command c in CommandService.GetAllCommands())
                 {
-                    LoggingService.Write(LogLevel.Warning, $"No translation found for {cmd}");
+                    string cmd = $"command_{c.Name.ToLower().Replace(' ', '_')}_desc";
+
+                    if (LocalizationService.Languages[lang.Key].GetString(cmd) == cmd)
+                    {
+                        LoggingService.Write(LogLevel.Warning, $"No translation found for {cmd}");
+                        invalidTranslations++;
+                    }
+                }
+
+                if(invalidTranslations > 0)
+                {
+                    LoggingService.Write(LogLevel.Error,
+                        $"{CommandService.GetAllCommands().Count - invalidTranslations} commands are missing a translation. Please consider adding them.");
+                }
+                else
+                {
+                    LoggingService.Write(LogLevel.Info,
+                        $"All command translations validated for {lang.Key}. This does not guarantee ALL string translations exist!");
                 }
             }
 
@@ -189,6 +211,43 @@ namespace Yuki
 
             /* Wait a little to make sure everything has had enough time to write */
             Thread.Sleep(500);
+        }
+
+        public object GenerateBucketKey(Command command, object bucketType, ICommandContext context, IServiceProvider provider)
+        {
+            if(!(context is YukiCommandContext commandContext))
+            {
+                throw new InvalidOperationException("Invalid command context");
+            }
+
+            string data = string.Empty;
+
+            commandContext.Command = commandContext.Command ?? command;
+
+            if(bucketType is CooldownBucketType bucket)
+            {
+                switch(bucket)
+                {
+                    case CooldownBucketType.Guild:
+                        data += commandContext.Guild.Id;
+                        break;
+                    case CooldownBucketType.Channel:
+                        data += commandContext.Channel.Id;
+                        break;
+                    case CooldownBucketType.User:
+                        data += commandContext.User.Id;
+                        break;
+                    case CooldownBucketType.Global:
+                        data += command;
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unknown bucket type!");
+                }
+
+                return data;
+            }
+
+            throw new InvalidOperationException("Unknown bucket type!");
         }
     }
 }

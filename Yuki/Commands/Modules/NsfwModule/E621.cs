@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.NsfwModule
     public partial class NsfwModule
     {
         [Command("e621")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task E621Async(params string[] tags)
         {
             YukiImage image = await new ImageSearch().GetImage(ImageType.E621, tags, null, true);

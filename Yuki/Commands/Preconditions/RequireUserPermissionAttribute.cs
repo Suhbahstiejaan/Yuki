@@ -18,42 +18,79 @@ namespace Yuki.Commands.Preconditions
 
         public ChannelPermission? ChannelPermission { get; }
 
-        public RequireUserPermissionAttribute(GuildPermission permission)
+        public bool IsBot { get; }
+        public bool AllowDM { get; }
+
+        public RequireUserPermissionAttribute(GuildPermission permission, bool allowDm, bool isBot = false)
         {
             GuildPermission = permission;
             ChannelPermission = null;
+            IsBot = isBot;
+            AllowDM = allowDm;
         }
 
-        public RequireUserPermissionAttribute(ChannelPermission permission)
+        public RequireUserPermissionAttribute(ChannelPermission permission, bool allowDm, bool isBot = false)
         {
             ChannelPermission = permission;
             GuildPermission = null;
+            IsBot = isBot;
+            AllowDM = allowDm;
         }
 
         public override Task<CheckResult> CheckAsync(ICommandContext _context, IServiceProvider provider)
         {
             YukiCommandContext context = (YukiCommandContext)_context;
 
-            IGuildUser guildUser = context.User as IGuildUser;
+            if(context.Channel is IDMChannel)
+            {
+                if(AllowDM)
+                {
+                    return Task.FromResult(CheckResult.Successful);
+                }
+                else
+                {
+                    return Task.FromResult(CheckResult.Unsuccessful("Command must be used in a guild channel."));
+                }
+            }
+
+            IUser user;
+
+            if (!IsBot)
+            {
+                user = context.User;
+            }
+            else
+            {
+                user = context.Client.CurrentUser;
+            }
+
+            IGuildUser guildUser = context.Guild.GetUserAsync(user.Id).Result;
 
             if (GuildPermission.HasValue)
             {
-                if (guildUser == null)
-                    return Task.FromResult(CheckResult.Unsuccessful("Command must be used in a guild channel."));
                 if (!guildUser.GuildPermissions.Has(GuildPermission.Value))
-                    return Task.FromResult(CheckResult.Unsuccessful($"User requires guild permission {GuildPermission.Value}."));
+                {
+                    return Task.FromResult(CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the guild permission {GuildPermission.Value}"));
+                }
             }
 
             if (ChannelPermission.HasValue)
             {
                 ChannelPermissions perms;
+
                 if (context.Channel is IGuildChannel guildChannel)
+                {
                     perms = guildUser.GetPermissions(guildChannel);
+                }
                 else
+                {
                     perms = ChannelPermissions.All(context.Channel);
+                }
 
                 if (!perms.Has(ChannelPermission.Value))
-                    return Task.FromResult(CheckResult.Unsuccessful($"User requires channel permission {ChannelPermission.Value}."));
+                {
+                    return Task.FromResult(CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the channel permission {ChannelPermission.Value}"));
+                }
             }
 
             return Task.FromResult(CheckResult.Successful);

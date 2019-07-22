@@ -9,6 +9,7 @@ namespace Yuki.Commands.Modules.FunModule
     public partial class FunModule
     {
         /*[Command("pokemoves", "pmoves")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task PokeMovesAsync(string pokemon)
         {
             PokemonInfo pokeInf = PokeApi.GetPokemon(pokemon);

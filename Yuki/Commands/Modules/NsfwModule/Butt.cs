@@ -13,6 +13,7 @@ namespace Yuki.Commands.Modules.NsfwModule
     public partial class NsfwModule
     {
         [Command("butts", "butt")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ButtsAsync()
         {
             try

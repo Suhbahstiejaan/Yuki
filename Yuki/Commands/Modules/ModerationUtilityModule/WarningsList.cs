@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("warnings")]
         [RequireModerator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetWarningsAsync(IGuildUser user)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

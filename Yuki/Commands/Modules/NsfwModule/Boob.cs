@@ -13,6 +13,7 @@ namespace Yuki.Commands.Modules.NsfwModule
     public partial class NsfwModule
     {
         [Command("boobs", "boob")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task BoobsAsync()
         {
             using (HttpClient client = new HttpClient())

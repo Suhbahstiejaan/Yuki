@@ -1,6 +1,4 @@
-﻿using Discord;
-using Qmmands;
-using System;
+﻿using Qmmands;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 using Yuki.Services;
@@ -11,21 +9,12 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("config", "settings")]
         [RequireAdministrator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ConfigureGuildSettingsAsync()
         {
             SettingsConfigurator settings = new SettingsConfigurator(this, Context);
 
-            while (settings.Running)
-            {
-                try
-                {
-                    await Task.Run(settings.Run);
-                }
-                catch(Exception e)
-                {
-                    await ReplyAsync(e);
-                }
-            }
+            await Task.Run(settings.Run);
         }
     }
 }

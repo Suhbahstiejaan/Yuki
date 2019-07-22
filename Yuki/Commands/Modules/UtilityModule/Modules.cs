@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("modules")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetModulesAsync()
         {
             IEnumerable<Module> modules = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules().Where(mod => mod.Parent == null);

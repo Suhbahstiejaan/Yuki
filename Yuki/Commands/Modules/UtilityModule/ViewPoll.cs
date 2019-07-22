@@ -9,6 +9,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("viewpoll")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ViewPollAsync(string pollId)
         {
             Poll poll = PollingService.GetPoll(pollId);

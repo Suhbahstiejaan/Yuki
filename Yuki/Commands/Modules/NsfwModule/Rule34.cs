@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.NsfwModule
     public partial class NsfwModule
     {
         [Command("rule34", "r34")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task R34Async(params string[] tags)
         {
             YukiImage image = await new ImageSearch().GetImage(ImageType.Rule34, tags, null, true);

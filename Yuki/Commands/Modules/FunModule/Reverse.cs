@@ -7,6 +7,7 @@ namespace Yuki.Commands.Modules.FunModule
     public partial class FunModule
     {
         [Command("reverse")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ReverseStringAsync([Remainder]string text)
         {
             char[] c = text.ToCharArray();

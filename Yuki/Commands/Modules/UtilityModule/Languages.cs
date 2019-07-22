@@ -8,6 +8,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("langs", "languages")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ListLanguagesAsync()
         {
             await ReplyAsync(Context.CreateEmbedBuilder(Language.GetString("langs_title"))

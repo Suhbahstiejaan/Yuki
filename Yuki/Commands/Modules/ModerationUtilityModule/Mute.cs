@@ -13,6 +13,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
     {
         [Command("mute")]
         [RequireModerator]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task MuteUserAsync(IGuildUser user, string time, [Remainder] string reason = null)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);

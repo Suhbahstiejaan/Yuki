@@ -8,6 +8,7 @@ namespace Yuki.Commands.Modules.FunModule
     public partial class FunModule
     {
         [Command("repeat")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ExampleReplyNextMessageAsync()
         {
             await ReplyAsync(Language.GetString("interactive_repeat_send_message"));

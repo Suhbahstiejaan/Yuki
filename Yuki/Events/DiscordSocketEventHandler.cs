@@ -267,9 +267,17 @@ namespace Yuki.Events
 
             if (result is FailedResult failedResult)
             {
-                if (!(failedResult is CommandNotFoundResult))
+                if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
                 {
-                    await message.Channel.SendMessageAsync(failedResult.Reason);
+                    if(checksFailed.FailedChecks.Count == 1)
+                    {
+                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Error);
+                    }
+                    else
+                    {
+                        await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
+                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Error))}");
+                    }
                 }
             }
         }

@@ -13,11 +13,18 @@ namespace Yuki.Commands
     {
 
         public DiscordShardedClient Client { get; }
+
         public IServiceProvider ServiceProvider { get; }
+
         public IGuild Guild { get; }
+
         public IMessageChannel Channel { get; }
+
         public IUser User { get; }
+
         public IUserMessage Message { get; }
+
+        public Command Command { get; set; }
 
         public YukiCommandContext(DiscordShardedClient client, IUserMessage msg, IServiceProvider provider)
         {

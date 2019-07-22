@@ -10,6 +10,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("commands")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ShowCommandsAsync(string moduleName)
         {
             IReadOnlyList<Command> commands = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules()

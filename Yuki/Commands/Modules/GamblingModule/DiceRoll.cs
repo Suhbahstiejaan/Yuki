@@ -7,6 +7,7 @@ namespace Yuki.Commands.Modules.GamblingModule
     public partial class GamlingModule
     {
         [Command("roll")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task DiceRollAsync([Remainder] string text = "")
         {
             int dice1 = new YukiRandom().Next(1, 6);

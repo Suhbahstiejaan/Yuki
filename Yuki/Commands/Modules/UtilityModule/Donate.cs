@@ -7,6 +7,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     public partial class UtilityModule
     {
         [Command("donate")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task DonateAsync()
         {
             EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("donate_title"))

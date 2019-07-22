@@ -1,9 +1,7 @@
 ﻿using Discord;
 using Qmmands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 using Yuki.Data.Objects.Database;
@@ -15,6 +13,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     {
         [Command("commandlist", "ccommands")]
         [RequireGuild]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task CustomCommandsList()
         {
             if(!(Context.Channel is IDMChannel))

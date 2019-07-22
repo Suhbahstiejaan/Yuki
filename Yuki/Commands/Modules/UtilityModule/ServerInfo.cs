@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     {
         [Command("serverinfo")]
         [RequireGuild]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ServerInfoAsync()
         {
             IGuild guild = Context.Guild;

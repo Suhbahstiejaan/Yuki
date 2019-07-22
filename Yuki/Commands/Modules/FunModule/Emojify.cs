@@ -1,7 +1,4 @@
 ﻿using Qmmands;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Yuki.Commands.Modules.FunModule
@@ -9,6 +6,7 @@ namespace Yuki.Commands.Modules.FunModule
     public partial class FunModule
     {
         [Command("emojify")]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task EmojifyStringAsync([Remainder] string text)
         {
             text = text.ToLower();

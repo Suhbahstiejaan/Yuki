@@ -12,6 +12,7 @@ namespace Yuki.Commands.Modules.GamblingModule
         public class RussianRoulette : YukiModule
         {
             [Command]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task Base()
             {
                 try
@@ -48,6 +49,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             }
 
             [Command("start")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task RouletteStartAsync()
             {
                 RouletteStartResult result = RussianRouletteService.GetGuild(Context.Guild.Id).StartGame(Context.Channel.Id, Context.User.Id);
@@ -56,6 +58,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             }
 
             [Command("join")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task RouletteJoinAsync()
             {
                 bool result = RussianRouletteService.GetGuild(Context.Guild.Id).AddPlayerToGame(Context.Channel.Id, Context.User.Id);
@@ -73,6 +76,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             }
 
             [Command("quit")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task RouletteQuitAsync()
             {
                 RussianRouletteService.GetGuild(Context.Guild.Id).RemovePlayerFromGame(Context.Channel.Id, Context.User.Id);
@@ -81,6 +85,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             }
 
             [Command("kick")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task RouletteKickAsync(ulong userId)
             {
                 if (RussianRouletteService.GetGuild(Context.Guild.Id).KickUserFromGame(Context.Channel.Id, userId, Context.User.Id))
@@ -94,6 +99,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             }
 
             [Command("players")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task RoulettePlayerListAsync()
             {
                 string[] players = RussianRouletteService.GetGuild(Context.Guild.Id).GetGame(Context.Channel.Id).Players.Select(player 

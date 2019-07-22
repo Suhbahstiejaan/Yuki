@@ -11,6 +11,7 @@ namespace Yuki.Commands.Modules.UtilityModule
     {
         [Command("roleinfo", "rinfo")]
         [RequireGuild]
+        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetRoleInfoAsync([Remainder] string roleName)
         {
             IRole role = Context.Guild.Roles.Where(r => r.Name.ToLower() == roleName.ToLower()).FirstOrDefault();
