@@ -5,9 +5,14 @@ using Yuki.Services.Database;
 
 namespace Yuki.Data.Objects.Settings
 {
-    public class SettingToggleRoles : ISettingPage
+    public class SettingToggleRoles : ISettingPageTogglable
     {
         public string Name { get; set; } = "roles_toggle";
+
+        public string GetState(YukiCommandContext Context)
+        {
+            return GuildSettings.GetGuild(Context.Guild.Id).EnableRoles ? "enabled" : "disabled";
+        }
 
         public void Display(YukiModule Module, YukiCommandContext Context) { }
 

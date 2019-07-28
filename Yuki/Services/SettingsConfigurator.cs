@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Data.Objects.Settings;
+using Yuki.Data.Objects.Settings.Togglable;
 using Yuki.Extensions;
 
 namespace Yuki.Services
@@ -193,11 +194,10 @@ namespace Yuki.Services
 
         public async Task Run()
         {
-            while (Running)
-            {
                 EmbedBuilder embed = Context.CreateEmbedBuilder(Module.Language.GetString("config_title"))
                 .WithDescription(string.Join("\n", SettingsRootOrder[SettingStack.Peek()]
-                        .Select(str => "[" + (SettingsRootOrder[SettingStack.Peek()].IndexOf(str) + 1) + "] " + Module.Language.GetString(str))))
+                        .Select(str => "[" + (SettingsRootOrder[SettingStack.Peek()].IndexOf(str) + 1) + "] " + Module.Language.GetString(str)
+                            .Replace("%state%", Module.Language.GetString((SettingPages.FirstOrDefault(page => page.Name == str) as ISettingPageTogglable).GetState(Context))))))
                 .WithFooter(Module.Language.GetString("config_footer"));
 
 
@@ -205,38 +205,37 @@ namespace Yuki.Services
 
                 InteractivityResult<SocketMessage> result = await Module.Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
 
-                if (result.IsSuccess)
+            if (result.IsSuccess)
+            {
+                if (int.TryParse(result.Value.Content, out int index))
                 {
-                    if (int.TryParse(result.Value.Content, out int index))
+                    if (index > 0 && index < SettingsRootOrder[SettingStack.Peek()].Count)
                     {
-                        if (index > 0 && index < SettingsRootOrder[SettingStack.Peek()].Count)
+                        currentPage = SettingPages.FirstOrDefault(page => page.Name == SettingsRootOrder[SettingStack.Peek()][index - 1]);
+
+                        if (currentPage == null)
                         {
-                            currentPage = SettingPages.FirstOrDefault(page => page.Name == SettingsRootOrder[SettingStack.Peek()][index - 1]);
+                            SettingStack.Push(SettingsRootOrder.ElementAt(index).Key);
 
-                            if (currentPage == null)
-                            {
-                                SettingStack.Push(SettingsRootOrder.ElementAt(index).Key);
-
-                                return;
-                            }
-
-                            currentPage.Display(Module, Context);
-
-                            await currentPage.Run(Module, Context);
+                            return;
                         }
+
+                        currentPage.Display(Module, Context);
+
+                        await currentPage.Run(Module, Context);
                     }
-                    if (result.Value.Content.ToLower() == Module.Language.GetString("back").ToLower())
+                }
+                if (result.Value.Content.ToLower() == Module.Language.GetString("back").ToLower())
+                {
+                    if (SettingStack.Count > 1)
                     {
-                        if (SettingStack.Count > 1)
-                        {
-                            SettingStack.Pop();
-                        }
+                        SettingStack.Pop();
                     }
-                    else if (result.Value.Content.ToLower() == Module.Language.GetString("exit").ToLower())
-                    {
-                        await Context.Channel.SendMessageAsync(Module.Language.GetString("settings_exit"));
-                        Running = false;
-                    }
+                }
+                else if (result.Value.Content.ToLower() == Module.Language.GetString("exit").ToLower())
+                {
+                    await Context.Channel.SendMessageAsync(Module.Language.GetString("settings_exit"));
+                    Running = false;
                 }
             }
         }

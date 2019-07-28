@@ -1,4 +1,5 @@
 ﻿using Qmmands;
+using System;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 using Yuki.Services;
@@ -14,7 +15,14 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
         {
             SettingsConfigurator settings = new SettingsConfigurator(this, Context);
 
-            await Task.Run(settings.Run);
+            try
+            {
+                while (settings.Running)
+                {
+                    await Task.Run(settings.Run);
+                }
+            }
+            catch(Exception) { }
         }
     }
 }

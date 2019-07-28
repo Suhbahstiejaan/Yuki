@@ -134,7 +134,7 @@ namespace Yuki
             {
                 LoggingService.Write(LogLevel.Info, $"Checking translations for language {lang.Key}...");
 
-                int invalidTranslations = 0;
+                int validTranslations = CommandService.GetAllCommands().Count;
 
                 foreach (Command c in CommandService.GetAllCommands())
                 {
@@ -143,14 +143,22 @@ namespace Yuki
                     if (LocalizationService.Languages[lang.Key].GetString(cmd) == cmd)
                     {
                         LoggingService.Write(LogLevel.Warning, $"No translation found for {cmd}");
-                        invalidTranslations++;
+                        validTranslations--;
                     }
                 }
 
-                if(invalidTranslations > 0)
+                if(validTranslations != 0)
                 {
-                    LoggingService.Write(LogLevel.Error,
-                        $"{CommandService.GetAllCommands().Count - invalidTranslations} commands are missing a translation. Please consider adding them.");
+                    int numMissing = CommandService.GetAllCommands().Count - validTranslations;
+
+                    if(numMissing > 1)
+                    {
+                        LoggingService.Write(LogLevel.Warning, $"{numMissing} commands are missing a translation. Please consider adding them!");
+                    }
+                    else
+                    {
+                        LoggingService.Write(LogLevel.Warning, $"A command is missing a translation. Please consider adding adding it!");
+                    }
                 }
                 else
                 {

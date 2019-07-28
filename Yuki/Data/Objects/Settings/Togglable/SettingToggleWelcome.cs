@@ -5,9 +5,14 @@ using Yuki.Services.Database;
 
 namespace Yuki.Data.Objects.Settings
 {
-    public class SettingToggleWelcome : ISettingPage
+    public class SettingToggleWelcome : ISettingPageTogglable
     {
         public string Name { get; set; } = "welcome_toggle_welcome";
+
+        public string GetState(YukiCommandContext Context)
+        {
+            return GuildSettings.GetGuild(Context.Guild.Id).EnableWelcome ? "enabled" : "disabled";
+        }
 
         public void Display(YukiModule Module, YukiCommandContext Context) { }
 

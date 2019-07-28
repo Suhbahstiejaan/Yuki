@@ -5,9 +5,14 @@ using Yuki.Services.Database;
 
 namespace Yuki.Data.Objects.Settings
 {
-    public class SettingToggleMute : ISettingPage
+    public class SettingToggleMute : ISettingPageTogglable
     {
         public string Name { get; set; } = "mute_toggle";
+
+        public string GetState(YukiCommandContext Context)
+        {
+            return GuildSettings.GetGuild(Context.Guild.Id).EnableMute ? "enabled" : "disabled";
+        }
 
         public void Display(YukiModule Module, YukiCommandContext Context) { }
 

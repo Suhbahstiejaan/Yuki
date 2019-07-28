@@ -3,13 +3,18 @@ using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Services.Database;
 
-namespace Yuki.Data.Objects.Settings
+namespace Yuki.Data.Objects.Settings.Togglable
 {
-    public class SettingToggleCache : ISettingPage
+    public class SettingToggleCache : ISettingPageTogglable
     {
         public string Name { get; set; } = "cache_toggle";
 
         public void Display(YukiModule Module, YukiCommandContext Context) { }
+
+        public string GetState(YukiCommandContext Context)
+        {
+            return GuildSettings.GetGuild(Context.Guild.Id).EnableCache ? "enabled" : "disabled";
+        }
 
         public async Task Run(YukiModule Module, YukiCommandContext Context)
         {

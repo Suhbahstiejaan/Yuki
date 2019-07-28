@@ -266,6 +266,12 @@ namespace Yuki.Data.Objects
         public string _true { get; set; }
         public string _false { get; set; }
 
+        public string enable { get; set; }
+        public string disable { get; set; }
+
+        public string enabled { get; set; }
+        public string disabled { get; set; }
+
         public string invisible { get; set; }
         public string offline { get; set; }
         public string away { get; set; }

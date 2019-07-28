@@ -5,9 +5,14 @@ using Yuki.Services.Database;
 
 namespace Yuki.Data.Objects.Settings
 {
-    public class SettingToggleNsfw : ISettingPage
+    public class SettingToggleNsfw : ISettingPageTogglable
     {
         public string Name { get; set; } = "nsfw_toggle";
+
+        public string GetState(YukiCommandContext Context)
+        {
+            return GuildSettings.GetGuild(Context.Guild.Id).EnableNsfw ? "enabled" : "disabled";
+        }
 
         public void Display(YukiModule Module, YukiCommandContext Context) { }
 

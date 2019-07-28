@@ -93,11 +93,32 @@ namespace Yuki.Services
 
             if(logLevel == LogLevel.Error)
             {
-                File.Copy(latestLogFile, FileDirectories.LogRoot + $"crash_{DateTime.Now.ToLongDateString()}.log");
+                WriteCrashFile(o.ToString(), 0);
+            }
+        }
 
-                if(Version.ReleaseType != ReleaseType.Development)
+        private static void WriteCrashFile(string text, int numTries)
+        {
+            string crashFileName = FileDirectories.LogRoot + $"crash {DateTime.Now.ToLongDateString()}";
+
+            if(numTries > 0)
+            {
+                crashFileName += $" ({numTries})";
+            }
+
+            crashFileName += ".log";
+
+            if (File.Exists(crashFileName))
+            {
+                WriteCrashFile(text, ++numTries);
+            }
+            else
+            {
+                File.Copy(latestLogFile, crashFileName);
+
+                if (Version.ReleaseType != ReleaseType.Development)
                 {
-                    throw new Exception(o.ToString());
+                    throw new Exception(text);
                 }
             }
         }
