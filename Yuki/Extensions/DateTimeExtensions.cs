@@ -39,7 +39,14 @@ namespace Yuki.Extensions
                     }
                 }
 
-                return prettyTime.Remove(prettyTime.Length - 2);
+                if(prettyTime.Length > 2)
+                {
+                    return prettyTime.Remove(prettyTime.Length - 2);
+                }
+                else
+                {
+                    return prettyTime;
+                }
             }
             else
             {

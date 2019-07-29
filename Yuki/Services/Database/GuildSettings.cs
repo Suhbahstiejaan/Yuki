@@ -772,10 +772,28 @@ namespace Yuki.Services.Database
             }
         }
 
+        public static bool IsChannelExplicit(ulong channelId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    return config.NsfwChannels.Contains(channelId) && config.EnableNsfw;
+                }
+
+                return false;
+            }
+        }
+
+
         #endregion
 
         #region Info
-        
+
         #endregion
     }
 }

@@ -20,6 +20,10 @@ namespace Yuki
         public const string GithubUrl = "https://github.com/VeeThree/Yuki/";
 
         public static DiscordBot Discord { get; private set; }
+        public static DateTime StartTime { get; private set; }
+
+        /* Prevent errors on client disconnect */
+        public static bool ShuttingDown;
 
         public YukiBot()
         {
@@ -27,6 +31,8 @@ namespace Yuki
             Localization.LoadLanguages();
 
             FileDirectories.CheckCreateDirectories();
+
+            StartTime = DateTime.Now;
 
             Discord = new DiscordBot();
         }
@@ -42,10 +48,10 @@ namespace Yuki
 
             await Discord.Client.StartAsync();
 
+            CreateEventManager();
+
             Logger.Write(LogLevel.Debug, $"Found {Discord.CommandService.GetAllCommands().Count} command(s)");
             Localization.CheckCommands(Discord.CommandService);
-
-            CreateEventManager();
 
             await Task.Delay(-1);
         }
@@ -86,6 +92,7 @@ namespace Yuki
 
         public void Stop()
         {
+            ShuttingDown = true;
             Logger.Write(LogLevel.Status, "Stopping client...");
 
             Discord.StopAsync().GetAwaiter().GetResult();

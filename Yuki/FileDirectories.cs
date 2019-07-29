@@ -15,6 +15,7 @@ namespace Yuki
         internal static string DBRoot { get; } = DataRoot + "databases/";
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
+        internal static string StatusMessages { get; } = AssetRoot + "status.toml";
 
         internal static string SettingsDB { get; } = DBRoot + "settings.db";
         internal static string CacheDB { get; } = DBRoot + "cache.db";

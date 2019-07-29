@@ -1,0 +1,16 @@
+Playing = [
+	"Minecraft", "with %usercount% users",
+	"in %guildcount% guilds", "Shard %shardid% (%usercount% users)",
+	"y!donate to support me", "uptime: %uptime%",
+	"Fortnite", "Overwatch", "Grand Theft Auto V"
+]
+
+Listening = [
+	"Revenge", "Bad Guy",
+	"Minecraft Style", "Despacito"
+]
+
+Watching = [
+	"Pewdiepie", "SMP Live", "you",
+	"RTGame", "CallMeKevin", "YouTube"
+]

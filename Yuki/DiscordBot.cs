@@ -40,6 +40,8 @@ namespace Yuki
                 TotalShards = ShardCount,
             });
 
+            await Client.LoginAsync(TokenType.Bot, token);
+
             CreateCommandService();
             CreateServices();
             SetEvents();

@@ -76,10 +76,11 @@ namespace Yuki.Core
                     break;
             }
 
-            string line = $"[{DateTime.Now.ToShortTimeString()}] [{logLevel.ToString()}] {o.ToString()}";
-            string lineColored = $"[{DateTime.Now.ToShortTimeString()}] {color.ToString()}[{logLevel.ToString()}] {o.ToString()}";
+            string obj = (o != null ? o.ToString() : "Sent object was null!");
+            string line = $"[{DateTime.Now.ToShortTimeString()}] [{logLevel.ToString()}] {obj}";
+            string lineColored = $"[{DateTime.Now.ToShortTimeString()}] {color.ToString()}[{logLevel.ToString()}] {obj}";
 
-            using (FileStream file = new FileStream(latestLogFile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream file = new FileStream(latestLogFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 using (StreamWriter sw = new StreamWriter(file))
                 {
@@ -93,33 +94,19 @@ namespace Yuki.Core
 
             if(logLevel == LogLevel.Error)
             {
-                WriteCrashFile(o.ToString(), 0);
+                WriteCrashFile(o.ToString());
             }
         }
 
-        private static void WriteCrashFile(string text, int numTries)
+        private static void WriteCrashFile(string text)
         {
-            string crashFileName = FileDirectories.LogRoot + $"crash {DateTime.Now.ToLongDateString()}";
+            string crashFileName = FileDirectories.LogRoot + $"crash {DateTime.Now.ToLongDateString()} at {DateTime.Now.ToShortTimeString()}.log";
 
-            if(numTries > 0)
+            File.Copy(latestLogFile, crashFileName);
+
+            if (Version.ReleaseType != ReleaseType.Development)
             {
-                crashFileName += $" ({numTries})";
-            }
-
-            crashFileName += ".log";
-
-            if (File.Exists(crashFileName))
-            {
-                WriteCrashFile(text, ++numTries);
-            }
-            else
-            {
-                File.Copy(latestLogFile, crashFileName);
-
-                if (Version.ReleaseType != ReleaseType.Development)
-                {
-                    throw new Exception(text);
-                }
+                throw new Exception(text);
             }
         }
     }

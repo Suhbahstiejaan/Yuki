@@ -503,5 +503,9 @@ namespace Yuki.Data.Objects
         public string lang_set_to { get; set; }
         public string role_added { get; set; }
         public string role_removed { get; set; }
+        public string moderator_role_added { get; set; }
+        public string moderator_role_removed { get; set; }
+        public string administrator_role_removed { get; set; }
+        public string administrator_role_added { get; set; }
     }
 }

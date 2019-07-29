@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Yuki.API;
 using Yuki.Data.Objects;
+using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.ImageModule
 {
@@ -13,7 +14,14 @@ namespace Yuki.Commands.Modules.ImageModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task DanbooruAsync(string[] tags = null)
         {
-            YukiImage image = await new ImageSearch().GetImage(ImageType.Danbooru, tags, null, forceExplicit: false);
+            bool isExplicit = false;
+
+            if (!(Context.Channel is IDMChannel))
+            {
+                isExplicit = GuildSettings.IsChannelExplicit(Context.Channel.Id, Context.Guild.Id);
+            }
+
+            YukiImage image = await new ImageSearch().GetImage(ImageType.Gelbooru, tags, null, forceExplicit: isExplicit);
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()
