@@ -30,7 +30,7 @@ namespace Yuki.Events
 
         private static Language GetLanguage(ulong guildId)
         {
-            return LocalizationService.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
+            return Localization.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
         }
 
         public static async Task JoinedGuild(SocketGuild guild) { }
@@ -253,8 +253,8 @@ namespace Yuki.Events
                 return;
 
             DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
-                                            YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShardFor(((IGuildChannel)message.Channel).Guild) :
-                                            YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetShard(0);
+                                            YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
+                                            YukiBot.Discord.Client.GetShard(0);
 
 
             bool hasPrefix = HasPrefix(message, out string output);
@@ -274,9 +274,9 @@ namespace Yuki.Events
                 return;
             }
 
-            IResult result = await YukiBot.Services.GetRequiredService<YukiBot>().CommandService
+            IResult result = await YukiBot.Discord.CommandService
                        .ExecuteAsync(output, new YukiCommandContext(
-                            YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient, socketMessage as IUserMessage, YukiBot.Services));
+                            YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services));
 
             if (result is FailedResult failedResult)
             {

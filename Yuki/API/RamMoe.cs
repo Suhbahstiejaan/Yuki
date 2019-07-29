@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Yuki.Commands;
+using Yuki.Core;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.API;
 using Yuki.Services;
@@ -53,7 +54,7 @@ namespace Yuki.API
             }
             catch (Exception e)
             {
-                LoggingService.Write(LogLevel.Debug, e);
+                Logger.Write(LogLevel.Debug, e);
             }
         }
     }

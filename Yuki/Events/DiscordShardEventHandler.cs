@@ -1,13 +1,9 @@
 ﻿using Discord.WebSocket;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Yuki.Core;
-using System.Timers;
-using Yuki.Data;
-using Yuki.Services;
 
 namespace Yuki.Events
 {
@@ -23,7 +19,7 @@ namespace Yuki.Events
 
         public static Task ShardConnected(DiscordSocketClient client)
         {
-            LoggingService.Write(LogLevel.Status, "Shard " + client.ShardId + ": connected");
+            Logger.Write(LogLevel.Status, "Shard " + client.ShardId + ": connected");
 
             return Task.CompletedTask;
         }
@@ -32,7 +28,7 @@ namespace Yuki.Events
         {
             if(!YukiBot.Services.GetRequiredService<YukiBot>().IsShuttingDown)
             {
-                LoggingService.Write(LogLevel.Error, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
+                Logger.Write(LogLevel.Error, "Shard " + client.ShardId + ": disconnected. Reason: " + e);
 
                 client.StopAsync();
                 client.StartAsync();

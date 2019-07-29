@@ -3,7 +3,7 @@ using Qmmands;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 
-namespace Yuki.Commands.Modules.ModerationUtilityModule
+namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {

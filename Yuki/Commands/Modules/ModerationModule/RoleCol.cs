@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 using Yuki.Extensions;
 
-namespace Yuki.Commands.Modules.ModerationUtilityModule
+namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {

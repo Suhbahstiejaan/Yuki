@@ -4,6 +4,7 @@ using InteractivityAddon;
 using Qmmands;
 using System;
 using System.Threading.Tasks;
+using Yuki.Core;
 using Yuki.Data.Objects;
 using Yuki.Services;
 
@@ -84,7 +85,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             }
             catch(Exception e)
             {
-                LoggingService.Write(LogLevel.Debug, e);
+                Logger.Write(LogLevel.Debug, e);
             }
         }
     }

@@ -15,20 +15,17 @@ namespace Yuki.Commands.Preconditions
 
             CheckResult result = CheckResult.Unsuccessful("You must be an administrator to execute this command.");
 
+            if (context.Guild.OwnerId == context.User.Id)
+            {
+                return Task.FromResult(CheckResult.Successful);
+            }
+
             foreach (ulong role in GuildSettings.GetGuild(context.Guild.Id).AdministratorRoles)
             {
                 if ((context.User as IGuildUser).RoleIds.Contains(role))
                 {
                     result = CheckResult.Successful;
                     break;
-                }
-            }
-
-            if(!result.IsSuccessful)
-            {
-                if(context.Guild.OwnerId == context.User.Id)
-                {
-                    result = CheckResult.Successful;
                 }
             }
 

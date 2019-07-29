@@ -10,7 +10,7 @@ using Yuki.Data.Objects;
 using Yuki.Extensions;
 using Yuki.Services;
 
-namespace Yuki.Commands.Modules.ModerationUtilityModule
+namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {

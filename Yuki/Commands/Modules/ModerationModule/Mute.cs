@@ -7,7 +7,7 @@ using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
 using Yuki.Services.Database;
 
-namespace Yuki.Commands.Modules.ModerationUtilityModule
+namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {

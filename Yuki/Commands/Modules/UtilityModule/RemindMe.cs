@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Yuki.Core;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
@@ -65,7 +66,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             }
             catch(Exception e)
             {
-                LoggingService.Write(LogLevel.Error, e);
+                Logger.Write(LogLevel.Error, e);
                 await ReplyAsync("error_occurred");
             }
         }

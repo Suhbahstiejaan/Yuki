@@ -13,7 +13,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetModulesAsync()
         {
-            IEnumerable<Module> modules = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules().Where(mod => mod.Parent == null);
+            IEnumerable<Module> modules = YukiBot.Discord.CommandService.GetAllModules().Where(mod => mod.Parent == null);
 
             EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("modules_title")).WithFooter(Language.GetString("modules_help"));
 

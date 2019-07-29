@@ -1,14 +1,15 @@
 ﻿using Discord;
 using Nett;
+using Qmmands;
 using System.Collections.Generic;
 using System.IO;
 using Yuki.Commands;
 using Yuki.Data.Objects;
 using Yuki.Services.Database;
 
-namespace Yuki.Services
+namespace Yuki.Core
 {
-    public static class LocalizationService
+    public static class Localization
     {
         public static Dictionary<string, Language> Languages { get; private set; } = new Dictionary<string, Language>();
 
@@ -75,6 +76,46 @@ namespace Yuki.Services
             }
 
             return GetLanguage(langCode);
+        }
+
+        public static void CheckCommands(CommandService commands)
+        {
+            foreach (KeyValuePair<string, Language> lang in Languages)
+            {
+                Logger.Write(LogLevel.Info, $"Checking translations for language {lang.Key}...");
+
+                int validTranslations = commands.GetAllCommands().Count;
+
+                foreach (Command c in commands.GetAllCommands())
+                {
+                    string cmd = $"command_{c.Name.ToLower().Replace(' ', '_')}_desc";
+
+                    if (Languages[lang.Key].GetString(cmd) == cmd)
+                    {
+                        Logger.Write(LogLevel.Warning, $"No translation found for {cmd}");
+                        validTranslations--;
+                    }
+                }
+
+                if (validTranslations != 0)
+                {
+                    int numMissing = commands.GetAllCommands().Count - validTranslations;
+
+                    if (numMissing > 1)
+                    {
+                        Logger.Write(LogLevel.Warning, $"{numMissing} commands are missing a translation. Please consider adding them!");
+                    }
+                    else
+                    {
+                        Logger.Write(LogLevel.Warning, $"A command is missing a translation. Please consider adding adding it!");
+                    }
+                }
+                else
+                {
+                    Logger.Write(LogLevel.Info,
+                        $"All command translations validated for {lang.Key}. This does not guarantee ALL string translations exist!");
+                }
+            }
         }
     }
 }

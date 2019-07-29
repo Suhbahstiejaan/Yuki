@@ -256,6 +256,15 @@ namespace Yuki.Data.Objects
         public string command_scramblr_desc { get; set; }
         public string command_scramblr_usage { get; set; }
 
+        public string command_setlang_desc { get; set; }
+        public string command_setlang_usage { get; set; }
+
+        public string command_selfrole_add_desc { get; set; }
+        public string command_selfrole_add_usage { get; set; }
+
+        public string command_selfrole_remove_desc { get; set; }
+        public string command_selfrole_remove_usage { get; set; }
+
 
         /* Strings */
         public string only_dm_channel { get; set; }
@@ -458,9 +467,6 @@ namespace Yuki.Data.Objects
         public string donate_title { get; set; }
         public string donate_desc { get; set; }
 
-        public string back { get; set; }
-        public string exit { get; set; }
-
         public string source { get; set; }
         public string page { get; set; }
         public string _explicit { get; set; }
@@ -487,18 +493,15 @@ namespace Yuki.Data.Objects
         public string slowmode_enabled { get; set; }
 
         public string warnings_list_title { get; set; }
-
         public string no_custom_commands { get; set; }
-
         public string goodnight_title { get; set; }
-
         public string langs_title { get; set; }
-
         public string remindme_incorrect_response_string { get; set; }
-
         public string role_given { get; set; }
         public string role_not_found { get; set; }
-
         public string roles_list_title { get; set; }
+        public string lang_set_to { get; set; }
+        public string role_added { get; set; }
+        public string role_removed { get; set; }
     }
 }

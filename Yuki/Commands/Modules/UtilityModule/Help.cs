@@ -29,7 +29,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                 else
                 {
                     /* TODO: list other found commands? */
-                    List<Command> commands = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllCommands()
+                    List<Command> commands = YukiBot.Discord.CommandService.GetAllCommands()
                         .Where(cmd => ((cmd.Module.Parent != null) ? $"{cmd.Module.Name.ToLower()}_{cmd.Name.ToLower()}" : cmd.Name.ToLower()) == commandStr.ToLower()).ToList();
 
                     if (commands.Count() == 1)

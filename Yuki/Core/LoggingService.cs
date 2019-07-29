@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Yuki.ColoredConsole;
 
-namespace Yuki.Services
+namespace Yuki.Core
 {
     public enum LogLevel
     {
@@ -16,11 +16,11 @@ namespace Yuki.Services
         Status
     }
 
-    public static class LoggingService
+    public static class Logger
     {
         private static string latestLogFile;
         
-        static LoggingService()
+        static Logger()
         {
             if(!Directory.Exists(FileDirectories.LogRoot))
             {

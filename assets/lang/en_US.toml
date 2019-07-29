@@ -216,6 +216,9 @@ command_reverse_usage = "y!reverse text"
 command_scramblr_desc = "Tweet Mashup, but for Discord!"
 command_scramblr_usage = "y!scramblr\ny!scramblr @JoeyWowey#4665"
 
+command_setlang_desc = "Sets the response language for your server. Specify `default` to return to the default language."
+command_setlang_usage = "y!scramblr\ny!scramblr @JoeyWowey#4665"
+
 
 
 #Strings
@@ -450,16 +453,13 @@ slowmode_disabled = "Slowmode has been disabled"
 slowmode_enabled = "Slowmode enabled! Time has been set to %time%"
 
 warnings_list_title = "Warnings"
-
 no_custom_commands = "No custom commands found for this server"
-
 goodnight_title = "Goodnight, %user%!"
-
 langs_title = "Languages"
-
 remindme_incorrect_response_string = "Incorrect response string!"
-
-role_given = "%user%, you've been given: `%rolename%`"
+role_given = "%user%, you now have the `%rolename%` role"
 role_not_found = "%user%, I couldn't find a role with the name `%rolename%`"
-
 roles_list_title = "Roles"
+lang_set_to = "Language set to: %lang%"
+role_added = "%rolename% has been added as a self-assignable role"
+role_removed = "%rolename% is no longer a self-assignable role"

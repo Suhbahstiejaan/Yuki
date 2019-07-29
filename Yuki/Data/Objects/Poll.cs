@@ -60,7 +60,7 @@ namespace Yuki.Data.Objects
         /// <param name="userId"></param>
         /// <returns></returns>
         public bool UserCanVote(ulong userId)
-            => YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.Guilds.FirstOrDefault(guild => guild.Id == GuildId && guild.GetUser(userId) != null) != null;
+            => YukiBot.Discord.Client.Guilds.FirstOrDefault(guild => guild.Id == GuildId && guild.GetUser(userId) != null) != null;
 
         public bool HasUserVoted(ulong userId)
             => HasUserVoted(userId, out PollItem item);

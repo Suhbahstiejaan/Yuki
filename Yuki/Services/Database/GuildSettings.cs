@@ -1,8 +1,6 @@
 ﻿using LiteDB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 
 namespace Yuki.Services.Database
@@ -218,7 +216,7 @@ namespace Yuki.Services.Database
         #endregion
 
         #region Toggles
-        public static void ToggleWelcome(ulong guildId)
+        public static void ToggleWelcome(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -228,14 +226,14 @@ namespace Yuki.Services.Database
                 {
 
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableWelcome = !config.EnableWelcome;
+                    config.EnableWelcome = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleGoodbye(ulong guildId)
+        public static void ToggleGoodbye(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -244,14 +242,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableGoodbye = !config.EnableGoodbye;
+                    config.EnableGoodbye = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleNsfw(ulong guildId)
+        public static void ToggleNsfw(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -260,14 +258,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableNsfw = !config.EnableNsfw;
+                    config.EnableNsfw = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleLogging(ulong guildId)
+        public static void ToggleLogging(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -276,14 +274,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableLogging = !config.EnableLogging;
+                    config.EnableLogging = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleCache(ulong guildId)
+        public static void ToggleCache(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -292,14 +290,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableCache = !config.EnableCache;
+                    config.EnableCache = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleMute(ulong guildId)
+        public static void ToggleMute(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -315,7 +313,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void ToggleWarnings(ulong guildId)
+        public static void ToggleWarnings(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -324,14 +322,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableWarnings = !config.EnableWarnings;
+                    config.EnableWarnings = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void ToggleRoles(ulong guildId)
+        public static void ToggleRoles(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -340,14 +338,14 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnableRoles = !config.EnableRoles;
+                    config.EnableRoles = state;
 
                     configs.Update(config);
                 }
             }
         }
 
-        public static void TogglePrefix(ulong guildId)
+        public static void TogglePrefix(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -356,7 +354,7 @@ namespace Yuki.Services.Database
                 if (configs.FindAll().Any(conf => conf.Id == guildId))
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-                    config.EnablePrefix = !config.EnablePrefix;
+                    config.EnablePrefix = state;
 
                     configs.Update(config);
                 }
@@ -577,7 +575,7 @@ namespace Yuki.Services.Database
         #endregion
 
         #region Removes
-        public static void RemChannelNsfw(ulong channelId, ulong guildId)
+        public static void RemoveChannelNsfw(ulong channelId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -597,7 +595,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemChannelCache(ulong channelId, ulong guildId)
+        public static void RemoveChannelCache(ulong channelId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -617,7 +615,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemWarningAction(int num, ulong guildId)
+        public static void RemoveWarningAction(int num, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -637,7 +635,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemRole(ulong roleId, ulong guildId)
+        public static void RemoveRole(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -657,7 +655,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemWarning(ulong userId, ulong guildId)
+        public static void RemoveWarning(ulong userId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -687,7 +685,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemRoleModerator(ulong roleId, ulong guildId)
+        public static void RemoveRoleModerator(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -707,7 +705,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemRoleAdministrator(ulong roleId, ulong guildId)
+        public static void RemoveRoleAdministrator(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -727,7 +725,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemMute(GuildMutedUser user, ulong guildId)
+        public static void RemoveMute(GuildMutedUser user, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {

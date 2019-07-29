@@ -1,0 +1,60 @@
+﻿using Qmmands;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Yuki.Services.Database;
+
+namespace Yuki.Commands.Modules.ModerationModule
+{
+    public partial class ModerationUtilityModule
+    {
+        [Command("enable")]
+        public async Task EnableAsync([Remainder] string option)
+        {
+            bool found = true;
+
+            ulong guildId = Context.Guild.Id;
+
+            switch(option)
+            {
+                case "welcome":
+                    GuildSettings.ToggleWelcome(guildId, true);
+                    break;
+                case "goodbye":
+                    GuildSettings.ToggleGoodbye(guildId, true);
+                    break;
+                case "nsfw":
+                    GuildSettings.ToggleNsfw(guildId, true);
+                    break;
+                case "logging":
+                    GuildSettings.ToggleLogging(guildId, true);
+                    break;
+                case "message cache":
+                    GuildSettings.ToggleCache(guildId, true);
+                    break;
+                case "selfrole":
+                    GuildSettings.ToggleRoles(guildId, true);
+                    break;
+                case "warnings":
+                    GuildSettings.ToggleWarnings(guildId, true);
+                    break;
+                case "muting":
+                    GuildSettings.ToggleMute(guildId, true);
+                    break;
+                case "pin archive":
+
+                    break;
+                default:
+                    found = false;
+                    break;
+            }
+
+            if(found)
+            {
+                await ReplyAsync(Language.GetString("setting_enabled"));
+
+            }
+        }
+    }
+}

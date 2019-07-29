@@ -5,7 +5,7 @@ using Yuki.Commands.Preconditions;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
-namespace Yuki.Commands.Modules.ModerationUtilityModule
+namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {
@@ -20,7 +20,7 @@ namespace Yuki.Commands.Modules.ModerationUtilityModule
             {
                 await user.RemoveRoleAsync(Context.Guild.GetRole(config.MuteRole));
 
-                GuildSettings.RemWarning(user.Id, Context.Guild.Id);
+                GuildSettings.RemoveWarning(user.Id, Context.Guild.Id);
 
                 await ReplyAsync(Language.GetString("user_remwarn"));
             }

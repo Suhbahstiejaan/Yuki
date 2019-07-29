@@ -13,7 +13,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ShowCommandsAsync(string moduleName)
         {
-            IReadOnlyList<Command> commands = YukiBot.Services.GetRequiredService<YukiBot>().CommandService.GetAllModules()
+            IReadOnlyList<Command> commands = YukiBot.Discord.CommandService.GetAllModules()
                                         .FirstOrDefault(mod => mod.Name.ToLower() == moduleName.ToLower()).Commands;
 
             EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("commands_title")).WithFooter(Language.GetString("commands_help"));

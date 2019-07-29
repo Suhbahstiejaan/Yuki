@@ -3,16 +3,16 @@ using InteractivityAddon;
 using Microsoft.Extensions.DependencyInjection;
 using Qmmands;
 using System.Threading.Tasks;
+using Yuki.Core;
 using Yuki.Data.Objects;
-using Yuki.Services;
 
 namespace Yuki.Commands
 {
     public abstract class YukiModule : ModuleBase<YukiCommandContext>
     {
-        public Language Language => LocalizationService.GetLanguage(Context);
+        public Language Language => Localization.GetLanguage(Context);
 
-        public InteractivityService Interactivity { get; } = YukiBot.Services.GetRequiredService<InteractivityService>();
+        public InteractivityService Interactivity { get; } = YukiBot.Discord.Services.GetRequiredService<InteractivityService>();
 
         public bool UserHasPriority(IUser executor, IUser otherUser) => Context.UserHasPriority(executor, otherUser);
         public bool RoleHasPriority(IRole role, IRole otherRole) => Context.RoleHasPriority(role, otherRole);
