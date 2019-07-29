@@ -447,16 +447,6 @@ namespace Yuki.Data.Objects
         public string remindme_success { get; set; }
         public string remindme_datetime_short { get; set; }
 
-        public string config_title { get; set; }
-        public string config_setting_welcome { get; set; }
-        public string config_setting_nsfw { get; set; }
-        public string config_setting_log { get; set; }
-        public string config_setting_cache { get; set; }
-        public string config_setting_mute { get; set; }
-        public string config_setting_prefix { get; set; }
-        public string config_setting_roles { get; set; }
-        public string config_setting_warnings { get; set; }
-
         public string pokemon_weight { get; set; }
         public string pokemon_height { get; set; }
         public string pokemon_base_exp { get; set; }
@@ -467,8 +457,6 @@ namespace Yuki.Data.Objects
 
         public string donate_title { get; set; }
         public string donate_desc { get; set; }
-
-
 
         public string back { get; set; }
         public string exit { get; set; }
@@ -512,108 +500,5 @@ namespace Yuki.Data.Objects
         public string role_not_found { get; set; }
 
         public string roles_list_title { get; set; }
-
-        public string config_footer { get; set; }
-        public string settings_exit { get; set; }
-
-        public string setting_welcome { get; set; }
-        public string setting_nsfw { get; set; }
-        public string setting_log { get; set; }
-        public string setting_cache { get; set; }
-        public string setting_mute { get; set; }
-        public string setting_prefix { get; set; }
-        public string setting_roles { get; set; }
-        public string setting_warnings { get; set; }
-        public string setting_roles_moderator { get; set; }
-        public string setting_roles_administrator { get; set; }
-
-        public string set_language { get; set; }
-        public string welcome_set_welcome { get; set; }
-        public string welcome_set_goodbye { get; set; }
-        public string welcome_set_channel { get; set; }
-        public string welcome_toggle_welcome { get; set; }
-        public string welcome_toggle_goodbye { get; set; }
-        public string nsfw_toggle { get; set; }
-        public string nsfw_add_channel { get; set; }
-        public string nsfw_rem_channel { get; set; }
-        public string log_toggle { get; set; }
-        public string log_set { get; set; }
-        public string cache_toggle { get; set; }
-        public string cache_add_channel { get; set; }
-        public string cache_rem_channel { get; set; }
-        public string mute_toggle { get; set; }
-        public string mute_set_role { get; set; }
-        public string prefix_toggle { get; set; }
-        public string prefix_set { get; set; }
-        public string roles_toggle { get; set; }
-        public string roles_set { get; set; }
-        public string roles_remove { get; set; }
-        public string roles_moderator { get; set; }
-        public string roles_administrator { get; set; }
-        public string warnings_toggle { get; set; }
-        public string warnings_add { get; set; }
-        public string warnings_remove { get; set; }
-        public string roles_moderator_add { get; set; }
-        public string roles_moderator_remove { get; set; }
-        public string roles_administrator_add { get; set; }
-        public string roles_administrator_remove { get; set; }
-
-        public string setting_welcome_toggle_desc { get; set; }
-        public string welcome_toggled { get; set; }
-        public string setting_warning_toggle_desc { get; set; }
-        public string warnings_toggled { get; set; }
-        public string setting_role_toggle_desc { get; set; }
-        public string roles_toggled { get; set; }
-        public string setting_prefix_toggle_desc { get; set; }
-        public string prefix_toggled { get; set; }
-        public string setting_nsfw_toggle_desc { get; set; }
-        public string nsfw_toggled { get; set; }
-        public string setting_mute_toggle_desc { get; set; }
-        public string mute_toggled { get; set; }
-        public string setting_logging_toggle_desc { get; set; }
-        public string logging_toggled { get; set; }
-        public string setting_goodbye_toggle_desc { get; set; }
-        public string goodbye_toggled { get; set; }
-        public string setting_cache_toggle_desc { get; set; }
-        public string cache_toggled { get; set; }
-        public string setting_welcome_set_desc { get; set; }
-        public string goodbye_set_to { get; set; }
-        public string setting_mute_set_desc { get; set; }
-        public string mute_set { get; set; }
-        public string set_language_text { get; set; }
-        public string language_not_found { get; set; }
-        public string language_set { get; set; }
-        public string setting_goodbye_set_desc { get; set; }
-        public string setting_warning_rem_desc { get; set; }
-        public string warningaction_removed { get; set; }
-        public string setting_role_rem_desc { get; set; }
-        public string role_removed { get; set; }
-        public string setting_moderator_rem_role_desc { get; set; }
-        public string moderator_removed { get; set; }
-        public string setting_channel_rem_nsfw_desc { get; set; }
-        public string nsfw_removed { get; set; }
-        public string setting_prefix_add_desc { get; set; }
-        public string prefix_added { get; set; }
-        public string setting_channel_rem_cache_desc { get; set; }
-        public string cache_removed { get; set; }
-        public string setting_moderator_add_role_desc { get; set; }
-        public string moderator_added { get; set; }
-        public string setting_administrator_rem_role_desc { get; set; }
-        public string administrator_removed { get; set; }
-        public string setting_warning_add_desc { get; set; }
-        public string warning_action_added { get; set; }
-        public string setting_role_add_desc { get; set; }
-        public string role_added { get; set; }
-        public string setting_channel_add_nsfw_desc { get; set; }
-        public string nsfw_added { get; set; }
-        public string setting_channel_add_log_desc { get; set; }
-        public string log_added { get; set; }
-        public string setting_channel_add_cache_desc { get; set; }
-        public string cache_added { get; set; }
-        public string setting_administrator_add_role_desc { get; set; }
-        public string administrator_added { get; set; }
-        public string set_welcomechannel_text { get; set; }
-        public string welcome_added { get; set; }
-        public string welcome_set_to { get; set; }
     }
 }
