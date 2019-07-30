@@ -83,35 +83,22 @@ namespace Yuki.Events
 
         private static void SetClientEvents(DiscordSocketClient client)
         {
-            client.JoinedGuild += DiscordSocketEventHandler.JoinedGuild;
-            client.LeftGuild += DiscordSocketEventHandler.LeftGuild;
+            client.MessageReceived += CommandHandler.HandleCommand;
 
-            client.ChannelCreated += DiscordSocketEventHandler.ChannelCreated;
-            client.ChannelDestroyed += DiscordSocketEventHandler.ChannelDestroyed;
-            client.ChannelUpdated += DiscordSocketEventHandler.ChannelUpdated;
-
-            client.GuildMemberUpdated += DiscordSocketEventHandler.GuildMemberUpdated;
-
-            client.GuildUpdated += DiscordSocketEventHandler.GuildUpdated;
-
-            client.MessageReceived += DiscordSocketEventHandler.MessageReceived;
             client.MessageUpdated += DiscordSocketEventHandler.MessageUpdated;
             client.MessageDeleted += DiscordSocketEventHandler.MessageDeleted;
 
-            client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
-            client.ReactionRemoved += DiscordSocketEventHandler.ReactionRemoved;
-            client.ReactionsCleared += DiscordSocketEventHandler.ReactionsCleared;
-
-            client.RoleCreated += DiscordSocketEventHandler.RoleCreated;
-            client.RoleDeleted += DiscordSocketEventHandler.RoleDeleted;
-            client.RoleUpdated += DiscordSocketEventHandler.RoleUpdated;
+            /* To uncomment once reaction roles are implemented
+             
+                client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
+                client.ReactionRemoved += DiscordSocketEventHandler.ReactionRemoved;
+                client.ReactionsCleared += DiscordSocketEventHandler.ReactionsCleared;
+            */
 
             client.UserBanned += DiscordSocketEventHandler.UserBanned;
             client.UserJoined += DiscordSocketEventHandler.UserJoined;
             client.UserLeft += DiscordSocketEventHandler.UserLeft;
             client.UserUnbanned += DiscordSocketEventHandler.UserUnbanned;
-
-            client.VoiceServerUpdated += DiscordSocketEventHandler.VoiceServerUpdated;
         }
     }
 }

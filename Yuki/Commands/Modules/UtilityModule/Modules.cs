@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Microsoft.Extensions.DependencyInjection;
 using Qmmands;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,9 @@ namespace Yuki.Commands.Modules.UtilityModule
 
             foreach (Module module in modules)
             {
-                embed.AddField(module.Name, Language.GetString("modules_count").Replace("%cmds%", module.Commands.Count.ToString()), true);
+                int commandCount = module.Commands.Count + module.Submodules.Count;
+
+                embed.AddField(module.Name, Language.GetString("modules_count").Replace("%cmds%", commandCount.ToString()), true);
             }
 
             await ReplyAsync(embed);

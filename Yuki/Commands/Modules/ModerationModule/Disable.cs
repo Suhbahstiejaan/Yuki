@@ -6,48 +6,48 @@ namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {
-        [Command("enable")]
-        public async Task EnableAsync([Remainder] string option)
+        [Command("disable")]
+        public async Task DisableAsync([Remainder] string option)
         {
             bool found = true;
 
             ulong guildId = Context.Guild.Id;
 
-            switch(option.ToLower())
+            switch (option.ToLower())
             {
                 case "welcome":
-                    GuildSettings.ToggleWelcome(guildId, true);
+                    GuildSettings.ToggleWelcome(guildId, false);
                     break;
                 case "goodbye":
-                    GuildSettings.ToggleGoodbye(guildId, true);
+                    GuildSettings.ToggleGoodbye(guildId, false);
                     break;
                 case "nsfw":
-                    GuildSettings.ToggleNsfw(guildId, true);
+                    GuildSettings.ToggleNsfw(guildId, false);
                     break;
                 case "logging":
-                    GuildSettings.ToggleLogging(guildId, true);
+                    GuildSettings.ToggleLogging(guildId, false);
                     break;
                 case "message cache":
                 case "messagecache":
-                    GuildSettings.ToggleCache(guildId, true);
+                    GuildSettings.ToggleCache(guildId, false);
                     break;
                 case "selfrole":
-                    GuildSettings.ToggleRoles(guildId, true);
+                    GuildSettings.ToggleRoles(guildId, false);
                     break;
                 case "warnings":
-                    GuildSettings.ToggleWarnings(guildId, true);
+                    GuildSettings.ToggleWarnings(guildId, false);
                     break;
                 case "muting":
-                    GuildSettings.ToggleMute(guildId, true);
+                    GuildSettings.ToggleMute(guildId, false);
                     break;
                 default:
                     found = false;
                     break;
             }
 
-            if(found)
+            if (found)
             {
-                await ReplyAsync(Language.GetString("setting_enabled").Replace("%settingname%", option));
+                await ReplyAsync(Language.GetString("setting_disabled").Replace("%settingname%", option));
             }
         }
     }

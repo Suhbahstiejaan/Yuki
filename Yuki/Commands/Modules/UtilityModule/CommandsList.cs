@@ -13,8 +13,8 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ShowCommandsAsync(string moduleName)
         {
-            IReadOnlyList<Command> commands = YukiBot.Discord.CommandService.GetAllModules()
-                                        .FirstOrDefault(mod => mod.Name.ToLower() == moduleName.ToLower()).Commands;
+            List<Command> commands = YukiBot.Discord.CommandService.GetAllModules()
+                                        .FirstOrDefault(mod => mod.Name.ToLower() == moduleName.ToLower()).Commands.ToList();
 
             EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("commands_title")).WithFooter(Language.GetString("commands_help"));
 
@@ -23,6 +23,14 @@ namespace Yuki.Commands.Modules.UtilityModule
                 string embedValue = string.Join(", ", command.Aliases.Where(alias => alias != command.Name));
                 
                 embed.AddField(command.Name, (!string.IsNullOrWhiteSpace(embedValue) ? embedValue : Language.GetString("commands_no_alias")), true);
+            }
+
+            List<string> subModules = YukiBot.Discord.CommandService.GetAllModules()
+                                             .FirstOrDefault(mod => mod.Name.ToLower() == moduleName.ToLower()).Submodules.Select(mod => mod.Name).ToList();
+
+            foreach (string mod in subModules)
+            {
+                embed.AddField(mod, "Submodule", true);
             }
 
             await ReplyAsync(embed);

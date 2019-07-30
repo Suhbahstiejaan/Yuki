@@ -42,6 +42,8 @@ namespace Yuki.Services.Database
                 WarningActions = new List<GuildWarningAction>(),
                 MutedUsers = new List<GuildMutedUser>(),
 
+                NsfwBlacklist = new List<string>(),
+
                 WelcomeChannel = 0,
                 LogChannel = 0,
                 MuteRole = 0,
@@ -572,6 +574,46 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static void BlacklistTag(string tag, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (!config.NsfwBlacklist.Contains(tag))
+                    {
+                        config.NsfwBlacklist.Add(tag);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void AddCommand(GuildCommand command, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (!config.Commands.Any(c => c.Name.ToLower() == command.Name.ToLower()))
+                    {
+                        config.Commands.Add(command);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Removes
@@ -608,6 +650,26 @@ namespace Yuki.Services.Database
                     if (config.CacheIgnoredChannels.Contains(channelId))
                     {
                         config.CacheIgnoredChannels.Remove(channelId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void RemoveChannelLog(ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.LogChannel != 0)
+                    {
+                        config.LogChannel = 0;
                     }
 
                     configs.Update(config);
@@ -789,7 +851,45 @@ namespace Yuki.Services.Database
             }
         }
 
+        public static void RemoveBlacklistTag(string tag, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.NsfwBlacklist.Contains(tag))
+                    {
+                        config.NsfwBlacklist.Remove(tag);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void RemoveCommand(string command, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.Commands.Any(c => c.Name.ToLower() == command.ToLower()))
+                    {
+                        config.Commands.Remove(config.Commands.FirstOrDefault(c => c.Name.ToLower() == command.ToLower()));
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Info

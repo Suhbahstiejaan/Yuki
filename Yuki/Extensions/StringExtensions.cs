@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace Yuki.Extensions
 {
@@ -10,6 +11,26 @@ namespace Yuki.Extensions
         public static bool IsUrl(this string url)
             => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        public static bool IsImage(this string url)
+        {
+            char[] chars = url.ToCharArray();
+
+            if (url.Length > 3 && url.Substring(url.Length - 3).Select(x => char.IsLetterOrDigit(x)).Any(x => x == false))
+                return false;
+            string targetExtension = Path.GetExtension(url).Replace(".", "");
+            if (String.IsNullOrEmpty(targetExtension))
+                return false;
+            else
+                targetExtension = targetExtension.ToLowerInvariant();
+
+            List<string> recognisedImageExtensions = new List<string>() { "jpeg", "jpg", "png", "gif" };
+
+            foreach (string extension in recognisedImageExtensions)
+                if (extension.Equals(targetExtension))
+                    return true;
+            return false;
+        }
 
         public static Discord.Color AsColor(this string hex)
         {

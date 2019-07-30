@@ -38,6 +38,8 @@ namespace Yuki.Data.Objects.Database
         public List<GuildWarnedUser> WarnedUsers { get; set; }
         public List<GuildWarningAction> WarningActions { get; set; }
 
+        public List<string> NsfwBlacklist { get; set; }
+
         public List<ulong> CacheIgnoredChannels { get; set; }
         public List<ulong> LevelIgnoredChannels { get; set; }
         public List<ulong> AutoBanUsers { get; set; }    /* Users to ban when they join */

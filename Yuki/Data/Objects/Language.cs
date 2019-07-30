@@ -507,5 +507,10 @@ namespace Yuki.Data.Objects
         public string moderator_role_removed { get; set; }
         public string administrator_role_removed { get; set; }
         public string administrator_role_added { get; set; }
+
+        /* Events */
+        public string event_channel_create { get; set; }
+        public string event_channel_name { get; set; }
+        public string event_channel_permissions { get; set; }
     }
 }

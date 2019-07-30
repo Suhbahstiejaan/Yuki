@@ -19,7 +19,8 @@ namespace Yuki.Commands.Modules.UtilityModule
             {
                 EmbedBuilder helpEmbed = Context.CreateEmbedBuilder(Language.GetString("help_title"))
                     .WithDescription(Language.GetString("help_info_description")
-                        .Replace("%botinvite%", YukiBot.BotInvUrl).Replace("%serverinvite%", YukiBot.ServerUrl)
+                        .Replace("%botinvite%", YukiBot.BotInvUrl)
+                        .Replace("%serverinvite%", YukiBot.ServerUrl)
                         .Replace("%github%", YukiBot.GithubUrl));
 
                 if (commandStr == "")
@@ -28,7 +29,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                 }
                 else
                 {
-                    /* TODO: list other found commands? */
+                    /* TODO: list similar commands? */
                     List<Command> commands = YukiBot.Discord.CommandService.GetAllCommands()
                         .Where(cmd => ((cmd.Module.Parent != null) ? $"{cmd.Module.Name.ToLower()}_{cmd.Name.ToLower()}" : cmd.Name.ToLower()) == commandStr.ToLower()).ToList();
 
@@ -54,7 +55,28 @@ namespace Yuki.Commands.Modules.UtilityModule
                     }
                     else
                     {
-                        await ReplyAsync(helpEmbed);
+                        List<Command> subCommands = YukiBot.Discord.CommandService.GetAllModules()
+                                                                .Where(mod => mod.Parent != null && mod.Name.ToLower() == commandStr.ToLower())
+                                                                .SelectMany(mod => mod.Commands).ToList();
+
+                        if(subCommands != null && subCommands.Count > 0)
+                        {
+                            EmbedBuilder embed = Context.CreateEmbedBuilder(subCommands[0].Module.Name);
+
+                            foreach(Command subCommand in subCommands)
+                            {
+                                string description = Language.GetString("command_" + subCommand.Name.ToLower() + "_desc") + "\n\n" +
+                                                     Language.GetString("command_" + subCommand.Name.ToLower() + "_usage") + "\n";
+
+                                embed.AddField(subCommand.Name, description);
+                            }
+
+                            await ReplyAsync(embed);
+                        }
+                        else
+                        {
+                            await ReplyAsync(helpEmbed);
+                        }
                     }
                 }
             }

@@ -1,17 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using Qmmands;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Yuki.Commands;
 using Yuki.Core;
-using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
-using Yuki.Services;
 using Yuki.Services.Database;
 
 namespace Yuki.Events
@@ -33,70 +28,7 @@ namespace Yuki.Events
             return Localization.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
         }
 
-        public static async Task JoinedGuild(SocketGuild guild) { }
-        public static async Task LeftGuild(SocketGuild guild) { }
-
-        public static async Task ChannelCreated(SocketChannel channel)
-        {
-            Language lang = GetLanguage(channel);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Green)
-                .WithAuthor(lang.GetString("event_channel_create"))
-                .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
-
-            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
-        }
-
-        public static async Task ChannelDestroyed(SocketChannel channel)
-        {
-            Language lang = GetLanguage(channel);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Red)
-                .WithAuthor(lang.GetString("event_channel_delete"))
-                .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
-
-            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
-        }
-
-        public static async Task ChannelUpdated(SocketChannel channelOld, SocketChannel channel)
-        {
-            Language lang = GetLanguage(channel);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Orange)
-                .WithAuthor(lang.GetString("event_channel_update"))
-                .AddField(lang.GetString("event_channel_name"), (channel as IGuildChannel).Name);
-
-            await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
-        }
-
-        public static async Task GuildMemberUpdated(SocketGuildUser userOld, SocketGuildUser user)
-        {
-            Language lang = GetLanguage(user.Guild.Id);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Orange)
-                .WithAuthor(lang.GetString("event_member_update"))
-                .AddField(lang.GetString("event_member_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
-
-            await LogMessageAsync(embed, user.Guild.Id);
-        }
-
-        public static async Task GuildUpdated(SocketGuild guildOld, SocketGuild guild)
-        {
-            Language lang = GetLanguage(guild.Id);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Orange)
-                .WithAuthor(lang.GetString("event_guild_update"))
-                .AddField(lang.GetString("event_guild_name"), guild.Name);
-
-            await LogMessageAsync(embed, guild.Id);
-        }
-        
-        public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
+        public static async Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
             Messages.InsertOrUpdate(new YukiMessage()
             {
@@ -107,74 +39,93 @@ namespace Yuki.Events
                 Content = (current as SocketUserMessage).Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
             });
 
-            return Task.CompletedTask;
+            if (!current.Author.IsBot && current.Content != messageOld.Value.Content)
+            {
+                string oldContent = messageOld.Value.Content;
+                string newContent = current.Content;
+
+                if (oldContent.Length > 1000)
+                {
+                    oldContent = oldContent.Substring(0, 997) + "...";
+                }
+
+                if (newContent.Length > 1000)
+                {
+                    newContent = newContent.Substring(0, 997) + "...";
+                }
+
+                Language lang = GetLanguage(channel);
+
+                EmbedBuilder embed = new EmbedBuilder()
+                    .WithAuthor(lang.GetString("event_message_updated"), current.Author.GetAvatarUrl())
+                    .WithDescription($"{lang.GetString("event_message_id")}: {current.Id}\n" +
+                                     $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
+                                     $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(current.Author.Id)}")
+                    .AddField(lang.GetString("event_message_old"), oldContent)
+                    .AddField(lang.GetString("event_message_new"), newContent)
+                    .WithColor(Color.Gold);
+
+                await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
+            }
         }
 
         public static async Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
             Messages.Remove(message.Value.Id);
 
-            Language lang = GetLanguage(channel);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Red)
-                .WithAuthor(lang.GetString("event_message_deleted"))
-                .AddField(lang.GetString("message_author"), $"{message.Value.Author.Username}#{message.Value.Author.Discriminator} ({message.Value.Author.Id})");
-
-            if (message.Value.Content != null)
-            { 
-                embed.AddField(lang.GetString("event_message_text"), message.Value.Content ?? lang.GetString("none"));
-            }
-
-            if(message.Value.Attachments.Count > 0)
+            if (!message.Value.Author.IsBot)
             {
-                embed.AddField(lang.GetString("event_message_attachments"), string.Join("\n", message.Value.Attachments.Select(a => $"[{a.Filename}]({a.Url})")));
+                string content = message.Value.Content;
+
+                if (content.Length > 1000)
+                {
+                    content = content.Substring(0, 997) + "...";
+                }
+
+                Language lang = GetLanguage(channel);
+
+                EmbedBuilder embed = new EmbedBuilder()
+                    .WithAuthor(lang.GetString("event_message_deleted"), message.Value.Author.GetAvatarUrl())
+                    .WithDescription($"{lang.GetString("event_message_id")}: {message.Value.Id}\n" +
+                                     $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
+                                     $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(message.Value.Author.Id)}")
+                    .WithColor(Color.Red);
+
+                if(message.Value.Attachments.Count > 0)
+                {
+                    if (message.Value.Attachments.Any(att => att.ProxyUrl.IsUrl()))
+                    {
+                        embed.WithImageUrl(message.Value.Attachments.FirstOrDefault(att => att.ProxyUrl.IsUrl()).Url);
+                    }
+
+                    if(message.Value.Attachments.Count > 1)
+                    {
+                        string attachments = string.Empty;
+
+                        IAttachment[] _attachments = message.Value.Attachments.ToArray();
+
+                        for (int i = 0; i < _attachments.Length; i++)
+                        {
+                            attachments += $"[{lang.GetString("message_attachment")} {i + 1}]({_attachments[i].ProxyUrl})\n";
+                        }
+
+                        embed.AddField(lang.GetString("message_attachments"), attachments);
+                    }
+                }
+
+                if(!string.IsNullOrEmpty(content))
+                {
+                    embed.AddField(lang.GetString("message_content"), content);
+                }
+
+                await LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);
             }
-
-            await LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);
         }
 
 
-        public static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction) { }
+        /*public static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction) { }
         public static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction) { }
-        public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }
-
-
-        public static async Task RoleCreated(SocketRole role)
-        {
-            Language lang = GetLanguage(role.Guild.Id);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Green)
-                .WithAuthor(lang.GetString("event_role_created"))
-                .AddField(lang.GetString("event_role_name"), role.Name);
-
-            await LogMessageAsync(embed, role.Guild.Id);
-        }
-
-        public static async Task RoleDeleted(SocketRole role)
-        {
-            Language lang = GetLanguage(role.Guild.Id);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Red)
-                .WithAuthor(lang.GetString("event_role_deleted"))
-                .AddField(lang.GetString("event_role_name"), role.Name);
-
-            await LogMessageAsync(embed, role.Guild.Id);
-        }
-
-        public static async Task RoleUpdated(SocketRole roleOld, SocketRole role)
-        {
-            Language lang = GetLanguage(role.Guild.Id);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                .WithColor(Color.Orange)
-                .WithAuthor(lang.GetString("event_role_updated"))
-                .AddField(lang.GetString("event_role_name"), role.Name);
-
-            await LogMessageAsync(embed, role.Guild.Id);
-        }
+        public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }*/
 
 
         public static async Task UserBanned(SocketUser user, SocketGuild guild)
@@ -204,8 +155,9 @@ namespace Yuki.Events
 
             if(guild.EnableWelcome && !string.IsNullOrWhiteSpace(guild.WelcomeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
             {
-                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(
-                    guild.WelcomeMessage.Replace("%muser%", user.Mention).Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(guild.WelcomeMessage
+                                                                                            .Replace("%muser%", user.Mention)
+                                                                                            .Replace("%user%", $"{user.Username}#{user.Discriminator}"));
             }
         }
 
@@ -224,8 +176,9 @@ namespace Yuki.Events
 
             if (guild.EnableGoodbye && !string.IsNullOrWhiteSpace(guild.GoodbyeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
             {
-                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(
-                    guild.GoodbyeMessage.Replace("%muser%", user.Mention).Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(guild.GoodbyeMessage
+                                                                                            .Replace("%muser%", user.Mention)
+                                                                                            .Replace("%user%", $"{user.Username}#{user.Discriminator}"));
             }
         }
 
@@ -241,78 +194,16 @@ namespace Yuki.Events
             await LogMessageAsync(embed, guild.Id);
         }
 
-        public static async Task VoiceServerUpdated(SocketVoiceServer voiceServer) { }
-
-
-
-        public static async Task MessageReceived(SocketMessage socketMessage)
-        {
-            if (!(socketMessage is SocketUserMessage message))
-                return;
-            if (message.Source != MessageSource.User)
-                return;
-
-            DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
-                                            YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
-                                            YukiBot.Discord.Client.GetShard(0);
-
-
-            bool hasPrefix = HasPrefix(message, out string output);
-
-            if (!hasPrefix)
-            {
-                Messages.InsertOrUpdate(new YukiMessage()
-                {
-                    Id = message.Id,
-                    AuthorId = message.Author.Id,
-                    ChannelId = message.Channel.Id,
-                    SendDate = DateTime.UtcNow,
-                    Content = (socketMessage as SocketUserMessage)
-                            .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
-                });
-
-                return;
-            }
-
-            IResult result = await YukiBot.Discord.CommandService
-                       .ExecuteAsync(output, new YukiCommandContext(
-                            YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services));
-
-            if (result is FailedResult failedResult)
-            {
-                if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
-                {
-                    if(checksFailed.FailedChecks.Count == 1)
-                    {
-                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Error);
-                    }
-                    else
-                    {
-                        await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
-                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Error))}");
-                    }
-                }
-            }
-        }
-
-        private static bool HasPrefix(SocketUserMessage message, out string output)
-        {
-            output = string.Empty;
-
-            return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
-        }
-
         private static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
         {
-            /*embed.WithFooter(GetLanguage(guildId).GetString("log_event_fired_at").Replace("%time%", DateTime.UtcNow.ToPrettyTime(false, true)));
-
+            embed.WithFooter(DateTime.UtcNow.ToPrettyTime(false, true));
+            
             GuildConfiguration config = GuildSettings.GetGuild(guildId);
 
-            if(!config.Equals(null) && config.EnableLogging)
+            if(!config.Equals(null) && config.EnableLogging && config.LogChannel != 0 && YukiBot.Discord.Client.GetGuild(guildId).TextChannels.Any(c => c.Id == config.LogChannel))
             {
-                await YukiBot.Services.GetRequiredService<YukiBot>().DiscordClient.GetGuild(guildId)
-                    .GetTextChannel(config.LogChannel).SendMessageAsync("", false, embed.Build());
-            }*/
+                await YukiBot.Discord.Client.GetGuild(guildId).GetTextChannel(config.LogChannel).SendMessageAsync("", false, embed.Build());
+            }
         }
     }
 }
