@@ -79,9 +79,9 @@ namespace Yuki.Events
             {
                 Logger.Write(LogLevel.Error, $"Shard {client.ShardId} disconnected. Reason: " + e);
 
-                await YukiBot.Discord.StopAsync();
-                Thread.Sleep(500);
-                await YukiBot.Discord.LoginAsync(Config.GetConfig().token);
+                //await YukiBot.Discord.StopAsync();
+                //Thread.Sleep(500);
+                //await YukiBot.Discord.LoginAsync(Config.GetConfig().token);
             }
         }
 
