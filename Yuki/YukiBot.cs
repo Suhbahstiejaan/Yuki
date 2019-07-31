@@ -20,8 +20,7 @@ namespace Yuki
         public const string GithubUrl = "https://github.com/VeeThree/Yuki/";
 
         public static DiscordBot Discord { get; private set; }
-        public static DateTime StartTime { get; private set; }
-
+        
         /* Prevent errors on client disconnect */
         public static bool ShuttingDown;
 
@@ -31,8 +30,6 @@ namespace Yuki
             Localization.LoadLanguages();
 
             FileDirectories.CheckCreateDirectories();
-
-            StartTime = DateTime.Now;
 
             Discord = new DiscordBot();
         }

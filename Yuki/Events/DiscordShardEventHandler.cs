@@ -9,6 +9,7 @@ using Nett;
 using Discord;
 using Yuki.Extensions;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Yuki.Events
 {
@@ -46,11 +47,18 @@ namespace Yuki.Events
                     activity = ActivityType.Playing;
                 }
 
+                string uptime = Process.GetCurrentProcess().StartTime.ToPrettyTime(true, false);
+
+                if (string.IsNullOrEmpty(uptime))
+                {
+                    uptime = "Just started";
+                }
+
                 string randomStatus = statuses[new YukiRandom().Next(statuses.Count)];
                 await client.SetGameAsync(name: randomStatus.Replace("%shardid%", client.ShardId.ToString())
                                                             .Replace("%usercount%", client.Guilds.Select(guild => guild.MemberCount).Sum().ToString())
                                                             .Replace("%guildcount%", client.Guilds.Count.ToString())
-                                                            .Replace("%uptime%", new DateTime((DateTime.Now - YukiBot.StartTime).Ticks).ToPrettyTime(true, false)),
+                                                            .Replace("%uptime%", uptime),
                                           streamUrl: null, type: activity);
 
                 status.Interval = TimeSpan.FromMinutes(new YukiRandom().Next(1, 5)).TotalMilliseconds;

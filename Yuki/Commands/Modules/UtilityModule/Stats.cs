@@ -2,6 +2,7 @@
 using Discord;
 using Qmmands;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Core;
@@ -21,11 +22,11 @@ namespace Yuki.Commands.Modules.UtilityModule
                 shardId = YukiBot.Discord.Client.GetShardIdFor(Context.Guild);
             }
 
-            string uptime = new DateTime((DateTime.Now - YukiBot.StartTime).Ticks).ToPrettyTime(true, false);
+            string uptime = Process.GetCurrentProcess().StartTime.ToPrettyTime(true, false);
 
-            if (string.IsNullOrEmpty(uptime))
+            if(string.IsNullOrEmpty(uptime))
             {
-                uptime = "0 seconds";
+                uptime = "Just started";
             }
 
             EmbedBuilder embed = new EmbedBuilder()
