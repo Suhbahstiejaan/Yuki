@@ -14,8 +14,17 @@ namespace Yuki.Extensions
 
             if(getTimeLeft)
             {
-                TimeSpan timeLeft = dateTime - DateTime.UtcNow;
-                
+                TimeSpan timeLeft;
+
+                if(dateTime < DateTime.UtcNow)
+                {
+                    timeLeft = DateTime.UtcNow - dateTime;
+                }
+                else
+                {
+                    timeLeft = dateTime - DateTime.UtcNow;
+                }
+
                 if(timeLeft.Days > 0)
                 {
                     prettyTime += timeLeft.Days + " days, ";
@@ -23,12 +32,12 @@ namespace Yuki.Extensions
 
                 if(timeLeft.Hours > 0)
                 {
-                    prettyTime += timeLeft.Hours + "hours, ";
+                    prettyTime += timeLeft.Hours + " hours, ";
                 }
 
                 if(timeLeft.Minutes > 0)
                 {
-                    prettyTime += timeLeft.Minutes + "minutes, ";
+                    prettyTime += timeLeft.Minutes + " minutes, ";
                 }
 
                 if(prettyTime == string.Empty)

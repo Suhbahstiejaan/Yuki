@@ -22,13 +22,6 @@ namespace Yuki.Commands.Modules.UtilityModule
                 shardId = YukiBot.Discord.Client.GetShardIdFor(Context.Guild);
             }
 
-            string uptime = Process.GetCurrentProcess().StartTime.ToPrettyTime(true, false);
-
-            if(string.IsNullOrEmpty(uptime))
-            {
-                uptime = "Just started";
-            }
-
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(Language.GetString("bot_stats_title"), Context.Client.CurrentUser.GetAvatarUrl())
                 .WithColor(Colors.Pink)
@@ -36,7 +29,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                           Context.Client.Guilds.SelectMany(guild => guild.Users).GroupBy(user => user.Id).Select(user => user.First()).Count(), true)
                 .AddField(Language.GetString("bot_stats_guilds"), Context.Client.Guilds.Count, true)
                 .AddField(Language.GetString("bot_stats_creator"), "Vee#0003", true)
-                .AddField(Language.GetString("bot_stats_uptime"), uptime, true)
+                .AddField(Language.GetString("bot_stats_uptime"), Process.GetCurrentProcess().StartTime.ToUniversalTime().ToPrettyTime(true, false), true)
                 .AddField(Language.GetString("bot_stats_shard"), $"{shardId}/{YukiBot.Discord.ShardCount - 1}", true)
                 .AddField(Language.GetString("bot_stats_memory"), ByteSize.FromBytes(Convert.ToDouble(GC.GetTotalMemory(true))), true);
 

@@ -10,6 +10,7 @@ using Discord;
 using Yuki.Extensions;
 using System.Threading;
 using System.Diagnostics;
+using Yuki.Data;
 
 namespace Yuki.Events
 {
@@ -47,14 +48,10 @@ namespace Yuki.Events
                     activity = ActivityType.Playing;
                 }
 
-                string uptime = Process.GetCurrentProcess().StartTime.ToPrettyTime(true, false);
-
-                if (string.IsNullOrEmpty(uptime))
-                {
-                    uptime = "Just started";
-                }
+                string uptime = Process.GetCurrentProcess().StartTime.ToUniversalTime().ToPrettyTime(true, false);
 
                 string randomStatus = statuses[new YukiRandom().Next(statuses.Count)];
+
                 await client.SetGameAsync(name: randomStatus.Replace("%shardid%", client.ShardId.ToString())
                                                             .Replace("%usercount%", client.Guilds.Select(guild => guild.MemberCount).Sum().ToString())
                                                             .Replace("%guildcount%", client.Guilds.Count.ToString())
@@ -76,17 +73,16 @@ namespace Yuki.Events
             return Task.CompletedTask;
         }
 
-        public static Task ShardDisconnected(Exception e, DiscordSocketClient client)
+        public static async Task ShardDisconnected(Exception e, DiscordSocketClient client)
         {
-            if (YukiBot.ShuttingDown) { return Task.CompletedTask; }
+            if (!YukiBot.ShuttingDown)
+            {
+                Logger.Write(LogLevel.Error, $"Shard {client.ShardId} disconnected. Reason: " + e);
 
-            Logger.Write(LogLevel.Error, $"Shard {client.ShardId} disconnected. Reason: " + e);
-
-            client.StopAsync();
-            Thread.Sleep(500);
-            client.StartAsync();
-
-            return Task.CompletedTask;
+                await YukiBot.Discord.StopAsync();
+                Thread.Sleep(500);
+                await YukiBot.Discord.LoginAsync(Config.GetConfig().token);
+            }
         }
 
         private static void SetClientEvents(DiscordSocketClient client)

@@ -30,8 +30,6 @@ namespace Yuki.Extensions
             {
                 if (extension.Equals(Path.GetExtension(url)))
                 {
-                    Console.WriteLine(extension);
-
                     return true;
                 }
             }
