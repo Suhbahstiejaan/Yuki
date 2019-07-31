@@ -335,6 +335,9 @@ namespace Yuki.Data.Objects
         public string command_cache_notice_desc { get; set; }
         public string command_cache_notice_usage { get; set; }
 
+        public string command_stats_desc { get; set; }
+        public string command_stats_usage { get; set; }
+        
 
         /* Strings */
         public string only_dm_channel { get; set; }
@@ -613,5 +616,13 @@ namespace Yuki.Data.Objects
         public string event_user_join { get; set; }
         public string event_user_leave { get; set; }
         public string event_user_unban { get; set; }
+
+        public string bot_stats_title { get; set; }
+        public string bot_stats_users_unique { get; set; }
+        public string bot_stats_guilds { get; set; }
+        public string bot_stats_creator { get; set; }
+        public string bot_stats_uptime { get; set; }
+        public string bot_stats_shard { get; set; }
+        public string bot_stats_memory { get; set; }
     }
 }

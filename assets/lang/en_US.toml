@@ -294,6 +294,9 @@ command_cache_ignore_usage = "y!cache ignore #spoilers"
 command_cache_notice_desc = "Make the bot cache messages in a channel again"
 command_cache_notice_usage = "y!cache notice #general\ny!cache notice #general"
 
+command_stats_desc = "View bot stats"
+command_stats_usage = "y!stats"
+
 
 
 #Strings
@@ -578,3 +581,12 @@ event_user_name = "User"
 event_user_join = "New Member"
 event_user_leave = "Member Left"
 event_user_unban = "Member Unbanned"
+
+
+bot_stats_title = "Bot Statistics"
+bot_stats_users_unique = "Unique Users"
+bot_stats_guilds = "Guilds"
+bot_stats_creator = "Creator"
+bot_stats_uptime = "Uptime"
+bot_stats_shard = "Currrent Shard"
+bot_stats_memory = "Memory Usage"
