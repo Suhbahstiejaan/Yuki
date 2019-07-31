@@ -14,7 +14,7 @@ namespace Yuki.Extensions
 
         public static bool IsImage(this string url)
         {
-            char[] chars = url.ToCharArray();
+            /*char[] chars = url.ToCharArray();
 
             if (url.Length > 3 && url.Substring(url.Length - 3).Select(x => char.IsLetterOrDigit(x)).Any(x => x == false))
                 return false;
@@ -22,13 +22,19 @@ namespace Yuki.Extensions
             if (String.IsNullOrEmpty(targetExtension))
                 return false;
             else
-                targetExtension = targetExtension.ToLowerInvariant();
+                targetExtension = targetExtension.ToLowerInvariant();*/
 
-            List<string> recognisedImageExtensions = new List<string>() { "jpeg", "jpg", "png", "gif" };
+            List<string> recognisedImageExtensions = new List<string>() { ".jpeg", ".jpg", ".png", ".gif" };
 
             foreach (string extension in recognisedImageExtensions)
-                if (extension.Equals(targetExtension))
+            {
+                if (extension.Equals(Path.GetExtension(url)))
+                {
+                    Console.WriteLine(extension);
+
                     return true;
+                }
+            }
             return false;
         }
 

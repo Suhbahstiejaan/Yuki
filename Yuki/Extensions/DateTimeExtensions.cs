@@ -54,7 +54,7 @@ namespace Yuki.Extensions
 
                 if(showTime)
                 {
-                    return $"{end} @ {dateTime.ToUniversalTime().TimeOfDay}";
+                    return $"{end} @ {dateTime.ToUniversalTime().ToShortTimeString()} UTC";
                 }
 
                 return end;

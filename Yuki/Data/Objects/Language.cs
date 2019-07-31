@@ -256,6 +256,7 @@ namespace Yuki.Data.Objects
         public string command_scramblr_desc { get; set; }
         public string command_scramblr_usage { get; set; }
 
+
         public string command_setlang_desc { get; set; }
         public string command_setlang_usage { get; set; }
 
@@ -264,6 +265,75 @@ namespace Yuki.Data.Objects
 
         public string command_selfrole_remove_desc { get; set; }
         public string command_selfrole_remove_usage { get; set; }
+
+        public string command_welcome_setchannel_desc { get; set; }
+        public string command_welcome_setchannel_usage { get; set; }
+
+        public string command_welcome_removechannel_desc { get; set; }
+        public string command_welcome_removechannel_usage { get; set; }
+
+        public string command_welcome_setmsg_desc { get; set; }
+        public string command_welcome_setmsg_usage { get; set; }
+
+        public string command_nsfw_add_desc { get; set; }
+        public string command_nsfw_add_usage { get; set; }
+
+        public string command_nsfw_remove_desc { get; set; }
+        public string command_nsfw_remove_usage { get; set; }
+
+        public string command_nsfw_blacklist_desc { get; set; }
+        public string command_nsfw_blacklist_usage { get; set; }
+
+        public string command_nsfw_unblacklist_desc { get; set; }
+        public string command_nsfw_unblacklist_usage { get; set; }
+
+        public string command_muterole_set_desc { get; set; }
+        public string command_muterole_set_usage { get; set; }
+
+        public string command_muterole_remove_desc { get; set; }
+        public string command_muterole_remove_usage { get; set; }
+
+        public string command_logchannel_set_desc { get; set; }
+        public string command_logchannel_set_usage { get; set; }
+
+        public string command_logchannel_remove_desc { get; set; }
+        public string command_logchannel_remove_usage { get; set; }
+
+        public string command_goodbye_set_desc { get; set; }
+        public string command_goodbye_set_usage { get; set; }
+
+        public string command_goodbye_remove_desc { get; set; }
+        public string command_goodbye_remove_usage { get; set; }
+
+        public string command_enable_desc { get; set; }
+        public string command_enable_usage { get; set; }
+
+        public string command_disable_desc { get; set; }
+        public string command_disable_usage { get; set; }
+
+        public string command_customcommands_add_desc { get; set; }
+        public string command_customcommands_add_usage { get; set; }
+
+        public string command_customcommands_remove_desc { get; set; }
+        public string command_customcommands_remove_usage { get; set; }
+
+        public string command_moderatorrole_add_desc { get; set; }
+        public string command_moderatorrole_add_usage { get; set; }
+
+        public string command_moderatorrole_remove_desc { get; set; }
+        public string command_moderatorrole_remove_usage { get; set; }
+
+        public string command_administratorrole_add_desc { get; set; }
+        public string command_administratorrole_add_usage { get; set; }
+
+        public string command_administratorrole_remove_desc { get; set; }
+        public string command_administratorrole_remove_usage { get; set; }
+
+        public string command_cache_ignore_desc { get; set; }
+        public string command_cache_ignore_usage { get; set; }
+
+        public string command_cache_notice_desc { get; set; }
+        public string command_cache_notice_usage { get; set; }
 
 
         /* Strings */
@@ -508,9 +578,40 @@ namespace Yuki.Data.Objects
         public string administrator_role_removed { get; set; }
         public string administrator_role_added { get; set; }
 
+        public string command_added { get; set; }
+        public string command_removed { get; set; }
+        public string setting_disabled { get; set; }
+        public string setting_enabled { get; set; }
+        public string goodbye_message_set { get; set; }
+        public string goodbye_message_removed { get; set; }
+        public string channel_not_found { get; set; }
+        public string log_channel_added { get; set; }
+        public string log_channel_removed { get; set; }
+        public string muterole_set { get; set; }
+        public string muterole_removed { get; set; }
+        public string nsfw_channel_added { get; set; }
+        public string nsfw_channel_removed { get; set; }
+        public string nsfw_tag_blacklisted { get; set; }
+        public string nsfw_tag_unblacklisted { get; set; }
+        public string welcome_channel_set { get; set; }
+        public string welcome_channel_removed { get; set; }
+        public string welcome_message_removed { get; set; }
+
         /* Events */
-        public string event_channel_create { get; set; }
-        public string event_channel_name { get; set; }
-        public string event_channel_permissions { get; set; }
+        public string event_message_updated { get; set; }
+        public string event_message_id { get; set; }
+        public string event_message_channel { get; set; }
+        public string event_message_author { get; set; }
+        public string event_message_old { get; set; }
+        public string event_message_new { get; set; }
+        public string event_message_deleted { get; set; }
+        public string message_attachment { get; set; }
+        public string message_attachments { get; set; }
+        public string message_content { get; set; }
+        public string event_user_banned { get; set; }
+        public string event_user_name { get; set; }
+        public string event_user_join { get; set; }
+        public string event_user_leave { get; set; }
+        public string event_user_unban { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                 {
                     GuildSettings.AddRole(roleId, Context.Guild.Id);
 
-                    await ReplyAsync(Language.GetString("role_added").Replace("rolename", roleName));
+                    await ReplyAsync(Language.GetString("role_added").Replace("%rolename%", roleName));
                 }
             }
 
@@ -73,7 +73,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                 {
                     GuildSettings.RemoveRole(roleId, Context.Guild.Id);
 
-                    await ReplyAsync(Language.GetString("role_removed").Replace("rolename", roleName));
+                    await ReplyAsync(Language.GetString("role_removed").Replace("%rolename%", roleName));
                 }
             }
         }

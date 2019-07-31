@@ -97,7 +97,7 @@ namespace Yuki.Core
                     }
                 }
 
-                if (validTranslations != 0)
+                if (validTranslations != commands.GetAllCommands().Count)
                 {
                     int numMissing = commands.GetAllCommands().Count - validTranslations;
 

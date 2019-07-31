@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Core;
@@ -30,47 +31,53 @@ namespace Yuki.Events
 
         public static async Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
-            Messages.InsertOrUpdate(new YukiMessage()
+            try
             {
-                Id = current.Id,
-                AuthorId = current.Author.Id,
-                ChannelId = current.Channel.Id,
-                SendDate = DateTime.UtcNow,
-                Content = (current as SocketUserMessage).Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
-            });
-
-            if (!current.Author.IsBot && current.Content != messageOld.Value.Content)
-            {
-                string oldContent = messageOld.Value.Content;
-                string newContent = current.Content;
-
-                if (oldContent.Length > 1000)
+                Messages.InsertOrUpdate(new YukiMessage()
                 {
-                    oldContent = oldContent.Substring(0, 997) + "...";
-                }
+                    Id = current.Id,
+                    AuthorId = current.Author.Id,
+                    ChannelId = current.Channel.Id,
+                    SendDate = DateTime.UtcNow,
+                    Content = (current as SocketUserMessage).Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
+                });
 
-                if (newContent.Length > 1000)
+                if (!current.Author.IsBot && current.Content != messageOld.Value.Content)
                 {
-                    newContent = newContent.Substring(0, 997) + "...";
+                    string oldContent = messageOld.Value.Content;
+                    string newContent = current.Content;
+
+                    if (oldContent.Length > 1000)
+                    {
+                        oldContent = oldContent.Substring(0, 997) + "...";
+                    }
+
+                    if (newContent.Length > 1000)
+                    {
+                        newContent = newContent.Substring(0, 997) + "...";
+                    }
+
+                    Language lang = GetLanguage(channel);
+
+                    EmbedBuilder embed = new EmbedBuilder()
+                        .WithAuthor(lang.GetString("event_message_updated"), current.Author.GetAvatarUrl())
+                        .WithDescription($"{lang.GetString("event_message_id")}: {current.Id}\n" +
+                                         $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
+                                         $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(current.Author.Id)}")
+                        .AddField(lang.GetString("event_message_old"), oldContent)
+                        .AddField(lang.GetString("event_message_new"), newContent)
+                        .WithColor(Color.Gold);
+
+                    await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
                 }
-
-                Language lang = GetLanguage(channel);
-
-                EmbedBuilder embed = new EmbedBuilder()
-                    .WithAuthor(lang.GetString("event_message_updated"), current.Author.GetAvatarUrl())
-                    .WithDescription($"{lang.GetString("event_message_id")}: {current.Id}\n" +
-                                     $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
-                                     $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(current.Author.Id)}")
-                    .AddField(lang.GetString("event_message_old"), oldContent)
-                    .AddField(lang.GetString("event_message_new"), newContent)
-                    .WithColor(Color.Gold);
-
-                await LogMessageAsync(embed, (channel as IGuildChannel).GuildId);
             }
+            catch (Exception e) { Console.WriteLine(e); }
         }
 
         public static async Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
+            await message.DownloadAsync();
+
             Messages.Remove(message.Value.Id);
 
             if (!message.Value.Author.IsBot)
@@ -91,31 +98,31 @@ namespace Yuki.Events
                                      $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(message.Value.Author.Id)}")
                     .WithColor(Color.Red);
 
-                if(message.Value.Attachments.Count > 0)
-                {
-                    if (message.Value.Attachments.Any(att => att.ProxyUrl.IsUrl()))
-                    {
-                        embed.WithImageUrl(message.Value.Attachments.FirstOrDefault(att => att.ProxyUrl.IsUrl()).Url);
-                    }
-
-                    if(message.Value.Attachments.Count > 1)
-                    {
-                        string attachments = string.Empty;
-
-                        IAttachment[] _attachments = message.Value.Attachments.ToArray();
-
-                        for (int i = 0; i < _attachments.Length; i++)
-                        {
-                            attachments += $"[{lang.GetString("message_attachment")} {i + 1}]({_attachments[i].ProxyUrl})\n";
-                        }
-
-                        embed.AddField(lang.GetString("message_attachments"), attachments);
-                    }
-                }
-
-                if(!string.IsNullOrEmpty(content))
+                if (!string.IsNullOrEmpty(content))
                 {
                     embed.AddField(lang.GetString("message_content"), content);
+                }
+
+                if (message.Value.Attachments != null && message.Value.Attachments.Count > 0)
+                {
+                    string attachments = string.Empty;
+                    string imageUrl = null;
+
+                    IAttachment[] _attachments = message.Value.Attachments.ToArray();
+
+                    imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+
+                    for (int i = 0; i < _attachments.Length; i++)
+                    {
+                        attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                    }
+
+                    if(imageUrl != null)
+                    {
+                        embed.WithImageUrl(imageUrl);
+                    }
+
+                    embed.AddField(lang.GetString("message_attachments"), attachments);
                 }
 
                 await LogMessageAsync(embed, ((IGuildChannel)channel).GuildId);

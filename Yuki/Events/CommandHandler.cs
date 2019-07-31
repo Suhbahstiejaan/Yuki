@@ -61,11 +61,33 @@ namespace Yuki.Events
                     }
                 }
             }
+
+            if(message.Channel is IDMChannel)
+            {
+                return;
+            }
+
+            GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
+                                                    .FirstOrDefault(cmd => cmd.Name.ToLower() == message.Content.ToLower());
+
+            if (!execCommand.Equals(default) && HasPrefix(message, out output))
+            {
+                await message.Channel.SendMessageAsync(execCommand.Response);
+            }
         }
 
         private static bool HasPrefix(SocketUserMessage message, out string output)
         {
             output = string.Empty;
+            if (!(message.Channel is IDMChannel))
+            {
+                GuildConfiguration config = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId);
+
+                if(config.EnablePrefix && config.Prefix != null)
+                {
+                    return CommandUtilities.HasPrefix(message.Content, config.Prefix, out output);
+                }
+            }
 
             return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
         }

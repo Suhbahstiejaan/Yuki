@@ -10,7 +10,7 @@ namespace Yuki.Commands.Modules.ModerationModule
         [Group("nsfw")]
         public class Nsfw : YukiModule
         {
-            [Command("set")]
+            [Command("add")]
             public async Task AddNsfwChannelAsync([Remainder] string channelName)
             {
                 ulong channelId = 0;

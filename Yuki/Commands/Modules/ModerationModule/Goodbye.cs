@@ -14,7 +14,7 @@ namespace Yuki.Commands.Modules.ModerationModule
             {
                 GuildSettings.SetGoodbye(msg, Context.Guild.Id);
 
-                await ReplyAsync(Language.GetString("goodbye_message_set"));
+                await ReplyAsync(Language.GetString("goodbye_message_set").Replace("%msg%", msg));
             }
 
             [Command("remove")]

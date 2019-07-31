@@ -39,7 +39,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                 {
                     GuildSettings.SetMuteRole(roleId, Context.Guild.Id);
 
-                    await ReplyAsync(Language.GetString("muterole_set").Replace("rolename", roleName));
+                    await ReplyAsync(Language.GetString("muterole_set").Replace("%rolename%", roleName));
                 }
             }
 
@@ -73,7 +73,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                 {
                     GuildSettings.SetMuteRole(0, Context.Guild.Id);
 
-                    await ReplyAsync(Language.GetString("muterole_removed").Replace("rolename", roleName));
+                    await ReplyAsync(Language.GetString("muterole_removed").Replace("%rolename%", roleName));
                 }
             }
         }
