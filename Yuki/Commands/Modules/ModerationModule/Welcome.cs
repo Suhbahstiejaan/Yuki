@@ -53,7 +53,7 @@ namespace Yuki.Commands.Modules.ModerationModule
             {
                 GuildSettings.SetWelcome(msg, Context.Guild.Id);
 
-                await ReplyAsync(Language.GetString("welcome_message_removed"));
+                await ReplyAsync(Language.GetString("welcome_message_set").Replace("%msg%", msg));
             }
         }
     }

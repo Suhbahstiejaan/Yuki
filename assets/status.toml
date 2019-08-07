@@ -1,7 +1,7 @@
 Playing = [
 	"Minecraft", "with %usercount% users",
 	"in %guildcount% guilds", "Shard %shardid% (%usercount% users)",
-	"y!donate to support me", "uptime: %uptime%",
+	"y!donate to support me",
 	"Fortnite", "Overwatch", "Grand Theft Auto V"
 ]
 

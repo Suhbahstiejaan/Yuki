@@ -16,8 +16,18 @@ namespace Yuki.Events
 {
     public static class DiscordShardEventHandler
     {
+        private static int connectedShards = 0;
+
         public static Task ShardReady(DiscordSocketClient client)
         {
+            connectedShards++;
+
+            /* Disable the Ready event */
+            if(connectedShards == YukiBot.Discord.ShardCount)
+            {
+                YukiBot.Discord.Client.ShardReady -= ShardReady;
+            }
+
             SetClientEvents(client);
 
             System.Timers.Timer status = new System.Timers.Timer();
