@@ -9,8 +9,6 @@ namespace Yuki.Data.Objects.Database
         [BsonId]
         public ulong Id { get; set; }
 
-        public DateTime LeaveDate { get; set; } /* When the bot was removed from the server. Used to clean up unused data. */
-
         public bool EnableWelcome { get; set; }
         public bool EnableGoodbye { get; set; }
         public bool EnableCache { get; set; }
@@ -20,6 +18,7 @@ namespace Yuki.Data.Objects.Database
         public bool EnablePrefix { get; set; }
         public bool EnableRoles { get; set; }
         public bool EnableLogging { get; set; }
+        public bool EnableFilter { get; set; }
 
         public string WelcomeMessage { get; set; }
         public string GoodbyeMessage { get; set; }
@@ -39,6 +38,7 @@ namespace Yuki.Data.Objects.Database
         public List<GuildWarningAction> WarningActions { get; set; }
 
         public List<string> NsfwBlacklist { get; set; }
+        public List<string> WordFilter { get; set; }
 
         public List<ulong> CacheIgnoredChannels { get; set; }
         public List<ulong> LevelIgnoredChannels { get; set; }

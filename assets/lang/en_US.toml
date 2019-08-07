@@ -297,6 +297,14 @@ command_cache_notice_usage = "y!cache notice #general\ny!cache notice #general"
 command_stats_desc = "View bot stats"
 command_stats_usage = "y!stats"
 
+command_filter_add_desc = "Add a regex-supported filter"
+command_filter_add_usage = "y!filter add ass\ny!filter add /\b(these|are|bad|words|like|ass)\b/"
+
+command_filter_list_desc = "List the filters (up to 180 characters) you've added to your server"
+command_filter_list_usage = "y!filter list"
+
+command_filter_remove_desc = "Remove a filter (takes index listed in y!filter list)"
+command_filter_remove_usage = "y!filter remove 2"
 
 
 #Strings
@@ -589,4 +597,8 @@ bot_stats_guilds = "Guilds"
 bot_stats_creator = "Creator"
 bot_stats_uptime = "Uptime"
 bot_stats_shard = "Currrent Shard"
-bot_stats_memory = "Memory Usage"
+
+filter_added = "Filter added!"
+filter_removed = "Filter removed!"
+event_filter_triggered = "Filter Triggered"
+filter_triggered = "Message by %user% triggered content filter!"

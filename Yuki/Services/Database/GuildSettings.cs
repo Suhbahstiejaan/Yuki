@@ -16,8 +16,6 @@ namespace Yuki.Services.Database
                 LangCode = "en_US",
                 Prefix = null,
 
-                LeaveDate = default,
-
                 EnableWelcome = false,
                 EnableGoodbye = false,
                 EnableNsfw = false,
@@ -27,6 +25,7 @@ namespace Yuki.Services.Database
                 EnablePrefix = false,
                 EnableRoles = false,
                 EnableWarnings = false,
+                EnableFilter = false,
 
                 AssignableRoles = new List<ulong>(),
                 AutoBanUsers = new List<ulong>(),
@@ -43,6 +42,7 @@ namespace Yuki.Services.Database
                 MutedUsers = new List<GuildMutedUser>(),
 
                 NsfwBlacklist = new List<string>(),
+                WordFilter = new List<string>(),
 
                 WelcomeChannel = 0,
                 LogChannel = 0,
@@ -362,6 +362,22 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static void ToggleFilter(ulong guildId, bool state)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+                    config.EnableFilter = state;
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Adds
@@ -608,6 +624,31 @@ namespace Yuki.Services.Database
                     if (!config.Commands.Any(c => c.Name.ToLower() == command.Name.ToLower()))
                     {
                         config.Commands.Add(command);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void AddFilter(string filter, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.WordFilter == null)
+                    {
+                        config.WordFilter = new List<string>();
+                    }
+
+                    if (!config.WordFilter.Any(str => str.ToLower() == filter.ToLower()))
+                    {
+                        config.WordFilter.Add(filter);
                     }
 
                     configs.Update(config);
@@ -884,6 +925,26 @@ namespace Yuki.Services.Database
                     if (config.Commands.Any(c => c.Name.ToLower() == command.ToLower()))
                     {
                         config.Commands.Remove(config.Commands.FirstOrDefault(c => c.Name.ToLower() == command.ToLower()));
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void RemoveFilter(int filterIndex, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if(filterIndex > 0 && filterIndex < config.WordFilter.Count)
+                    {
+                        config.WordFilter.RemoveAt(filterIndex);
                     }
 
                     configs.Update(config);

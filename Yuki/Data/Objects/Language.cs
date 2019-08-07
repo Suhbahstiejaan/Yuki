@@ -337,6 +337,15 @@ namespace Yuki.Data.Objects
 
         public string command_stats_desc { get; set; }
         public string command_stats_usage { get; set; }
+
+        public string command_filter_add_desc { get; set; }
+        public string command_filter_add_usage { get; set; }
+
+        public string command_filter_list_desc { get; set; }
+        public string command_filter_list_usage { get; set; }
+
+        public string command_filter_remove_desc { get; set; }
+        public string command_filter_remove_usage { get; set; }
         
 
         /* Strings */
@@ -624,5 +633,10 @@ namespace Yuki.Data.Objects
         public string bot_stats_uptime { get; set; }
         public string bot_stats_shard { get; set; }
         public string bot_stats_memory { get; set; }
+
+        public string filter_added { get; set; }
+        public string filter_removed { get; set; }
+        public string event_filter_triggered { get; set; }
+        public string filter_triggered { get; set; }
     }
 }

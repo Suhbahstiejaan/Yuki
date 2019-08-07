@@ -201,7 +201,7 @@ namespace Yuki.Events
             await LogMessageAsync(embed, guild.Id);
         }
 
-        private static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
+        public static async Task LogMessageAsync(EmbedBuilder embed, ulong guildId)
         {
             embed.WithFooter(DateTime.UtcNow.ToPrettyTime(false, true));
             

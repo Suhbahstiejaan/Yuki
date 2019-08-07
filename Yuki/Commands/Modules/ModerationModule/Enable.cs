@@ -40,6 +40,9 @@ namespace Yuki.Commands.Modules.ModerationModule
                 case "muting":
                     GuildSettings.ToggleMute(guildId, true);
                     break;
+                case "filter":
+                    GuildSettings.ToggleFilter(guildId, true);
+                    break;
                 default:
                     found = false;
                     break;
