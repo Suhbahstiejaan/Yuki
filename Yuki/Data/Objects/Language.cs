@@ -569,6 +569,9 @@ namespace Yuki.Data.Objects
         public string roles_disabled { get; set; }
 
         public string scramblr_not_enabled { get; set; }
+        public string scramblr_info { get; set; }
+        public string scramblr_enabled { get; set; }
+        public string scramblr_disabled { get; set; }
 
         public string slowmode_time_long { get; set; }
         public string slowmode_disabled { get; set; }

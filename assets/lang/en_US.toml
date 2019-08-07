@@ -532,7 +532,10 @@ mute_disabled = "Muting is currently disabled on this server!"
 warnings_disabled = "Warnings are currently disabled on this server!"
 roles_disabled = "Assignable roles are currently disabled on this server!"
 
-scramblr_not_enabled = "Sorry! You can't use scamblr at this time. To enable it, run y!usersettings"
+scramblr_not_enabled = "Hey, %user%! In order to use scramblr, we need your permission to store the text in your messages. This is a very brief explanation, if you want to read more about it, run y!scramblr info."
+scramblr_info = "In order for scramblr to work optimally, we've decided to store a maximum amount of 100 messages per user (who allows us to, of course). This helps reduce the amount of repetition, and can help make some funny responses from the bot! We know it sounds a little scary, so you don't have to enable it if you don't want to. To enable, run `y!scramblr enable`. If you want to opt out at any time, run `y!scramblr disable` and the stored information will be cleared."
+scramblr_enabled = "Scramblr's been enabled! It won't work right away, though - come back after talking for a little bit and see if I can make something funny!"
+scramblr_disabled = "Scramblr's been disabled! I've also gone ahead and cleared the messages stored"
 
 slowmode_time_long = "Time too long! Must be 6hrs max"
 slowmode_disabled = "Slowmode has been disabled"

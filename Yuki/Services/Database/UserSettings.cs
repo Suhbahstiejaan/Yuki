@@ -128,5 +128,21 @@ namespace Yuki.Services.Database
 
             return new List<YukiReminder>();
         }
+
+        public static void SetCanGetMessages(ulong userId, bool state)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+
+                if (users.FindAll().Any(usr => usr.Id == userId))
+                {
+                    YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
+                    user.CanGetMsgs = state;
+
+                    users.Update(user);
+                }
+            }
+        }
     }
 }
