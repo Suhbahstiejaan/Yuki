@@ -66,7 +66,6 @@ namespace Yuki.Events
                                     .AddField(lang.GetString("message_content"), message.Content)
                                     .WithColor(Color.Purple);
 
-                                    await message.Channel.SendMessageAsync(lang.GetString("filter_triggered").Replace("%user%", message.Author.Username));
                                     await message.DeleteAsync();
                                     await DiscordSocketEventHandler.LogMessageAsync(embed, guildChannel.GuildId);
                                 }
