@@ -47,7 +47,7 @@ namespace Yuki.Events
 
                         foreach (string wordFilter in filter)
                         {
-                            if (Regex.IsMatch(message.Content, $@"{wordFilter}", RegexOptions.IgnoreCase))
+                            if (Regex.IsMatch(message.Content, $@"\b{wordFilter}\b", RegexOptions.IgnoreCase))
                             {
                                 if (guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
                                     guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
