@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
+using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
@@ -14,7 +15,7 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Command("commandlist", "ccommands")]
         [RequireGuild]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task CustomCommandsList()
+        public async Task CustomCommandsList(int page = 0)
         {
             if(!(Context.Channel is IDMChannel))
             {
@@ -22,8 +23,9 @@ namespace Yuki.Commands.Modules.UtilityModule
 
                 if(commands.Count > 0)
                 {
-                    await ReplyAsync(Context.CreateEmbedBuilder(Language.GetString("commands_title"))
-                            .WithDescription(string.Join("\n", commands.Select(c => $"{commands.IndexOf(c) + 1}. {c.Name}"))));
+                    PageManager manager = new PageManager(commands.Select(c => c.Name).ToArray(), "commands");
+
+                    await ReplyAsync(manager.GetPage(page));
                 }
                 else
                 {

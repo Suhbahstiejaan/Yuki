@@ -2,6 +2,7 @@
 using Qmmands;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
+using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
@@ -12,7 +13,7 @@ namespace Yuki.Commands.Modules.ModerationModule
         [Command("warnings")]
         [RequireModerator]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task GetWarningsAsync(IGuildUser user)
+        public async Task GetWarningsAsync(IGuildUser user, int page = 0)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);
 
@@ -20,17 +21,9 @@ namespace Yuki.Commands.Modules.ModerationModule
             {
                 GuildWarnedUser wUser = GuildSettings.GetWarnedUser(user.Id, Context.Guild.Id);
 
-                string warn = "";
+                PageManager manager = new PageManager(wUser.WarningReasons.ToArray(), "warnings");
 
-                for(int i = 0; i < wUser.Warning; i++)
-                {
-                    warn += $"{i + 1}. {wUser.WarningReasons[i]}\n";
-                }
-
-                EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("warnings_list_title"))
-                    .WithDescription(warn);
-
-                await ReplyAsync(embed);
+                await ReplyAsync(manager.GetPage(page));
             }
             else
             {

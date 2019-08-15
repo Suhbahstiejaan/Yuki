@@ -1,7 +1,9 @@
 ﻿using Discord;
 using Qmmands;
+using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
+using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
@@ -12,23 +14,15 @@ namespace Yuki.Commands.Modules.ModerationModule
         [Command("roles")]
         [RequireGuild]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task GetRolesAsync()
+        public async Task GetRolesAsync(int page = 0)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);
 
             if (config.EnableRoles)
             {
-                string roles = "";
+                PageManager manager = new PageManager(config.AssignableRoles.Select(role => Context.Guild.GetRole(role).Name).ToArray(), "roles");
 
-                for (int i = 0; i < config.AssignableRoles.Count; i++)
-                {
-                    roles += $"{i + 1}. {Context.Guild.GetRole(config.AssignableRoles[i]).Name}\n";
-                }
-
-                EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("roles_list_title"))
-                    .WithDescription(roles);
-
-                await ReplyAsync(embed);
+                await ReplyAsync(manager.GetPage(page));
             }
             else
             {

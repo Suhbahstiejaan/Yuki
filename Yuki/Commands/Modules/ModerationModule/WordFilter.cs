@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Yuki.Data.Objects;
 using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.ModerationModule
@@ -20,25 +21,13 @@ namespace Yuki.Commands.Modules.ModerationModule
             }
             
             [Command("list")]
-            public async Task ListFiltersAsync()
+            public async Task ListFiltersAsync(int page = 0)
             {
                 string[] filters = GuildSettings.GetGuild(Context.Guild.Id).WordFilter.ToArray();
 
-                string filterMsg = "";
+                PageManager manager = new PageManager(filters, "filters");
 
-                for(int i = 0; i < filters.Length; i++)
-                {
-                    string filter = filters[i];
-
-                    if(filter.Length > 180)
-                    {
-                        filter = filter.Substring(0, 180);
-                    }
-
-                    filterMsg += $"{i+1} {filter}\n\n";
-                }
-
-                await ReplyAsync($"```{filterMsg}```");
+                await ReplyAsync(manager.GetPage(page));
             }
 
             [Command("remove", "rem")]
