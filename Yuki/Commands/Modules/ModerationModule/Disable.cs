@@ -32,6 +32,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                     GuildSettings.ToggleCache(guildId, false);
                     break;
                 case "selfrole":
+                case "roles":
                     GuildSettings.ToggleRoles(guildId, false);
                     break;
                 case "warnings":
