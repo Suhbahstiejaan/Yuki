@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Core;
+using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
@@ -162,9 +163,9 @@ namespace Yuki.Events
 
             if(guild.EnableWelcome && !string.IsNullOrWhiteSpace(guild.WelcomeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
             {
-                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(guild.WelcomeMessage
-                                                                                            .Replace("%muser%", user.Mention)
-                                                                                            .Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                YukiContextMessage msg = new YukiContextMessage(user, user.Guild);
+
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(guild.WelcomeMessage, msg));
             }
         }
 
@@ -183,9 +184,9 @@ namespace Yuki.Events
 
             if (guild.EnableGoodbye && !string.IsNullOrWhiteSpace(guild.GoodbyeMessage) && user.Guild.Channels.ToList().Any(ch => ch.Id == guild.WelcomeChannel))
             {
-                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(guild.GoodbyeMessage
-                                                                                            .Replace("%muser%", user.Mention)
-                                                                                            .Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                YukiContextMessage msg = new YukiContextMessage(user, user.Guild);
+
+                await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(guild.GoodbyeMessage, msg));
             }
         }
 

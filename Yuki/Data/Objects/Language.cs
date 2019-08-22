@@ -641,5 +641,6 @@ namespace Yuki.Data.Objects
         public string filter_removed { get; set; }
         public string event_filter_triggered { get; set; }
         public string filter_triggered { get; set; }
+        public string role_taken { get; set; }
     }
 }

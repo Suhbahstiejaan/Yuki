@@ -120,7 +120,9 @@ namespace Yuki.Events
 
                 if (!execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response) && HasPrefix(message, out output))
                 {
-                    await message.Channel.SendMessageAsync(execCommand.Response);
+                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(execCommand.Response, msg));
                 }
             }
             catch(Exception e) { await socketMessage.Channel.SendMessageAsync(e.ToString()); }

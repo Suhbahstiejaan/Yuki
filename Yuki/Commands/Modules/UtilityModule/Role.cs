@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Qmmands;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
 using Yuki.Services.Database;
@@ -17,34 +17,40 @@ namespace Yuki.Commands.Modules.UtilityModule
         {
             try
             {
-                List<ulong> roles = GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles;
-
-                ulong guildRole = MentionUtils.ParseRole(roleString);
-
                 IRole givenRole = default;
 
-                if (roles.Contains(guildRole))
+                ulong guildRole = 0;
+
+                if (MentionUtils.TryParseRole(roleString, out guildRole))
                 {
                     givenRole = Context.Guild.GetRole(guildRole);
-                    await (Context.User as IGuildUser).AddRoleAsync(givenRole);
                 }
                 else
                 {
-                    foreach (ulong role in roles)
+                    foreach (IRole role in Context.Guild.Roles.Where(r => GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(r.Id)))
                     {
-                        IRole irole = Context.Guild.GetRole(role);
-
-                        if (irole.Name.ToLower().Contains(roleString.ToLower()) || irole.Name.ToLower() == roleString.ToLower())
+                        if (role.Name.ToLower().Contains(roleString.ToLower()) ||
+                            role.Name.ToLower() == roleString.ToLower() ||
+                            (ulong.TryParse(roleString, out ulong r) && role.Id == r))
                         {
-                            await (Context.User as IGuildUser).AddRoleAsync(irole);
-                            givenRole = irole;
+                            givenRole = role;
+                            break;
                         }
                     }
                 }
 
-                if (!givenRole.Equals(default))
+                if (givenRole != null && !givenRole.Equals(default))
                 {
-                    await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", givenRole.Name));
+                    if ((Context.User as IGuildUser).RoleIds.Contains(givenRole.Id))
+                    {
+                        await (Context.User as IGuildUser).RemoveRoleAsync(givenRole);
+                        await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", givenRole.Name));
+                    }
+                    else
+                    {
+                        await (Context.User as IGuildUser).AddRoleAsync(givenRole);
+                        await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", givenRole.Name));
+                    }
                 }
                 else
                 {
