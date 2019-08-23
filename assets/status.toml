@@ -2,15 +2,14 @@ Playing = [
 	"Minecraft", "with %usercount% users",
 	"in %guildcount% guilds", "Shard %shardid% (%usercount% users)",
 	"y!donate to support me",
-	"Fortnite", "Overwatch", "Grand Theft Auto V"
+	"Fortnite", "Overwatch", "y!scramblr", "y!help"
 ]
 
 Listening = [
-	"Revenge", "Bad Guy",
-	"Minecraft Style", "Despacito"
+	"Bad Guy", "Despacito"
 ]
 
 Watching = [
-	"Pewdiepie", "SMP Live", "you",
-	"RTGame", "CallMeKevin", "YouTube"
+	"you", "RTGame",
+	"CallMeKevin", "YouTube"
 ]
