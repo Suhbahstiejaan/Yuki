@@ -1,5 +1,6 @@
 ﻿using Discord;
 using System;
+using System.Linq;
 using Yuki.Commands;
 
 namespace Yuki.Data
@@ -10,75 +11,109 @@ namespace Yuki.Data
         {
             string rebuilt = string.Empty;
 
-            foreach(string substring in _string.Split(' '))
+            foreach(string substring in _string.Split(' ').ToList().Select(s => s.ToLower()))
             {
-                string str;
+                string str = substring;
 
-                switch (substring.ToLower())
+                if(substring.Contains("{user}"))
                 {
-                    #region User
-                    case "{user}":
-                    case "{user.mention}":
-                        str = Context.User.Mention;
-                        break;
-                    case "{user.id}":
-                        str = Context.User.Id.ToString();
-                        break;
-                    case "{user.name}":
-                        str = Context.User.Username;
-                        break;
-                    case "{user.discrim}":
-                        str = Context.User.Discriminator;
-                        break;
-                    case "{user.tag}":
-                        str = $"{Context.User.Username}#{Context.User.Discriminator}";
-                        break;
-                    case "{user.avatar}":
-                        str = Context.User.GetAvatarUrl();
-                        break;
-                    #endregion
-                    #region Server
-                    case "{server}":
-                    case "{server.name}":
-                        str = Context.Guild.Name;
-                        break;
-                    case "{server.id}":
-                        str = Context.Guild.Id.ToString();
-                        break;
-                    case "{server.member_count}":
-                        str = Context.Guild.GetUsersAsync().Result.Count.ToString();
-                        break;
-                    case "{server.icon}":
-                        str = Context.Guild.IconUrl;
-                        break;
-                    case "{server.region}":
-                        str = Context.Guild.VoiceRegionId;
-                        break;
-                    #endregion
-                    #region Server Owner
-                    case "{server.owner}":
-                    case "{server.owner.mention}":
-                        str = Context.Guild.GetOwnerAsync().Result.Mention;
-                        break;
-                    case "{server.owner.id}":
-                        str = Context.Guild.GetOwnerAsync().Result.Id.ToString();
-                        break;
-                    case "{server.owner.name}":
-                        str = Context.Guild.GetOwnerAsync().Result.Username;
-                        break;
-                    case "{server.owner.discrim}":
-                        str = Context.Guild.GetOwnerAsync().Result.Discriminator;
-                        break;
-                    case "{server.owner.tag}":
-                        str = $"{Context.Guild.GetOwnerAsync().Result.Username}#{Context.Guild.GetOwnerAsync().Result.Discriminator}";
-                        break;
-                    case "{server.owner.avatar}":
-                        str = Context.Guild.GetOwnerAsync().Result.GetAvatarUrl();
-                        break;
-                    #endregion
-                    default:
-                        str = substring;
-                        break;
+                    str = substring.Replace("{user}", Context.User.Mention);
+                }
+
+                if(substring.Contains("{user.mention}"))
+                {
+                    str = substring.Replace("{user.mention}", Context.User.Mention);
+                }
+
+                if (substring.Contains("{user.id}"))
+                {
+                    str = substring.Replace("{user.id}", Context.User.Id.ToString());
+                }
+
+                if (substring.Contains("{user.name}"))
+                {
+                    str = substring.Replace("{user.id}", Context.User.Username);
+                }
+
+                if (substring.Contains("{user.discrim}"))
+                {
+                    str = substring.Replace("{user.discrim}", Context.User.Discriminator);
+                }
+
+                if (substring.Contains("{user.tag}"))
+                {
+                    str = substring.Replace("{user.tag}", $"{Context.User.Username}#{Context.User.Discriminator}");
+                }
+
+                if (substring.Contains("{user.avatar}"))
+                {
+                    str = substring.Replace("{user.avatar}", Context.User.GetAvatarUrl());
+                }
+
+                if (substring.Contains("{server}"))
+                {
+                    str = substring.Replace("{server}", Context.Guild.Name);
+                }
+
+                if (substring.Contains("{server.name}"))
+                {
+                    str = substring.Replace("{server.name}", Context.Guild.Name);
+                }
+
+                if (substring.Contains("{server.members}"))
+                {
+                    str = substring.Replace("{server.members}", Context.Guild.GetUsersAsync().Result.Count.ToString());
+                }
+
+                if (substring.Contains("{server.id}"))
+                {
+                    str = substring.Replace("{server.id}", Context.Guild.Id.ToString());
+                }
+
+                if (substring.Contains("{server.icon}"))
+                {
+                    str = substring.Replace("{server.icon}", Context.Guild.IconUrl);
+                }
+
+                if (substring.Contains("{server.region}"))
+                {
+                    str = substring.Replace("{server.region}", Context.Guild.VoiceRegionId);
+                }
+
+
+                if (substring.Contains("{server.owner}"))
+                {
+                    str = substring.Replace("{server.owner}", Context.Guild.GetOwnerAsync().Result.Mention);
+                }
+
+                if (substring.Contains("{server.owner.mention}"))
+                {
+                    str = substring.Replace("{server.owner.mention}", Context.Guild.GetOwnerAsync().Result.Mention);
+                }
+
+                if (substring.Contains("{server.owner.id}"))
+                {
+                    str = substring.Replace("{server.owner.id}", Context.Guild.GetOwnerAsync().Result.Id.ToString());
+                }
+
+                if (substring.Contains("{server.owner.name}"))
+                {
+                    str = substring.Replace("{server.owner.id}", Context.Guild.GetOwnerAsync().Result.Username);
+                }
+
+                if (substring.Contains("{server.owner.discrim}"))
+                {
+                    str = substring.Replace("{server.owner.discrim}", Context.Guild.GetOwnerAsync().Result.Discriminator);
+                }
+
+                if (substring.Contains("{server.owner.tag}"))
+                {
+                    str = substring.Replace("{server.owner.tag}", $"{Context.Guild.GetOwnerAsync().Result.Username}#{Context.Guild.GetOwnerAsync().Result.Discriminator}");
+                }
+
+                if (substring.Contains("{server.owner.avatar}"))
+                {
+                    str = substring.Replace("{server.owner.avatar}", Context.Guild.GetOwnerAsync().Result.GetAvatarUrl());
                 }
 
                 rebuilt += str + " ";
