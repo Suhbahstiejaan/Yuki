@@ -32,7 +32,7 @@ namespace Yuki.Data
 
                 if (substring.Contains("{user.name}"))
                 {
-                    str = substring.Replace("{user.id}", Context.User.Username);
+                    str = substring.Replace("{user.name}", Context.User.Username);
                 }
 
                 if (substring.Contains("{user.discrim}"))
