@@ -30,7 +30,7 @@ namespace Yuki.Events
                                                 YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
                                                 YukiBot.Discord.Client.GetShard(0);
 
-                bool hasPrefix = HasPrefix(message, out string output);
+                bool hasPrefix = HasPrefix(message, out string trimmedContent);
 
 
                 if (!(message.Channel is IDMChannel))
@@ -91,7 +91,7 @@ namespace Yuki.Events
                 }
 
                 IResult result = await YukiBot.Discord.CommandService
-                           .ExecuteAsync(output, new YukiCommandContext(
+                           .ExecuteAsync(trimmedContent, new YukiCommandContext(
                                 YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services));
 
                 if (result is FailedResult failedResult)
@@ -114,11 +114,11 @@ namespace Yuki.Events
                 {
                     return;
                 }
-
+ 
                 GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
-                                                        .FirstOrDefault(cmd => cmd.Name.ToLower() == message.Content.ToLower());
+                                                        .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.ToLower());
 
-                if (!execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response) && HasPrefix(message, out output))
+                if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
                 {
                     YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
 

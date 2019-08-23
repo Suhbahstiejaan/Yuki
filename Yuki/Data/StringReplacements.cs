@@ -1,4 +1,5 @@
 ﻿using Discord;
+using System;
 using Yuki.Commands;
 
 namespace Yuki.Data
@@ -7,6 +8,8 @@ namespace Yuki.Data
     {
         public static string GetReplacement(string _string, YukiContextMessage Context)
         {
+            string rebuilt = string.Empty;
+
             foreach(string substring in _string.Split(' '))
             {
                 string str;
@@ -78,10 +81,11 @@ namespace Yuki.Data
                         break;
                 }
 
-                _string.Replace(_string.Substring(_string.IndexOf(substring), substring.Length), str);
+                rebuilt += str + " ";
             }
 
-            return _string;
+            /* Get rid of trailing space */
+            return rebuilt.Substring(0, rebuilt.Length - 1);
         }
     }
 

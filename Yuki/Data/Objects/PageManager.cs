@@ -78,7 +78,7 @@ namespace Yuki.Data.Objects
                 return "Could not find any " + dataType + "s";
             else if (pageNum > pages.Count)
                 return pages[pages.Count - 1].Value;
-            else if (pageNum < 0)
+            else if (pageNum <= 0)
                 return pages[0].Value;
 
             return pages[pageNum - 1].Value;
