@@ -16,7 +16,8 @@ namespace Yuki.Commands.Modules.UtilityModule
                        .WithDescription(Language.GetString("help_info_description")
                            .Replace("%botinvite%", YukiBot.BotInvUrl)
                            .Replace("%serverinvite%", YukiBot.ServerUrl)
-                           .Replace("%github%", YukiBot.GithubUrl));
+                           .Replace("%github%", YukiBot.GithubUrl)
+                           .Replace("%wiki%", YukiBot.WikiUrl));
 
             if (commandStr == "")
             {

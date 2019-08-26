@@ -18,6 +18,7 @@ namespace Yuki
         public const string ServerUrl = "https://discord.gg/qA4c4f3";
         public const string BotInvUrl = "https://discordapp.com/oauth2/authorize?client_id=338887651677700098&scope=bot&permissions=271690950";
         public const string GithubUrl = "https://github.com/VeeThree/Yuki/";
+        public const string WikiUrl = "https://github.com/VeeThree/Yuki/wiki/";
 
         public static DiscordBot Discord { get; private set; }
         
