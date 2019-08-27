@@ -1,5 +1,4 @@
-﻿using Discord;
-using Qmmands;
+﻿using Qmmands;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
@@ -7,9 +6,9 @@ using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
-namespace Yuki.Commands.Modules.ModerationModule
+namespace Yuki.Commands.Modules.UtilityModule
 {
-    public partial class ModerationUtilityModule
+    public partial class UtilityModule
     {
         [Command("roles")]
         [RequireGuild]
