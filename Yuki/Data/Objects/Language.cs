@@ -401,6 +401,7 @@ namespace Yuki.Data.Objects
         public string rammoe_nyan { get; set; }
         public string rammoe_owo { get; set; }
         public string rammoe_pat_alt { get; set; }
+        public string rammoe_pat { get; set; }
         public string rammoe_pout { get; set; }
         public string rammoe_rem { get; set; }
         public string rammoe_slap { get; set; }
