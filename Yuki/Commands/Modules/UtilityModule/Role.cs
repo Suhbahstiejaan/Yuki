@@ -25,14 +25,19 @@ namespace Yuki.Commands.Modules.UtilityModule
             }
             else
             {
-                foreach (IRole role in Context.Guild.Roles.Where(r => GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(r.Id)))
+                givenRole = Context.Guild.Roles.FirstOrDefault(r => r.Name.ToLower() == roleString.ToLower());
+
+                if(givenRole == null || givenRole == default)
                 {
-                    if (role.Name.ToLower().Contains(roleString.ToLower()) ||
-                        role.Name.ToLower() == roleString.ToLower() ||
-                        (ulong.TryParse(roleString, out ulong r) && role.Id == r))
+                    foreach (IRole role in Context.Guild.Roles.Where(r => GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(r.Id)))
                     {
-                        givenRole = role;
-                        break;
+                        if (role.Name.ToLower().Contains(roleString.ToLower()) ||
+                            role.Name.ToLower() == roleString.ToLower() ||
+                            (ulong.TryParse(roleString, out ulong r) && role.Id == r))
+                        {
+                            givenRole = role;
+                            break;
+                        }
                     }
                 }
             }
