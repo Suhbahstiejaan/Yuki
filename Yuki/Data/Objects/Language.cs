@@ -275,17 +275,17 @@ namespace Yuki.Data.Objects
         public string command_welcome_setmsg_desc { get; set; }
         public string command_welcome_setmsg_usage { get; set; }
 
-        public string command_nsfw_add_desc { get; set; }
-        public string command_nsfw_add_usage { get; set; }
+        public string command_nsfwchannel_add_desc { get; set; }
+        public string command_nsfwchannel_add_usage { get; set; }
 
-        public string command_nsfw_remove_desc { get; set; }
-        public string command_nsfw_remove_usage { get; set; }
+        public string command_nsfwchannel_remove_desc { get; set; }
+        public string command_nsfwchannel_remove_usage { get; set; }
 
-        public string command_nsfw_blacklist_desc { get; set; }
-        public string command_nsfw_blacklist_usage { get; set; }
+        public string command_blacklist_add_desc { get; set; }
+        public string command_blacklist_add_usage { get; set; }
 
-        public string command_nsfw_unblacklist_desc { get; set; }
-        public string command_nsfw_unblacklist_usage { get; set; }
+        public string command_blacklist_remove_desc { get; set; }
+        public string command_blacklist_remove_usage { get; set; }
 
         public string command_muterole_set_desc { get; set; }
         public string command_muterole_set_usage { get; set; }

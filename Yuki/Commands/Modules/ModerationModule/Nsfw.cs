@@ -7,7 +7,7 @@ namespace Yuki.Commands.Modules.ModerationModule
 {
     public partial class ModerationUtilityModule
     {
-        [Group("nsfw")]
+        [Group("nsfwchannel")]
         public class Nsfw : YukiModule
         {
             [Command("add")]
@@ -69,22 +69,32 @@ namespace Yuki.Commands.Modules.ModerationModule
                     await ReplyAsync(Language.GetString("nsfw_channel_removed").Replace("%channelname%", MentionUtils.MentionChannel(channelId)));
                 }
             }
+        }
+    }
 
-            [Command("blacklist")]
-            public async Task AddTagToBlacklistAsync(string tag)
+    [Group("blacklist")]
+    public class NsfwBlacklist : YukiModule
+    {
+        [Command("add")]
+        public async Task AddTagToBlacklistAsync([Remainder] string[] tag)
+        {
+            for(int i = 0; i < tag.Length; i++)
             {
-                GuildSettings.BlacklistTag(tag, Context.Guild.Id);
-
-                await ReplyAsync(Language.GetString("nsfw_tag_blacklisted").Replace("%tag%", tag));
+                GuildSettings.BlacklistTag(tag[i], Context.Guild.Id);
             }
 
-            [Command("unblacklist")]
-            public async Task RemoveTagFromBlacklistAsync(string tag)
-            {
-                GuildSettings.RemoveBlacklistTag(tag, Context.Guild.Id);
+            await ReplyAsync(Language.GetString("nsfw_tag_blacklisted").Replace("%tag%", string.Join(", ", tag)));
+        }
 
-                await ReplyAsync(Language.GetString("nsfw_tag_unblacklisted").Replace("%tag%", tag));
+        [Command("remove")]
+        public async Task RemoveTagFromBlacklistAsync([Remainder] string[] tag)
+        {
+            for (int i = 0; i < tag.Length; i++)
+            {
+                GuildSettings.RemoveBlacklistTag(tag[i], Context.Guild.Id);
             }
+
+            await ReplyAsync(Language.GetString("nsfw_tag_unblacklisted").Replace("%tag%", string.Join(", ", tag)));
         }
     }
 }

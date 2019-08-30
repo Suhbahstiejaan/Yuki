@@ -123,9 +123,6 @@ command_roleinfo_usage = "y!roleinfo Admin"
 command_viewpoll_desc = "View a poll"
 command_viewpoll_usage = "y!viewpoll pollid"
 
-command_modules_desc = "View a list of modules"
-command_modules_usage = "y!modules"
-
 command_help_desc = "Learn a bit about how to use the bot, or get help on a command"
 command_help_usage = "y!help\ny!help commandName"
 
@@ -152,9 +149,6 @@ command_gelbooru_usage = "y!gelbooru\ny!gelbooru terms"
 
 command_danbooru_desc = "Search danbooru for an image. Will return an NSFW image if used in a channel marked as NSFW (with NSFW enabled)"
 command_danbooru_usage = "y!danbooru\ny!danbooru terms"
-
-command_commands_desc = "View commands in a module"
-command_commands_usage = "y!commands utility"
 
 command_commandlist_desc = "View a list of custom commands for a server"
 command_commandlist_usage = "y!commandlist"
@@ -234,17 +228,17 @@ command_welcome_removechannel_usage = "y!welcome removechannel"
 command_welcome_setmsg_desc = "Set the welcome message. Add %user% to have the bot say the new member's username, and %muser% to mention the user."
 command_welcome_setmsg_usage = "y!welcome setmsg Welcome to the server, %muser%!"
 
-command_nsfw_add_desc = "Register a channel as an NSFW channel"
-command_nsfw_add_usage = "y!nsfw add #nsfw"
+command_nsfwchannel_add_desc = "Register a channel as an NSFW channel"
+command_nsfwchannel_add_usage = "y!nsfwchannel add #nsfw"
 
-command_nsfw_remove_desc = "Remove a channel from the list of NSFW channels"
-command_nsfw_remove_usage = "y!nsfw remove #nsfw"
+command_nsfwchannel_remove_desc = "Remove a channel from the list of NSFW channels"
+command_nsfwchannel_remove_usage = "y!nsfwchannel remove #nsfw"
 
-command_nsfw_blacklist_desc = "Blacklist a tag"
-command_nsfw_blacklist_usage = "y!nsfw blacklist yiff"
+command_nsfw_blacklist_add_desc = "Blacklist a tag"
+command_nsfw_blacklist_add_usage = "y!blacklist add yiff"
 
-command_nsfw_unblacklist_desc = "Remove a tag from the tag blacklist"
-command_nsfw_unblacklist_usage = "y!nsfw unblacklist yiff"
+command_nsfw_blacklist_remove_desc = "Remove a tag from the tag blacklist"
+command_nsfw_blacklist_remove_usage = "y!blacklist remove yiff"
 
 command_muterole_set_desc = "Set the role that gets assigned when someone is muted"
 command_muterole_set_usage = "y!muterole set @Muted"
@@ -365,7 +359,6 @@ rammoe_nom_alt = "%executor% got nommed by %user%"
 rammoe_nyan = "nyan"
 rammoe_owo = "owo"
 rammoe_pat = "%user% got a pat from %executor%!"
-rammoe_pat_alt = "%executor%, you got patted by %user%!"
 rammoe_pat_alt = "%executor% was patted by %user%!"
 rammoe_pout = "%executor% is pouting!"
 rammoe_rem = "rem"
@@ -497,7 +490,7 @@ commands_no_alias = "No aliases"
 help_title = "Looking for help?"
 help_aliases = "Aliases"
 help_usage = "Usage"
-help_info_description = "To add me to your own server, [click here!](%botinvite%)\n\n\n• For a list of modules, use `y!modules`\n• To view commands in a module, use `y!commands moduleName`\n\nInterested in supporting my development and getting some perks? Use `y!donate`!\n\nNeed to report a bug or want to request a feature? Join my [support server!](%serverinvite%)\n\nIf you need further information about how to use the bot and to manage settings, view [the wiki](%wiki%)"
+help_info_description = "To add me to your own server, [click here!](%botinvite%)\n\n\n• For a list of modules, use `y!help list`\n• To view commands in a module, use `y!help moduleName`\n\nInterested in supporting my development and getting some perks? Use `y!donate`!\n\nNeed to report a bug or want to request a feature? Join my [support server!](%serverinvite%)\n\nIf you need further information about how to use the bot and to manage settings, view [the wiki](%wiki%)"
 help_description = "Description"
 
 remindme_success = ":thumbsup: Got it, %user%! I'll remember to remind you about this:\n\n%reminder%"

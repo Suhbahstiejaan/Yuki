@@ -23,6 +23,21 @@ namespace Yuki.Commands.Modules.UtilityModule
             {
                 await ReplyAsync(helpEmbed);
             }
+            else if(commandStr == "list")
+            {
+                IEnumerable<Module> modules = YukiBot.Discord.CommandService.GetAllModules().Where(mod => mod.Parent == null);
+
+                EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("modules_title")).WithFooter(Language.GetString("modules_help"));
+
+                foreach (Module module in modules)
+                {
+                    int commandCount = module.Commands.Count + module.Submodules.Count;
+
+                    embed.AddField(module.Name, Language.GetString("modules_count").Replace("%cmds%", commandCount.ToString()), true);
+                }
+
+                await ReplyAsync(embed);
+            }
             else
             {
                 /* TODO: list similar commands? */
@@ -71,7 +86,34 @@ namespace Yuki.Commands.Modules.UtilityModule
                     }
                     else
                     {
-                        await ReplyAsync(helpEmbed);
+                        List<Command> cmds = YukiBot.Discord.CommandService.GetAllModules()
+                                        .FirstOrDefault(mod => mod.Name.ToLower() == commandStr.ToLower()).Commands.ToList();
+
+                        if(cmds != null && cmds.Count > 0)
+                        {
+                            EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("commands_title")).WithFooter(Language.GetString("commands_help"));
+
+                            foreach (Command command in cmds)
+                            {
+                                string embedValue = string.Join(", ", command.Aliases.Where(alias => alias != command.Name));
+
+                                embed.AddField(command.Name, (!string.IsNullOrWhiteSpace(embedValue) ? embedValue : Language.GetString("commands_no_alias")), true);
+                            }
+
+                            List<string> subModules = YukiBot.Discord.CommandService.GetAllModules()
+                                                             .FirstOrDefault(mod => mod.Name.ToLower() == commandStr.ToLower()).Submodules.Select(mod => mod.Name).ToList();
+
+                            foreach (string mod in subModules)
+                            {
+                                embed.AddField(mod, "Submodule", true);
+                            }
+
+                            await ReplyAsync(embed);
+                        }
+                        else
+                        {
+                            await ReplyAsync(helpEmbed);
+                        }
                     }
                 }
             }
