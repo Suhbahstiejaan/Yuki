@@ -109,7 +109,14 @@ namespace Yuki.Services
 
         public RouletteGame GetGame(ulong channelId)
         {
-            return Games[Games.IndexOf(Games.FirstOrDefault(g => g.Id == channelId))];
+            if(Games != null && Games.Count > 0)
+            {
+                return Games[Games.IndexOf(Games.FirstOrDefault(g => g.Id == channelId))];
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public void RemovePlayerFromGame(ulong channelId, ulong userId)
