@@ -47,17 +47,17 @@ namespace Yuki.Commands.Modules.UtilityModule
                 if ((Context.User as IGuildUser).RoleIds.Contains(givenRole.Id))
                 {
                     await (Context.User as IGuildUser).RemoveRoleAsync(givenRole);
-                    await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", givenRole.Name).Replace("%name%", givenRole.Name).Replace("%user%", Context.User.Username));
+                    await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", givenRole.Name).Replace("%user%", Context.User.Username));
                 }
                 else
                 {
                     await (Context.User as IGuildUser).AddRoleAsync(givenRole);
-                    await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", givenRole.Name).Replace("%name%", givenRole.Name).Replace("%user%", Context.User.Username));
+                    await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", givenRole.Name).Replace("%user%", Context.User.Username));
                 }
             }
             else
             {
-                await ReplyAsync(Language.GetString("role_not_found").Replace("%rolename%", roleString).Replace("%name%", givenRole.Name).Replace("%user%", Context.User.Username));
+                await ReplyAsync(Language.GetString("role_not_found").Replace("%rolename%", roleString).Replace("%user%", Context.User.Username));
             }
         }
     }
