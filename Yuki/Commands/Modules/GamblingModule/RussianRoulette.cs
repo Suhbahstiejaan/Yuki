@@ -44,6 +44,10 @@ namespace Yuki.Commands.Modules.GamblingModule
                             }
                         }
                     }
+                    else
+                    {
+                        await ReplyAsync(Language.GetString("roulette_no_game"));
+                    }
                 }
                 catch (Exception e) { await ReplyAsync(e); }
             }
