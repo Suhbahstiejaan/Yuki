@@ -19,6 +19,8 @@ namespace Yuki.Data.Objects.Database
         public bool EnableRoles { get; set; }
         public bool EnableLogging { get; set; }
         public bool EnableFilter { get; set; }
+        public bool EnableReactionRoles { get; set; }
+        public bool EnableStarboard { get; set; }
 
         public string WelcomeMessage { get; set; }
         public string GoodbyeMessage { get; set; }
@@ -27,7 +29,10 @@ namespace Yuki.Data.Objects.Database
 
         public string Prefix { get; set; } /* Custom prefix for server */
 
+        public int StarRequirement { get; set; }
+
         public ulong WelcomeChannel { get; set; }
+        public ulong StarboardChannel { get; set; }
         public ulong LogChannel { get; set; }
         public ulong MuteRole { get; set; }
         
@@ -36,6 +41,7 @@ namespace Yuki.Data.Objects.Database
         public List<GuildMutedUser> MutedUsers { get; set; }
         public List<GuildWarnedUser> WarnedUsers { get; set; }
         public List<GuildWarningAction> WarningActions { get; set; }
+        public List<ReactionMessage> ReactableMessages { get; set; }
 
         public List<string> NsfwBlacklist { get; set; }
         public List<string> WordFilter { get; set; }

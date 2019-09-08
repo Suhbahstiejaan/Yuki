@@ -300,6 +300,16 @@ command_filter_list_usage = "y!filter list"
 command_filter_remove_desc = "Remove a filter (takes index listed in y!filter list)"
 command_filter_remove_usage = "y!filter remove 2"
 
+command_starboard_requirement_desc = "Set the number of stars required for a message to be added to the starboard"
+command_starboard_requirement_usage = "y!starboard requirement 5"
+
+command_starboard_channel_desc = "Set the starboard channel"
+command_starboard_channel_usage = "y!starboard channel #starboard"
+
+command_reactionrole_desc = "Add a reaction role"
+command_reactionrole_usage = "y!reactionrole :emote: Role Name"
+        
+
 
 #Strings
 require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
@@ -601,3 +611,7 @@ event_filter_triggered = "Filter Triggered"
 filter_triggered = "Message by %user% triggered content filter!"
 role_taken = "%user%, you no longer have role `%rolename%`"
 welcome_message_set = "Welcome message has been set to %msg%"
+
+starboard_requirement_set = "Starboard requirement set!"
+starboard_invalid_requirement = "Invalid number! Must be at least 1 and at most 100"
+starboard_channel_set = "Starboard channel set!"

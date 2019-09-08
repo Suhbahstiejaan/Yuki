@@ -346,6 +346,15 @@ namespace Yuki.Data.Objects
 
         public string command_filter_remove_desc { get; set; }
         public string command_filter_remove_usage { get; set; }
+
+        public string command_starboard_requirement_desc { get; set; }
+        public string command_starboard_requirement_usage { get; set; }
+
+        public string command_starboard_channel_desc { get; set; }
+        public string command_starboard_channel_usage { get; set; }
+
+        public string command_reactionrole_desc { get; set; }
+        public string command_reactionrole_usage { get; set; }
         
 
         /* Strings */
@@ -644,5 +653,9 @@ namespace Yuki.Data.Objects
         public string filter_triggered { get; set; }
         public string role_taken { get; set; }
         public string welcome_message_set { get; set; }
+
+        public string starboard_requirement_set { get; set; }
+        public string starboard_invalid_requirement { get; set; }
+        public string starboard_channel_set { get; set; }
     }
 }

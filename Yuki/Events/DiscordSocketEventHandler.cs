@@ -130,10 +130,245 @@ namespace Yuki.Events
             }
         }
 
+        public static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            try
+            {
+                IUserMessage msg = await message.GetOrDownloadAsync();
 
-        /*public static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction) { }
-        public static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction) { }
-        public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }*/
+                if (channel is IDMChannel)
+                {
+                    return;
+                }
+
+                IGuild guild = (channel as IGuildChannel).Guild;
+
+                IGuildUser user = await guild.GetUserAsync(msg.Author.Id);
+
+                GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
+
+
+
+                /* Starboard */
+                if (!config.Equals(null) && config.EnableStarboard && !(message.Value.Author.IsBot || message.Value.Author.Id == reaction.UserId))
+                {
+                    int starCount = message.Value.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Value.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
+
+                    if (starCount >= config.StarRequirement)
+                    {
+                        EmbedBuilder embed = new EmbedBuilder()
+                            .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
+                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), message.Value.Author.Mention, true)
+                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)message.Value.Channel).Mention, true)
+                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({message.Id}) | ").WithCurrentTimestamp()
+                            .WithColor(Colors.Yellow);
+
+                        if (message.Value.Attachments != null && message.Value.Attachments.Count > 0)
+                        {
+                            string attachments = string.Empty;
+                            string imageUrl = null;
+
+                            IAttachment[] _attachments = message.Value.Attachments.ToArray();
+
+                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+
+                            for (int i = 0; i < _attachments.Length; i++)
+                            {
+                                attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                            }
+
+                            if (imageUrl != null)
+                            {
+                                embed.WithImageUrl(imageUrl);
+                            }
+
+                            embed.AddField(GetLanguage(channel).GetString("message_attachments"), attachments);
+                        }
+
+                        IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
+                                    .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
+                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(message.Id.ToString())).FirstOrDefault();
+
+                        if (starredMessage != default)
+                        {
+                            await ((IUserMessage)starredMessage).ModifyAsync(a =>
+                                {
+                                    a.Embed = embed.Build();
+                                });
+                        }
+                        else
+                        {
+                            await ((ITextChannel)channel).SendMessageAsync("", false, embed.Build());
+                        }
+                    }
+                }
+
+
+
+
+                /* Reaction roles */
+                if (config.Equals(null) || !config.EnableReactionRoles)
+                {
+                    return;
+                }
+
+                ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_msg => _msg.Id == msg.Id);
+
+                if (reactionMessage.Equals(default))
+                {
+                    return;
+                }
+
+                foreach (MessageReaction r in reactionMessage.Reactions)
+                {
+                    Emote emote = null;
+
+                    Emoji emoji = null;
+
+                    if (!(Emote.TryParse(r.Emote, out emote)))
+                    {
+                        emoji = new Emoji(r.Emote);
+                    }
+                    if (!(emoji == null && emote == null))
+                    {
+                        await user.AddRoleAsync(guild.GetRole(r.RoleId));
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await channel.SendMessageAsync(e.ToString());
+            }
+        }
+
+        public static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            try
+            {
+
+                /* Reaction roles */
+                IUserMessage msg = await message.GetOrDownloadAsync();
+
+                if (channel is IDMChannel)
+                {
+                    return;
+                }
+
+                IGuild guild = (channel as IGuildChannel).Guild;
+
+                IGuildUser user = await guild.GetUserAsync(msg.Author.Id);
+
+                GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
+
+
+
+                /* Starboard */
+                if (!config.Equals(null) && config.EnableStarboard && !(message.Value.Author.IsBot || message.Value.Author.Id == reaction.UserId))
+                {
+                    int starCount = message.Value.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Value.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
+
+                    IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
+                                    .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
+                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(message.Id.ToString())).FirstOrDefault();
+
+                    if (starCount >= config.StarRequirement)
+                    {
+                        EmbedBuilder embed = new EmbedBuilder()
+                            .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
+                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), message.Value.Author.Mention, true)
+                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)message.Value.Channel).Mention, true)
+                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({message.Id}) | ").WithCurrentTimestamp()
+                            .WithColor(Colors.Yellow);
+
+                        if (message.Value.Attachments != null && message.Value.Attachments.Count > 0)
+                        {
+                            string attachments = string.Empty;
+                            string imageUrl = null;
+
+                            IAttachment[] _attachments = message.Value.Attachments.ToArray();
+
+                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+
+                            for (int i = 0; i < _attachments.Length; i++)
+                            {
+                                attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                            }
+
+                            if (imageUrl != null)
+                            {
+                                embed.WithImageUrl(imageUrl);
+                            }
+
+                            embed.AddField(GetLanguage(channel).GetString("message_attachments"), attachments);
+                        }
+
+                        if (starredMessage != default)
+                        {
+                            await ((IUserMessage)starredMessage).ModifyAsync(a =>
+                            {
+                                a.Embed = embed.Build();
+                            });
+                        }
+                        else
+                        {
+                            await ((ITextChannel)channel).SendMessageAsync("", false, embed.Build());
+                        }
+                    }
+
+                    if(starCount == 0)
+                    {
+                        if(starredMessage != default)
+                        {
+                            await starredMessage.DeleteAsync();
+                        }
+                    }
+                }
+
+
+
+
+                /* Reaction roles */
+                if (config.Equals(null) || !config.EnableReactionRoles)
+                {
+                    return;
+                }
+
+                ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_msg => _msg.Id == msg.Id);
+
+                if (reactionMessage.Equals(default))
+                {
+                    return;
+                }
+
+                foreach (MessageReaction r in reactionMessage.Reactions)
+                {
+                    Emote emote = null;
+
+                    Emoji emoji = null;
+
+                    if (!(Emote.TryParse(r.Emote, out emote)))
+                    {
+                        emoji = new Emoji(r.Emote);
+                    }
+                    if (!(emoji == null && emote == null))
+                    {
+                        if(!user.RoleIds.Contains(guild.GetRole(r.RoleId).Id))
+                        {
+                            await user.RemoveRoleAsync(guild.GetRole(r.RoleId));
+                        }
+
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await channel.SendMessageAsync(e.ToString());
+            }
+        }
+
+        /*public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }*/
 
 
         public static async Task UserBanned(SocketUser user, SocketGuild guild)

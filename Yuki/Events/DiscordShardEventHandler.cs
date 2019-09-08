@@ -101,10 +101,12 @@ namespace Yuki.Events
             client.MessageUpdated += DiscordSocketEventHandler.MessageUpdated;
             client.MessageDeleted += DiscordSocketEventHandler.MessageDeleted;
 
+
+            client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
+            client.ReactionRemoved += DiscordSocketEventHandler.ReactionRemoved;
+
             /* To uncomment once reaction roles are implemented
              
-                client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
-                client.ReactionRemoved += DiscordSocketEventHandler.ReactionRemoved;
                 client.ReactionsCleared += DiscordSocketEventHandler.ReactionsCleared;
             */
 

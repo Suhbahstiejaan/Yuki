@@ -35,6 +35,9 @@ namespace Yuki.Commands.Modules.ModerationModule
                 case "roles":
                     GuildSettings.ToggleRoles(guildId, true);
                     break;
+                case "reactionrole":
+                    GuildSettings.ToggleReactionRoles(guildId, true);
+                    break;
                 case "warnings":
                     GuildSettings.ToggleWarnings(guildId, true);
                     break;
@@ -43,6 +46,9 @@ namespace Yuki.Commands.Modules.ModerationModule
                     break;
                 case "filter":
                     GuildSettings.ToggleFilter(guildId, true);
+                    break;
+                case "starboard":
+                    GuildSettings.ToggleStarboard(guildId, true);
                     break;
                 default:
                     found = false;

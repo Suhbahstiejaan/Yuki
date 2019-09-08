@@ -26,6 +26,8 @@ namespace Yuki.Services.Database
                 EnableRoles = false,
                 EnableWarnings = false,
                 EnableFilter = false,
+                EnableReactionRoles = false,
+                EnableStarboard = false,
 
                 AssignableRoles = new List<ulong>(),
                 AutoBanUsers = new List<ulong>(),
@@ -40,11 +42,15 @@ namespace Yuki.Services.Database
                 WarnedUsers = new List<GuildWarnedUser>(),
                 WarningActions = new List<GuildWarningAction>(),
                 MutedUsers = new List<GuildMutedUser>(),
+                ReactableMessages = new List<ReactionMessage>(),
 
                 NsfwBlacklist = new List<string>(),
                 WordFilter = new List<string>(),
 
+                StarRequirement = 10,
+
                 WelcomeChannel = 0,
+                StarboardChannel = 0,
                 LogChannel = 0,
                 MuteRole = 0,
 
@@ -378,6 +384,38 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static void ToggleReactionRoles(ulong guildId, bool state)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+                    config.EnableReactionRoles = state;
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void ToggleStarboard(ulong guildId, bool state)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+                    config.EnableStarboard = state;
+
+                    configs.Update(config);
+                }
+            }
+        }
         #endregion
 
         #region Adds
@@ -650,6 +688,69 @@ namespace Yuki.Services.Database
                     {
                         config.WordFilter.Add(filter);
                     }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void AddReactionMessage(ReactionMessage message, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.ReactableMessages == null)
+                    {
+                        config.ReactableMessages = new List<ReactionMessage>();
+                    }
+
+                    if (!config.ReactableMessages.Any(msg => msg.Id == message.Id))
+                    {
+                        config.ReactableMessages.Add(message);
+                    }
+                    else
+                    {
+                        config.ReactableMessages[config.ReactableMessages.IndexOf(config.ReactableMessages.FirstOrDefault(msg => msg.Id == message.Id))].Reactions.AddRange(message.Reactions);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void SetStarRequirement(int numStars, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    config.StarRequirement = numStars;
+
+                    configs.Update(config);
+                }
+            }
+        }
+
+        public static void SetStarboardChannel(ulong channelId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    config.StarboardChannel = channelId;
 
                     configs.Update(config);
                 }

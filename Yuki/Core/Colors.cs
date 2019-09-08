@@ -27,5 +27,7 @@ namespace Yuki.Core
             => Get()[new YukiRandom().Next(Get().Length)];
 
         public static Color Pink = new Color(228, 11, 210);
+
+        public static Color Yellow = new Color(255, 255, 0);
     }
 }
