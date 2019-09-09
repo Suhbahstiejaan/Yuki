@@ -220,7 +220,7 @@ namespace Yuki.Events
 
                 ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_msg => _msg.Id == msg.Id);
 
-                if (reactionMessage.Equals(default))
+                if (reactionMessage.Equals(default) || (reactionMessage.Reactions == null || reactionMessage.Reactions.Count < 1))
                 {
                     return;
                 }
