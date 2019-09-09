@@ -150,25 +150,25 @@ namespace Yuki.Events
 
 
                 /* Starboard */
-                if (!config.Equals(null) && config.EnableStarboard && !(message.Value.Author.IsBot || message.Value.Author.Id == reaction.UserId))
+                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot || msg.Author.Id == reaction.UserId))
                 {
-                    int starCount = message.Value.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Value.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
+                    int starCount = msg.Reactions.Keys.Select(r => r.Name == "⭐") != null ? msg.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
 
                     if (starCount >= config.StarRequirement)
                     {
                         EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
-                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), message.Value.Author.Mention, true)
-                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)message.Value.Channel).Mention, true)
-                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({message.Id}) | ").WithCurrentTimestamp()
+                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), msg.Author.Mention, true)
+                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)msg.Channel).Mention, true)
+                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id}) | ").WithCurrentTimestamp()
                             .WithColor(Colors.Yellow);
 
-                        if (message.Value.Attachments != null && message.Value.Attachments.Count > 0)
+                        if (msg.Attachments != null && msg.Attachments.Count > 0)
                         {
                             string attachments = string.Empty;
                             string imageUrl = null;
 
-                            IAttachment[] _attachments = message.Value.Attachments.ToArray();
+                            IAttachment[] _attachments = msg.Attachments.ToArray();
 
                             imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
 
@@ -187,7 +187,7 @@ namespace Yuki.Events
 
                         IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
                                     .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
-                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(message.Id.ToString())).FirstOrDefault();
+                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(msg.Id.ToString())).FirstOrDefault();
 
                         if (starredMessage != default)
                         {
@@ -264,29 +264,29 @@ namespace Yuki.Events
 
 
                 /* Starboard */
-                if (!config.Equals(null) && config.EnableStarboard && !(message.Value.Author.IsBot || message.Value.Author.Id == reaction.UserId))
+                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot || msg.Author.Id == reaction.UserId))
                 {
-                    int starCount = message.Value.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Value.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
+                    int starCount = msg.Reactions.Keys.Select(r => r.Name == "⭐") != null ? msg.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
 
                     IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
                                     .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
-                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(message.Id.ToString())).FirstOrDefault();
+                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(msg.Id.ToString())).FirstOrDefault();
 
                     if (starCount >= config.StarRequirement)
                     {
                         EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
-                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), message.Value.Author.Mention, true)
-                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)message.Value.Channel).Mention, true)
-                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({message.Id}) | ").WithCurrentTimestamp()
+                            .AddField(GetLanguage(channel).GetString("starboard_field_author"), msg.Author.Mention, true)
+                            .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)msg.Channel).Mention, true)
+                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id}) | ").WithCurrentTimestamp()
                             .WithColor(Colors.Yellow);
 
-                        if (message.Value.Attachments != null && message.Value.Attachments.Count > 0)
+                        if (msg.Attachments != null && msg.Attachments.Count > 0)
                         {
                             string attachments = string.Empty;
                             string imageUrl = null;
 
-                            IAttachment[] _attachments = message.Value.Attachments.ToArray();
+                            IAttachment[] _attachments = msg.Attachments.ToArray();
 
                             imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
 
