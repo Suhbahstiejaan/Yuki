@@ -657,5 +657,10 @@ namespace Yuki.Data.Objects
         public string starboard_requirement_set { get; set; }
         public string starboard_invalid_requirement { get; set; }
         public string starboard_channel_set { get; set; }
+
+        public string starboard_title { get; set; }
+        public string starboard_field_author { get; set; }
+        public string starboard_field_channel { get; set; }
+        public string starboard_stars { get; set; }
     }
 }

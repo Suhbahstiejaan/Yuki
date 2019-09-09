@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using System;
 using System.IO;
@@ -150,7 +151,7 @@ namespace Yuki.Events
 
 
                 /* Starboard */
-                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot || msg.Author.Id == reaction.UserId))
+                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot))//|| msg.Author.Id == reaction.UserId))
                 {
                     int starCount = msg.Reactions.Keys.Select(r => r.Name == "⭐") != null ? msg.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
 
@@ -158,10 +159,11 @@ namespace Yuki.Events
                     {
                         EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
+                            .WithDescription(msg.Content)
                             .AddField(GetLanguage(channel).GetString("starboard_field_author"), msg.Author.Mention, true)
                             .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)msg.Channel).Mention, true)
-                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id}) | ").WithCurrentTimestamp()
-                            .WithColor(Colors.Yellow);
+                            .WithFooter($"⭐ {starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id})").WithCurrentTimestamp()
+                            .WithColor(Color.Gold);
 
                         if (msg.Attachments != null && msg.Attachments.Count > 0)
                         {
@@ -185,20 +187,32 @@ namespace Yuki.Events
                             embed.AddField(GetLanguage(channel).GetString("message_attachments"), attachments);
                         }
 
-                        IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
-                                    .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
-                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(msg.Id.ToString())).FirstOrDefault();
+                        bool starUpdated = false;
+                        foreach(IMessage imessage in (await AsyncEnumerable.ToList((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
+                        {
+                            if(imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id && imessage.Embeds != null && imessage.Embeds.Count > 0)
+                            {
+                                IEmbed msgEmbed = imessage.Embeds.ToArray()[0];
 
-                        if (starredMessage != default)
-                        {
-                            await ((IUserMessage)starredMessage).ModifyAsync(a =>
+                                if(msgEmbed.Footer.HasValue)
                                 {
-                                    a.Embed = embed.Build();
-                                });
+                                    if(msgEmbed.Footer.Value.Text.StartsWith('⭐') && msgEmbed.Footer.Value.Text.Contains(msg.Id.ToString()))
+                                    {
+                                        await ((IUserMessage)imessage).ModifyAsync(a =>
+                                        {
+                                            a.Embed = embed.Build();
+                                        });
+
+                                        starUpdated = true;
+                                        break;
+                                    }
+                                }
+                            }
                         }
-                        else
+
+                        if(!starUpdated)
                         {
-                            await ((ITextChannel)channel).SendMessageAsync("", false, embed.Build());
+                            await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
                         }
                     }
                 }
@@ -214,7 +228,7 @@ namespace Yuki.Events
 
                 ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_msg => _msg.Id == msg.Id);
 
-                if (reactionMessage.Equals(default))
+                if (reactionMessage.Equals(default) || reactionMessage.Reactions == null)
                 {
                     return;
                 }
@@ -236,7 +250,7 @@ namespace Yuki.Events
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 await channel.SendMessageAsync(e.ToString());
             }
@@ -264,22 +278,19 @@ namespace Yuki.Events
 
 
                 /* Starboard */
-                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot || msg.Author.Id == reaction.UserId))
+                if (!config.Equals(null) && config.EnableStarboard && !(msg.Author.IsBot))//|| msg.Author.Id == reaction.UserId))
                 {
                     int starCount = msg.Reactions.Keys.Select(r => r.Name == "⭐") != null ? msg.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
-
-                    IMessage starredMessage = (await AsyncEnumerable.ToList(((ITextChannel)channel).GetMessagesAsync(100)))
-                                    .SelectMany(_msg => _msg.ToArray()).Where(_msg => _msg.Embeds.ToArray()[0].Footer.Value.Text.StartsWith("⭐")
-                                                    && _msg.Embeds.ToArray()[0].Footer.Value.Text.Contains(msg.Id.ToString())).FirstOrDefault();
 
                     if (starCount >= config.StarRequirement)
                     {
                         EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(GetLanguage(channel).GetString("starboard_title"))
+                            .WithDescription(msg.Content)
                             .AddField(GetLanguage(channel).GetString("starboard_field_author"), msg.Author.Mention, true)
                             .AddField(GetLanguage(channel).GetString("starboard_field_channel"), ((ITextChannel)msg.Channel).Mention, true)
-                            .WithFooter($"{starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id}) | ").WithCurrentTimestamp()
-                            .WithColor(Colors.Yellow);
+                            .WithFooter($"⭐ {starCount} {GetLanguage(channel).GetString("starboard_stars")} ({msg.Id})").WithCurrentTimestamp()
+                            .WithColor(Color.Gold);
 
                         if (msg.Attachments != null && msg.Attachments.Count > 0)
                         {
@@ -303,25 +314,38 @@ namespace Yuki.Events
                             embed.AddField(GetLanguage(channel).GetString("message_attachments"), attachments);
                         }
 
-                        if (starredMessage != default)
+                        bool starUpdated = false;
+                        foreach (IMessage imessage in (await AsyncEnumerable.ToList((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
                         {
-                            await ((IUserMessage)starredMessage).ModifyAsync(a =>
+                            if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id && imessage.Embeds != null && imessage.Embeds.Count > 0)
                             {
-                                a.Embed = embed.Build();
-                            });
+                                IEmbed msgEmbed = imessage.Embeds.ToArray()[0];
+
+                                if (msgEmbed.Footer.HasValue)
+                                {
+                                    if (msgEmbed.Footer.Value.Text.StartsWith('⭐') && msgEmbed.Footer.Value.Text.Contains(msg.Id.ToString()))
+                                    {
+                                        await ((IUserMessage)imessage).ModifyAsync(a =>
+                                        {
+                                            a.Embed = embed.Build();
+                                        });
+
+                                        starUpdated = true;
+                                        break;
+                                    }
+                                }
+                            }
                         }
-                        else
+
+                        if (!starUpdated)
                         {
-                            await ((ITextChannel)channel).SendMessageAsync("", false, embed.Build());
+                            await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
                         }
                     }
 
                     if(starCount == 0)
                     {
-                        if(starredMessage != default)
-                        {
-                            await starredMessage.DeleteAsync();
-                        }
+                        await msg.DeleteAsync();
                     }
                 }
 
