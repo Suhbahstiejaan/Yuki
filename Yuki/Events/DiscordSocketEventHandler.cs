@@ -150,7 +150,6 @@ namespace Yuki.Events
                 GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
 
 
-
                 Starboard.Manage(msg, channel as ITextChannel, reaction);
 
 
@@ -208,7 +207,6 @@ namespace Yuki.Events
                 IGuildUser user = await guild.GetUserAsync(msg.Author.Id);
 
                 GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
-
 
 
                 Starboard.Manage(msg, channel as ITextChannel, reaction, true);
