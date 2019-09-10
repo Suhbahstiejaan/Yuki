@@ -77,6 +77,8 @@ namespace Yuki.Services.Database
                     if(config.StarboardIgnoredChannels == null)
                     {
                         config.StarboardIgnoredChannels = new List<ulong>();
+
+                        configs.Update(config);
                     }
 
                     return config;
