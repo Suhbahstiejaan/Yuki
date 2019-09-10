@@ -6,9 +6,9 @@ namespace Yuki
     {
         public static int Major  { get; } = 2;
         public static int Minor  { get; } = 0;
-        public static int Hotfix { get; } = 0;
+        public static int Hotfix { get; } = 1;
         
-        public static ReleaseType ReleaseType { get; } = ReleaseType.PreRelease;
+        public static ReleaseType ReleaseType { get; } = ReleaseType.Release;
 
         public static string DiscordNetVersion { get; } = DiscordConfig.Version + $" (API v{DiscordConfig.APIVersion}, Voice API v{DiscordConfig.VoiceAPIVersion})";
 
