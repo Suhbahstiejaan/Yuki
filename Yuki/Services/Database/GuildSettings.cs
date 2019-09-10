@@ -72,7 +72,14 @@ namespace Yuki.Services.Database
                 }
                 else
                 {
-                    return configs.FindAll().FirstOrDefault(conf => conf.Id == id);
+                    GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == id);
+
+                    if(config.StarboardIgnoredChannels == null)
+                    {
+                        config.StarboardIgnoredChannels = new List<ulong>();
+                    }
+
+                    return config;
                 }
             }
         }
