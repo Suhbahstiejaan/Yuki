@@ -353,6 +353,9 @@ namespace Yuki.Data.Objects
         public string command_starboard_channel_desc { get; set; }
         public string command_starboard_channel_usage { get; set; }
 
+        public string command_starboard_ignore_desc { get; set; }
+        public string command_starboard_ignore_usage { get; set; }
+
         public string command_reactionrole_desc { get; set; }
         public string command_reactionrole_usage { get; set; }
         
@@ -662,5 +665,8 @@ namespace Yuki.Data.Objects
         public string starboard_field_author { get; set; }
         public string starboard_field_channel { get; set; }
         public string starboard_stars { get; set; }
+        public string starboard_enabled_in_channel { get; set; }
+        public string starboard_disabled_in_channel { get; set; }
+        public string starboard_channel_ignored { get; set; }
     }
 }

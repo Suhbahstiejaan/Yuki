@@ -48,6 +48,7 @@ namespace Yuki.Data.Objects.Database
 
         public List<ulong> CacheIgnoredChannels { get; set; }
         public List<ulong> LevelIgnoredChannels { get; set; }
+        public List<ulong> StarboardIgnoredChannels { get; set; }
         public List<ulong> AutoBanUsers { get; set; }    /* Users to ban when they join */
         public List<ulong> NsfwChannels { get; set; }
         public List<ulong> AssignableRoles { get; set; }

@@ -306,6 +306,9 @@ command_starboard_requirement_usage = "y!starboard requirement 5"
 command_starboard_channel_desc = "Set the starboard channel"
 command_starboard_channel_usage = "y!starboard channel #starboard"
 
+command_starboard_ignore_desc = "Enable or disable Starboard starring in a channel by running the command in that channel. Rerun the command to re-enable Starboard starring."
+command_starboard_ignore_usage = "y!starboard ignore"
+
 command_reactionrole_desc = "Add a reaction role"
 command_reactionrole_usage = "y!reactionrole :emote: Role Name"
         
@@ -619,3 +622,6 @@ starboard_title = "Starred Content"
 starboard_field_author = "Author"
 starboard_field_channel = "Channel"
 starboard_stars = "stars"
+starboard_enabled_in_channel = "Starboard starring is enabled in this channel."
+starboard_disabled_in_channel = "Starboard starring is disabled in this channel."
+starboard_channel_ignored = "Starboard starring has been toggled for this channel. Status: %channel_status%"

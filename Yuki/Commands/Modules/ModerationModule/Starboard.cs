@@ -54,5 +54,17 @@ namespace Yuki.Commands.Modules.ModerationModule
                 }
             }
         }
+
+        [Command("ignore")]
+        public async Task SetStarboardChannelAsync()
+        {
+            ulong channelId = Context.Channel.Id;
+
+            bool enabled = GuildSettings.ToggleStarboardInChannel(channelId, Context.Guild.Id);
+
+            string status = enabled ? Language.GetString("starboard_enabled_in_channel") : Language.GetString("starboard_disabled_in_channel");
+
+            await ReplyAsync(Language.GetString("starboard_channel_ignored").Replace("%channelname%", MentionUtils.MentionChannel(channelId)).Replace("%channel_status%", status));
+        }
     }
 }

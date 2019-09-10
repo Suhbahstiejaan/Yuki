@@ -756,6 +756,36 @@ namespace Yuki.Services.Database
                 }
             }
         }
+
+        public static bool ToggleStarboardInChannel(ulong channelId, ulong guildId)
+        {
+            bool enabled = false;
+
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    enabled = !config.StarboardIgnoredChannels.Contains(channelId);
+
+                    if (!enabled)
+                    {
+                        config.StarboardIgnoredChannels.Remove(channelId);
+                    }
+                    else
+                    {
+                        config.StarboardIgnoredChannels.Add(channelId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+
+            return enabled;
+        }
         #endregion
 
         #region Removes

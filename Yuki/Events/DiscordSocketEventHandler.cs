@@ -193,8 +193,6 @@ namespace Yuki.Events
         {
             try
             {
-
-                /* Reaction roles */
                 IUserMessage msg = await message.GetOrDownloadAsync();
 
                 if (channel is IDMChannel)
