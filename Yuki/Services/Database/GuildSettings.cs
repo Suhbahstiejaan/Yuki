@@ -30,6 +30,7 @@ namespace Yuki.Services.Database
                 EnableStarboard = false,
 
                 AssignableRoles = new List<ulong>(),
+                StarboardIgnoredChannels = new List<ulong>(),
                 AutoBanUsers = new List<ulong>(),
                 CacheIgnoredChannels = new List<ulong>(),
                 LevelIgnoredChannels = new List<ulong>(),

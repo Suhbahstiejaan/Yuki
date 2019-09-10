@@ -34,7 +34,7 @@ namespace Yuki.Services
 
                 /* Starboard */
                 if (!config.Equals(null) && config.EnableStarboard && !(reaction.User.Value.IsBot || message.Author.Id == reaction.UserId) &&
-                    !config.StarboardIgnoredChannels.Contains(message.Channel.Id))
+                    config.StarboardIgnoredChannels != null && !config.StarboardIgnoredChannels.Contains(message.Channel.Id))
                 {
                     int starCount = message.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Reactions.Select(r => r.Key.Name == "⭐").Count() : 0;
 
