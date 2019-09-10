@@ -33,28 +33,32 @@ namespace Yuki.Events
 
             status.Elapsed += new System.Timers.ElapsedEventHandler((EventHandler)async delegate (object sender, EventArgs e)
             {
-                int statusType = new YukiRandom().Next(1, 100);
+                List<string> statuses = new List<string>();
+                ActivityType activity = default;
 
-                List<string> statuses;
-                ActivityType activity;
+                while(statuses == null || statuses.Count < 1)
+                {
+                    int statusType = new YukiRandom().Next(1, 100);
 
-                StatusMessages messages = Toml.ReadFile<StatusMessages>(FileDirectories.StatusMessages);
+                    StatusMessages messages = Toml.ReadFile<StatusMessages>(FileDirectories.StatusMessages);
 
-                if(statusType <= 33)
-                {
-                    statuses = messages.Listening;
-                    activity = ActivityType.Listening;
+                    if (statusType <= 33)
+                    {
+                        statuses = messages.Listening;
+                        activity = ActivityType.Listening;
+                    }
+                    else if (statusType > 33 && statusType <= 66)
+                    {
+                        statuses = messages.Watching;
+                        activity = ActivityType.Watching;
+                    }
+                    else
+                    {
+                        statuses = messages.Playing;
+                        activity = ActivityType.Playing;
+                    }
                 }
-                else if(statusType > 33 && statusType <= 66)
-                {
-                    statuses = messages.Watching;
-                    activity = ActivityType.Watching;
-                }
-                else
-                {
-                    statuses = messages.Playing;
-                    activity = ActivityType.Playing;
-                }
+
 
                 string uptime = Process.GetCurrentProcess().StartTime.ToUniversalTime().ToPrettyTime(true, false);
 
