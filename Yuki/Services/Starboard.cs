@@ -59,11 +59,6 @@ namespace Yuki.Services
                         }
                     }
 
-                    if (starCount >= config.StarRequirement && msg == default)
-                    {
-                        return;
-                    }
-
                     EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(lang.GetString("starboard_title"))
                             .WithDescription(message.Content)
@@ -102,7 +97,7 @@ namespace Yuki.Services
                         });
                     }
 
-                    if (!starUpdated)
+                    if (!starUpdated && starCount >= config.StarRequirement)
                     {
                         await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
                     }
