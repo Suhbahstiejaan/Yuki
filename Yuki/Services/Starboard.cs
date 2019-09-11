@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.IO;
 using System.Linq;
 using Yuki.Core;
 using Yuki.Data.Objects;
@@ -74,7 +75,23 @@ namespace Yuki.Services
 
                         IAttachment[] _attachments = message.Attachments.ToArray();
 
-                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+                        foreach(string str in message.Content.Split(' '))
+                        {
+                            if (str.IsImage())
+                            {
+                                if(imageUrl == null)
+                                {
+                                    imageUrl = str;
+                                }
+
+                                attachments += $"[{Path.GetFileName(message.Content)}]({str})\n";
+                            }
+                        }
+
+                        if(imageUrl == null)
+                        {
+                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+                        }
 
                         for (int i = 0; i < _attachments.Length; i++)
                         {
