@@ -59,9 +59,12 @@ namespace Yuki.Services
                         }
                     }
 
-                    if (starCount >= config.StarRequirement)
+                    if (starCount >= config.StarRequirement && msg == default)
                     {
-                        EmbedBuilder embed = new EmbedBuilder()
+                        return;
+                    }
+
+                    EmbedBuilder embed = new EmbedBuilder()
                             .WithAuthor(lang.GetString("starboard_title"))
                             .WithDescription(message.Content)
                             .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
@@ -69,43 +72,42 @@ namespace Yuki.Services
                             .WithFooter($"⭐ {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
                             .WithColor(Color.Gold);
 
-                        if (message.Attachments != null && message.Attachments.Count > 0)
+                    if (message.Attachments != null && message.Attachments.Count > 0)
+                    {
+                        string attachments = string.Empty;
+                        string imageUrl = null;
+
+                        IAttachment[] _attachments = message.Attachments.ToArray();
+
+                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+
+                        for (int i = 0; i < _attachments.Length; i++)
                         {
-                            string attachments = string.Empty;
-                            string imageUrl = null;
-
-                            IAttachment[] _attachments = message.Attachments.ToArray();
-
-                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
-
-                            for (int i = 0; i < _attachments.Length; i++)
-                            {
-                                attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
-                            }
-
-                            if (imageUrl != null)
-                            {
-                                embed.WithImageUrl(imageUrl);
-                            }
-
-                            embed.AddField(lang.GetString("message_attachments"), attachments);
+                            attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
                         }
 
-                        if(msg != default)
+                        if (imageUrl != null)
                         {
-                            await ((IUserMessage)msg).ModifyAsync(a =>
-                            {
-                                a.Embed = embed.Build();
-                            });
+                            embed.WithImageUrl(imageUrl);
                         }
 
-                        if (!starUpdated)
-                        {
-                            await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
-                        }
+                        embed.AddField(lang.GetString("message_attachments"), attachments);
                     }
 
-                    if (isDeleteCheck && starCount == 0 && msg != default)
+                    if (msg != default)
+                    {
+                        await ((IUserMessage)msg).ModifyAsync(a =>
+                        {
+                            a.Embed = embed.Build();
+                        });
+                    }
+
+                    if (!starUpdated)
+                    {
+                        await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
+                    }
+
+                    if (isDeleteCheck && starCount < config.StarRequirement && msg != default)
                     {
                         await msg.DeleteAsync();
                     }
