@@ -81,6 +81,11 @@ namespace Yuki.Services.Database
                         configs.Update(config);
                     }
 
+                    if(config.StarRequirement < 1)
+                    {
+                        config.StarRequirement = 10;
+                    }
+
                     return config;
                 }
             }
