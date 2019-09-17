@@ -15,8 +15,6 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetUserInfoAsync(IUser userParam = default)
         {
-            try
-            {
                 if (Context.Channel is IDMChannel)
                 {
                     return;
@@ -57,11 +55,6 @@ namespace Yuki.Commands.Modules.UtilityModule
                                                 roles, true);
 
                 await ReplyAsync(embed);
-            }
-            catch(Exception e)
-            {
-                await ReplyAsync(e);
-            }
         }
     }
 }
