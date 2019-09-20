@@ -33,7 +33,7 @@ namespace Yuki.Commands.Modules.ModerationModule
             [Command("remove", "rem")]
             public async Task RemoveFilterAsync(int filterIndex)
             {
-                GuildSettings.RemoveFilter(filterIndex--, Context.Guild.Id);
+                GuildSettings.RemoveFilter(--filterIndex, Context.Guild.Id);
 
                 await ReplyAsync(Language.GetString("filter_removed"));
             }

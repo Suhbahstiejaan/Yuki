@@ -1088,7 +1088,7 @@ namespace Yuki.Services.Database
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
 
-                    if(filterIndex > 0 && filterIndex < config.WordFilter.Count)
+                    if(filterIndex >= 0 && filterIndex < config.WordFilter.Count)
                     {
                         config.WordFilter.RemoveAt(filterIndex);
                     }
