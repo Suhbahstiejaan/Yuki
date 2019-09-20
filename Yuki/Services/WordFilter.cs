@@ -31,7 +31,7 @@ namespace Yuki.Services
 
                 foreach (string wordFilter in filter)
                 {
-                    if (Regex.IsMatch(message.Content, $@"\b{wordFilter}\b", RegexOptions.IgnoreCase) || message.Content.LevenshteinAny(wordFilter))
+                    if (Regex.IsMatch(message.Content, $@"\b{wordFilter}\b", RegexOptions.IgnoreCase))// || message.Content.LevenshteinAny(wordFilter))
                     {
                         if (guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
                             guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
