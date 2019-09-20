@@ -15,6 +15,11 @@ namespace Yuki.API
 {
     public static class RamMoe
     {
+        private static string[] badImages = new[]
+        {
+            "rkshJ3Sjx.gif"
+        };
+
         public static async Task<string> GetImageAsync(string type, bool isNsfw = false)
         {
             using (HttpClient http = new HttpClient())
@@ -26,7 +31,16 @@ namespace Yuki.API
                 {
                     RamMoeFile moe = JsonConvert.DeserializeObject<RamMoeFile>(reader.ReadToEnd());
 
-                    return "https://cdn.ram.moe/" + moe.path.Remove(0, 3);
+                    string moeImage = moe.path.Remove(0, 3);
+
+                    if(!badImages.Contains(moeImage))
+                    {
+                        return "https://cdn.ram.moe/" + moeImage;
+                    }
+                    else
+                    {
+                        return await GetImageAsync(type, isNsfw);
+                    }
                 }
             }
         }

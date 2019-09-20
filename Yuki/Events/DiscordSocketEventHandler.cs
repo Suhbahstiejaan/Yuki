@@ -32,6 +32,11 @@ namespace Yuki.Events
             return Localization.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
         }
 
+        public static async Task MessageReveived(SocketMessage message)
+        {
+
+        }
+
         public static async Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
             try

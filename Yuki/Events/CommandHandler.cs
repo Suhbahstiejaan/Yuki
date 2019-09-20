@@ -11,6 +11,7 @@ using Yuki.Core;
 using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
+using Yuki.Services;
 using Yuki.Services.Database;
 
 namespace Yuki.Events
@@ -35,44 +36,7 @@ namespace Yuki.Events
 
                 if (!(message.Channel is IDMChannel))
                 {
-                    IGuildChannel guildChannel = (message.Channel as IGuildChannel);
-
-                    GuildConfiguration guild = GuildSettings.GetGuild(guildChannel.GuildId);
-
-                    Language lang = Localization.GetLanguage(guild.LangCode);
-
-                    if (guild.EnableFilter)
-                    {
-                        List<string> filter = guild.WordFilter;
-
-                        foreach (string wordFilter in filter)
-                        {
-                            if (Regex.IsMatch(message.Content, $@"\b{wordFilter}\b", RegexOptions.IgnoreCase))
-                            {
-                                if (guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
-                                    guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
-                                    guildChannel.Guild.OwnerId == message.Author.Id)
-                                {
-                                    /* Add exclamation mark emote */
-                                    await message.AddReactionAsync(new Emoji("❗"));
-                                }
-                                else
-                                {
-                                    EmbedBuilder embed = new EmbedBuilder()
-                                    .WithAuthor(lang.GetString("event_filter_triggered"), message.Author.GetAvatarUrl())
-                                    .WithDescription($"{lang.GetString("event_message_id")}: {message.Id}\n" +
-                                                     $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(guildChannel.Id)} ({guildChannel.Id})\n" +
-                                                     $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(message.Author.Id)}")
-                                    .AddField(lang.GetString("message_content"), message.Content)
-                                    .WithColor(Color.Purple);
-
-                                    await message.DeleteAsync();
-                                    await DiscordSocketEventHandler.LogMessageAsync(embed, guildChannel.GuildId);
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    await WordFilter.CheckFilter(message);
                 }
 
                 if (!hasPrefix)
