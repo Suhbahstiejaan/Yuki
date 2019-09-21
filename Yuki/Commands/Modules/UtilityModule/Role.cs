@@ -23,8 +23,20 @@ namespace Yuki.Commands.Modules.UtilityModule
             }
             else
             {
-                await ReplyAsync(Language.GetString("role_not_found").Replace("%rolename%", roleString).Replace("%user%", Context.User.Username));
-                return;
+                foreach(IRole role in Context.Guild.Roles)
+                {
+                    if(role.Name.ToLower() == roleString.ToLower())
+                    {
+                        queriedRole = role;
+                        break;
+                    }
+                }
+
+                if(queriedRole == default)
+                {
+                    await ReplyAsync(Language.GetString("role_not_found").Replace("%rolename%", roleString).Replace("%user%", Context.User.Username));
+                    return;
+                }
             }
 
             if(GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(queriedRole.Id))
