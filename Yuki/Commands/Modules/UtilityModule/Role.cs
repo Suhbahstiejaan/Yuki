@@ -15,44 +15,31 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GiveRoleAsync([Remainder] string roleString)
         {
-            IRole givenRole = default;
+            IRole queriedRole = default;
 
-            ulong guildRole = 0;
-
-            if (MentionUtils.TryParseRole(roleString, out guildRole))
+            if(MentionUtils.TryParseRole(roleString, out ulong guildRole))
             {
-                givenRole = Context.Guild.GetRole(guildRole);
+                queriedRole = Context.Guild.GetRole(guildRole);
             }
             else
             {
-                givenRole = Context.Guild.Roles.FirstOrDefault(r => r.Name.ToLower() == roleString.ToLower());
-
-                if(givenRole == null || givenRole == default)
-                {
-                    foreach (IRole role in Context.Guild.Roles.Where(r => GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(r.Id)))
-                    {
-                        if (role.Name.ToLower().Contains(roleString.ToLower()) ||
-                            role.Name.ToLower() == roleString.ToLower() ||
-                            (ulong.TryParse(roleString, out ulong r) && role.Id == r))
-                        {
-                            givenRole = role;
-                            break;
-                        }
-                    }
-                }
+                await ReplyAsync(Language.GetString("role_not_found").Replace("%rolename%", roleString).Replace("%user%", Context.User.Username));
+                return;
             }
 
-            if (givenRole != null && !givenRole.Equals(default))
+            if(GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(queriedRole.Id))
             {
-                if ((Context.User as IGuildUser).RoleIds.Contains(givenRole.Id))
+                if (!(await Context.Guild.GetUserAsync(Context.User.Id)).RoleIds.Contains(queriedRole.Id))
                 {
-                    await (Context.User as IGuildUser).RemoveRoleAsync(givenRole);
-                    await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", givenRole.Name).Replace("%user%", Context.User.Username));
+                    await (await Context.Guild.GetUserAsync(Context.User.Id)).AddRoleAsync(Context.Guild.GetRole(queriedRole.Id));
+
+                    await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", queriedRole.Name).Replace("%user%", Context.User.Username));
                 }
                 else
                 {
-                    await (Context.User as IGuildUser).AddRoleAsync(givenRole);
-                    await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", givenRole.Name).Replace("%user%", Context.User.Username));
+                    await (await Context.Guild.GetUserAsync(Context.User.Id)).RemoveRoleAsync(Context.Guild.GetRole(queriedRole.Id));
+
+                    await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", queriedRole.Name).Replace("%user%", Context.User.Username));
                 }
             }
             else
