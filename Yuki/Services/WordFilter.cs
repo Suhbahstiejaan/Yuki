@@ -31,7 +31,7 @@ namespace Yuki.Services
 
                 foreach (string wordFilter in filter)
                 {
-                    if (Regex.IsMatch(message.Content, $@"\b{wordFilter}\b", RegexOptions.IgnoreCase) || message.Content.LevenshteinDistance(wordFilter) <= 1)
+                    if (Regex.IsMatch(Sanitize(message.Content), $@"\b{wordFilter}\b", RegexOptions.IgnoreCase))
                     {
                         if (guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
                             guildChannel.Guild.GetUserAsync(message.Author.Id).Result.RoleIds.Any(guild.ModeratorRoles.Contains) ||
@@ -57,6 +57,66 @@ namespace Yuki.Services
                     }
                 }
             }
+        }
+
+        private static string Sanitize(string str)
+        {
+            str = Regex.Replace(str, @"[^\w\s]*", "");
+
+            Dictionary<string, string> leetRules = new Dictionary<string, string>();
+
+            leetRules.Add("4", "A");
+            leetRules.Add(@"/\", "A");
+            leetRules.Add("@", "A");
+            leetRules.Add("^", "A");
+
+            leetRules.Add("13", "B");
+            leetRules.Add("/3", "B");
+            leetRules.Add("|3", "B");
+            leetRules.Add("8", "B");
+
+            leetRules.Add("><", "X");
+
+            leetRules.Add("<", "C");
+            leetRules.Add("(", "C");
+
+            leetRules.Add("|)", "D");
+            leetRules.Add("|>", "D");
+
+            leetRules.Add("3", "E");
+
+            leetRules.Add("6", "G");
+
+            leetRules.Add("/-/", "H");
+            leetRules.Add("[-]", "H");
+            leetRules.Add("]-[", "H");
+
+            leetRules.Add("!", "I");
+
+            leetRules.Add("|_", "L");
+
+            leetRules.Add("_/", "J");
+            leetRules.Add("_|", "J");
+
+            leetRules.Add("1", "L");
+
+            leetRules.Add("0", "O");
+
+            leetRules.Add("5", "S");
+
+            leetRules.Add("7", "T");
+
+            leetRules.Add(@"\/\/", "W");
+            leetRules.Add(@"\/", "V");
+
+            leetRules.Add("2", "Z");
+
+            foreach(KeyValuePair<string, string> pair in leetRules)
+            {
+                str = str.Replace(pair.Key, pair.Value);
+            }
+
+            return str;
         }
     }
 }
