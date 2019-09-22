@@ -143,6 +143,12 @@ namespace Yuki.Events
             {
                 IUserMessage msg = await message.GetOrDownloadAsync();
 
+                if (!message.HasValue || msg.Equals(null) || !reaction.User.IsSpecified)
+                {
+                    return;
+                }
+
+
                 if (channel is IDMChannel)
                 {
                     return;
