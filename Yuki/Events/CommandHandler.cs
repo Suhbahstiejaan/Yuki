@@ -20,76 +20,72 @@ namespace Yuki.Events
     {
         public static async Task HandleCommand(SocketMessage socketMessage)
         {
-            try
+            if (!(socketMessage is SocketUserMessage message))
+                return;
+            if (message.Source != MessageSource.User)
+                return;
+
+            DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
+                                            YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
+                                            YukiBot.Discord.Client.GetShard(0);
+
+            bool hasPrefix = HasPrefix(message, out string trimmedContent);
+
+
+            if (!(message.Channel is IDMChannel))
             {
-                if (!(socketMessage is SocketUserMessage message))
-                    return;
-                if (message.Source != MessageSource.User)
-                    return;
+                await WordFilter.CheckFilter(message);
+            }
 
-                DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
-                                                YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
-                                                YukiBot.Discord.Client.GetShard(0);
-
-                bool hasPrefix = HasPrefix(message, out string trimmedContent);
-
-
-                if (!(message.Channel is IDMChannel))
+            if (!hasPrefix)
+            {
+                Messages.InsertOrUpdate(new YukiMessage()
                 {
-                    await WordFilter.CheckFilter(message);
-                }
+                    Id = message.Id,
+                    AuthorId = message.Author.Id,
+                    ChannelId = message.Channel.Id,
+                    SendDate = DateTime.UtcNow,
+                    Content = (socketMessage as SocketUserMessage)
+                            .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
+                });
 
-                if (!hasPrefix)
+                return;
+            }
+
+            IResult result = await YukiBot.Discord.CommandService
+                       .ExecuteAsync(trimmedContent, new YukiCommandContext(
+                            YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services));
+
+            if (result is FailedResult failedResult)
+            {
+                if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
                 {
-                    Messages.InsertOrUpdate(new YukiMessage()
+                    if (checksFailed.FailedChecks.Count == 1)
                     {
-                        Id = message.Id,
-                        AuthorId = message.Author.Id,
-                        ChannelId = message.Channel.Id,
-                        SendDate = DateTime.UtcNow,
-                        Content = (socketMessage as SocketUserMessage)
-                                .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
-                    });
-
-                    return;
-                }
-
-                IResult result = await YukiBot.Discord.CommandService
-                           .ExecuteAsync(trimmedContent, new YukiCommandContext(
-                                YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services));
-
-                if (result is FailedResult failedResult)
-                {
-                    if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
+                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Error);
+                    }
+                    else
                     {
-                        if (checksFailed.FailedChecks.Count == 1)
-                        {
-                            await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Error);
-                        }
-                        else
-                        {
-                            await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
-                                    $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Error))}");
-                        }
+                        await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
+                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Error))}");
                     }
                 }
-
-                if (message.Channel is IDMChannel)
-                {
-                    return;
-                }
- 
-                GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
-                                                        .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.ToLower());
-
-                if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
-                {
-                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
-
-                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(execCommand.Response, msg));
-                }
             }
-            catch(Exception e) { await socketMessage.Channel.SendMessageAsync(e.ToString()); }
+
+            if (message.Channel is IDMChannel)
+            {
+                return;
+            }
+
+            GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
+                                                    .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.ToLower());
+
+            if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
+            {
+                YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(execCommand.Response, msg));
+            }
         }
 
         private static bool HasPrefix(SocketUserMessage message, out string output)
