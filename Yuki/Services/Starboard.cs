@@ -117,7 +117,7 @@ namespace Yuki.Services
                     await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
                 }
 
-                if (isDeleteCheck && starCount < config.StarRequirement && msg != default)
+                if (isDeleteCheck && starCount < 1 && msg != default)
                 {
                     await msg.DeleteAsync();
                 }
