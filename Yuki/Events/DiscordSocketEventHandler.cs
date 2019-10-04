@@ -162,37 +162,8 @@ namespace Yuki.Events
 
 
                 Starboard.Manage(msg, channel as ITextChannel, reaction);
+                ReactionRoles.ManageReact(msg, channel as ITextChannel, reaction);
 
-
-                /* Reaction roles */
-                if (config.Equals(null) || !config.EnableReactionRoles)
-                {
-                    return;
-                }
-
-                ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_message => _message.Id == msg.Id);
-
-                if (reactionMessage.Equals(default) || reactionMessage.Reactions == null)
-                {
-                    return;
-                }
-
-                foreach (MessageReaction r in reactionMessage.Reactions)
-                {
-                    Emote emote = null;
-
-                    Emoji emoji = null;
-
-                    if (!(Emote.TryParse(r.Emote, out emote)))
-                    {
-                        emoji = new Emoji(r.Emote);
-                    }
-                    if (!(emoji == null && emote == null))
-                    {
-                        await user.AddRoleAsync(guild.GetRole(r.RoleId));
-                        return;
-                    }
-                }
             }
             catch(Exception e)
             {
@@ -219,41 +190,7 @@ namespace Yuki.Events
 
 
                 Starboard.Manage(msg, channel as ITextChannel, reaction, true);
-
-
-                /* Reaction roles */
-                if (config.Equals(null) || !config.EnableReactionRoles)
-                {
-                    return;
-                }
-
-                ReactionMessage reactionMessage = config.ReactableMessages.FirstOrDefault(_msg => _msg.Id == msg.Id);
-
-                if (reactionMessage.Equals(default) || (reactionMessage.Reactions == null || reactionMessage.Reactions.Count < 1))
-                {
-                    return;
-                }
-
-                foreach (MessageReaction r in reactionMessage.Reactions)
-                {
-                    Emote emote = null;
-
-                    Emoji emoji = null;
-
-                    if (!(Emote.TryParse(r.Emote, out emote)))
-                    {
-                        emoji = new Emoji(r.Emote);
-                    }
-                    if (!(emoji == null && emote == null))
-                    {
-                        if(!user.RoleIds.Contains(guild.GetRole(r.RoleId).Id))
-                        {
-                            await user.RemoveRoleAsync(guild.GetRole(r.RoleId));
-                        }
-
-                        return;
-                    }
-                }
+                ReactionRoles.ManageUnreact(msg, channel as ITextChannel, reaction);
             }
             catch (Exception e)
             {
