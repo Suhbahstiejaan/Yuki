@@ -10,7 +10,7 @@ namespace Yuki.Services
     {
         public static async void ManageReact(IUserMessage message, ITextChannel channel, SocketReaction reaction)
         {
-            if (channel is IDMChannel)
+            if (channel is IDMChannel || !reaction.User.IsSpecified)
             {
                 return;
             }
@@ -18,7 +18,7 @@ namespace Yuki.Services
 
             IGuild guild = (channel as IGuildChannel).Guild;
 
-            IGuildUser user = await guild.GetUserAsync(message.Author.Id);
+            IGuildUser user = await guild.GetUserAsync(reaction.UserId);
 
             GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
             
@@ -46,7 +46,7 @@ namespace Yuki.Services
 
         public static async void ManageUnreact(IUserMessage message, ITextChannel channel, SocketReaction reaction)
         {
-            if (channel is IDMChannel)
+            if (channel is IDMChannel || !reaction.User.IsSpecified)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace Yuki.Services
 
             IGuild guild = (channel as IGuildChannel).Guild;
 
-            IGuildUser user = await guild.GetUserAsync(message.Author.Id);
+            IGuildUser user = await guild.GetUserAsync(reaction.UserId);
 
             GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
 
