@@ -36,7 +36,7 @@ namespace Yuki.Services
 
             foreach (MessageReaction r in reactionMessage.Reactions)
             {
-                if (r.Emote == reaction.Emote.Name)
+                if (r.Emote.ToLower() == reaction.Emote.Name.ToLower())
                 {
                     await user.AddRoleAsync(guild.GetRole(r.RoleId));
                     return;
@@ -72,7 +72,7 @@ namespace Yuki.Services
 
             foreach (MessageReaction r in reactionMessage.Reactions)
             {
-                if (r.Emote == reaction.Emote.Name)
+                if (r.Emote.ToLower() == reaction.Emote.Name.ToLower())
                 {
                     await user.RemoveRoleAsync(guild.GetRole(r.RoleId));
                     return;

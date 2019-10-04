@@ -47,7 +47,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                     {
                         new MessageReaction()
                         {
-                            Emote = emoteStr,
+                            Emote = emoteStr.ToLower(),
                             RoleId = role.Id
                         }
                     }
