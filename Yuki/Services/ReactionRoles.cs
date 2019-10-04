@@ -36,16 +36,7 @@ namespace Yuki.Services
 
             foreach (MessageReaction r in reactionMessage.Reactions)
             {
-                Emote emote = null;
-
-                Emoji emoji = null;
-
-                if (!Emote.TryParse(r.Emote, out emote))
-                {
-                    emoji = new Emoji(r.Emote);
-                }
-
-                if (emoji != null || emote != null)
+                if (r.Emote == reaction.Emote.Name)
                 {
                     await user.AddRoleAsync(guild.GetRole(r.RoleId));
                     return;
@@ -81,16 +72,7 @@ namespace Yuki.Services
 
             foreach (MessageReaction r in reactionMessage.Reactions)
             {
-                Emote emote = null;
-
-                Emoji emoji = null;
-
-                if (!Emote.TryParse(r.Emote, out emote))
-                {
-                    emoji = new Emoji(r.Emote);
-                }
-
-                if (emoji != null || emote != null)
+                if (r.Emote == reaction.Emote.Name)
                 {
                     await user.RemoveRoleAsync(guild.GetRole(r.RoleId));
                     return;
