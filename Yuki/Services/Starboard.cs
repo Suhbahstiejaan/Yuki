@@ -60,7 +60,7 @@ namespace Yuki.Services
 
                 EmbedBuilder embed = new EmbedBuilder()
                         .WithAuthor(lang.GetString("starboard_title"))
-                        .WithDescription(message.Content)
+                        .WithDescription($"[{message.Content}]({message.GetJumpUrl()})")
                         .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
                         .AddField(lang.GetString("starboard_field_channel"), ((ITextChannel)message.Channel).Mention, true)
                         .WithFooter($"⭐ {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()

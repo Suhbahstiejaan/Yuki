@@ -17,6 +17,9 @@ namespace Yuki.Commands.Modules.ModerationModule
         {
             try
             {
+                await ReplyAsync("This feature has been temporarily disabled!");
+                return;
+
                 /* Format: emoji role */
                 SocketUserMessage reactionMessage = (await Context.Channel.GetMessagesAsync(Context.Message, Direction.Before, 1).FlattenAsync()).FirstOrDefault() as SocketUserMessage;
 
