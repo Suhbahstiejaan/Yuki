@@ -32,7 +32,7 @@ namespace Yuki.Events
             return Localization.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
         }
 
-        public static async Task MessageReveived(SocketMessage message)
+        public static async Task MessageReceived(SocketMessage message)
         {
 
         }
@@ -162,7 +162,7 @@ namespace Yuki.Events
 
 
                 Starboard.Manage(msg, channel as ITextChannel, reaction);
-                ReactionRoles.ManageReact(msg, channel as ITextChannel, reaction);
+                ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: false);
 
             }
             catch(Exception e)
@@ -190,7 +190,7 @@ namespace Yuki.Events
 
 
                 Starboard.Manage(msg, channel as ITextChannel, reaction, true);
-                ReactionRoles.ManageUnreact(msg, channel as ITextChannel, reaction);
+                ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: true);
             }
             catch (Exception e)
             {

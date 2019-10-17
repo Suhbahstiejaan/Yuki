@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Yuki.Commands.Preconditions
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class RequireUserPermissionAttribute : CheckBaseAttribute
+    public class RequireUserPermissionAttribute : CheckAttribute
     {
         public GuildPermission? GuildPermission { get; }
 
@@ -37,7 +37,7 @@ namespace Yuki.Commands.Preconditions
             AllowDM = allowDm;
         }
 
-        public override Task<CheckResult> CheckAsync(ICommandContext _context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext _context)
         {
             YukiCommandContext context = (YukiCommandContext)_context;
 
@@ -45,11 +45,11 @@ namespace Yuki.Commands.Preconditions
             {
                 if(AllowDM)
                 {
-                    return Task.FromResult(CheckResult.Successful);
+                    return CheckResult.Successful;
                 }
                 else
                 {
-                    return Task.FromResult(CheckResult.Unsuccessful("Command must be used in a guild channel."));
+                    return CheckResult.Unsuccessful("Command must be used in a guild channel.");
                 }
             }
 
@@ -70,7 +70,7 @@ namespace Yuki.Commands.Preconditions
             {
                 if (!guildUser.GuildPermissions.Has(GuildPermission.Value))
                 {
-                    return Task.FromResult(CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the guild permission {GuildPermission.Value}"));
+                    return CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the guild permission {GuildPermission.Value}");
                 }
             }
 
@@ -89,11 +89,11 @@ namespace Yuki.Commands.Preconditions
 
                 if (!perms.Has(ChannelPermission.Value))
                 {
-                    return Task.FromResult(CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the channel permission {ChannelPermission.Value}"));
+                    return CheckResult.Unsuccessful($"Sorry, {context.User.Username}! {(IsBot ? "I" : "you")} require the channel permission {ChannelPermission.Value}");
                 }
             }
 
-            return Task.FromResult(CheckResult.Successful);
+            return CheckResult.Successful;
         }
     }
 }

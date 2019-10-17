@@ -9,7 +9,7 @@ namespace Yuki.Commands.TypeParsers
 {
     public sealed class UserTypeParser<TUser> : TypeParser<TUser> where TUser : IUser
     {
-        public override async Task<TypeParserResult<TUser>> ParseAsync(Parameter param, string value, ICommandContext _context, IServiceProvider provider)
+        public override async ValueTask<TypeParserResult<TUser>> ParseAsync(Parameter param, string value, CommandContext _context)
         {
             if(!(_context is YukiCommandContext))
             {

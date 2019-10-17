@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 
 namespace Yuki.Commands.Preconditions
 {
-    public class RequireGuildAttribute : CheckBaseAttribute
+    public class RequireGuildAttribute : CheckAttribute
     {
-        public override Task<CheckResult> CheckAsync(ICommandContext c, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext c)
         {
             YukiCommandContext context = c as YukiCommandContext;
 
             if (context.Channel is IDMChannel)
             {
-                return Task.FromResult(CheckResult.Unsuccessful("This command can only be executed inside a guild channel."));
+                return CheckResult.Unsuccessful("This command can only be executed inside a guild channel.");
             }
             else
             {
-                return Task.FromResult(CheckResult.Successful);
+                return CheckResult.Successful;
             }
         }
     }

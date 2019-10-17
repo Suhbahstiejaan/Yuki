@@ -6,6 +6,7 @@ using Qmmands;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Yuki.Commands;
 using Yuki.Commands.TypeParsers;
 using Yuki.Data;
 using Yuki.Data.Objects;
@@ -51,9 +52,13 @@ namespace Yuki
         {
             CommandService = new CommandService(new CommandServiceConfiguration()
             {
-                CaseSensitive = false,
+                StringComparison = StringComparison.InvariantCultureIgnoreCase,
                 DefaultRunMode = RunMode.Parallel,
-                CooldownBucketKeyGenerator = BucketKey.Generate
+                CooldownBucketKeyGenerator = (obj, _context) =>
+                {
+                    YukiCommandContext context = (YukiCommandContext)_context;
+                    return context.User.Id;
+                }
             });
 
             CommandService.AddModules(Assembly.GetEntryAssembly());

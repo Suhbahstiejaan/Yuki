@@ -7,9 +7,9 @@ using Yuki.Services.Database;
 
 namespace Yuki.Commands.Preconditions
 {
-    public class RequireNsfwAttribute : CheckBaseAttribute
+    public class RequireNsfwAttribute : CheckAttribute
     {
-        public override Task<CheckResult> CheckAsync(ICommandContext c, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext c)
         {
             YukiCommandContext context = c as YukiCommandContext;
 
@@ -27,7 +27,7 @@ namespace Yuki.Commands.Preconditions
                     CheckResult.Successful : CheckResult.Unsuccessful("Not an NSFW channel");
             }
 
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

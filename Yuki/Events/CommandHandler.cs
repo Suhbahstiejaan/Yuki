@@ -62,12 +62,12 @@ namespace Yuki.Events
                 {
                     if (checksFailed.FailedChecks.Count == 1)
                     {
-                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Error);
+                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Result.Reason);
                     }
                     else
                     {
                         await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
-                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Error))}");
+                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Result.Reason))}");
                     }
                 }
             }

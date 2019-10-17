@@ -7,17 +7,17 @@ using Yuki.Data;
 namespace Yuki.Commands.Preconditions
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class RequireOwnerAttribute : CheckBaseAttribute
+    public class RequireOwnerAttribute : CheckAttribute
     {
-        public override Task<CheckResult> CheckAsync(ICommandContext context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext context)
         {
             if (Config.GetConfig().owners.Any(o => o == ((YukiCommandContext)context).User.Id))
             {
-                return Task.FromResult(CheckResult.Successful);
+                return CheckResult.Successful;
             }
             else
             {
-                return Task.FromResult(CheckResult.Unsuccessful("You must be a bot owner to run this command."));
+                return CheckResult.Unsuccessful("You must be a bot owner to run this command.");
             }
         }
     }

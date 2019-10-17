@@ -17,11 +17,8 @@ namespace Yuki.Commands.Modules.ModerationModule
         {
             try
             {
-                await ReplyAsync("This feature has been temporarily disabled!");
-                return;
-
                 /* Format: emoji role */
-                SocketUserMessage reactionMessage = (await Context.Channel.GetMessagesAsync(Context.Message, Direction.Before, 1).FlattenAsync()).FirstOrDefault() as SocketUserMessage;
+                SocketUserMessage reactionMessage = (await Context.Channel.GetMessagesAsync(100).FlattenAsync()).FirstOrDefault(msg => msg.Id != Context.Message.Id) as SocketUserMessage;
 
                 string emoteStr = args.Split(' ')[0];
                 Emote emote = null;
@@ -66,6 +63,8 @@ namespace Yuki.Commands.Modules.ModerationModule
                     {
                         await reactionMessage.AddReactionAsync(emoji);
                     }
+
+                    await Context.Message.DeleteAsync();
                 }
             }
             catch(Exception e)

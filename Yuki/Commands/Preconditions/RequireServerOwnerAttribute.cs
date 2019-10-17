@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Yuki.Commands.Preconditions
 {
-    public class RequireServerOwnerAttribute : CheckBaseAttribute
+    public class RequireServerOwnerAttribute : CheckAttribute
     {
-        public override Task<CheckResult> CheckAsync(ICommandContext c, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext c)
         {
             YukiCommandContext context = c as YukiCommandContext;
 
             if (context.Guild.OwnerId == context.User.Id)
             {
-                return Task.FromResult(CheckResult.Successful);
+                return CheckResult.Successful;
             }
 
-            return Task.FromResult(CheckResult.Unsuccessful("You must be the server owner to execute this command."));
+            return CheckResult.Unsuccessful("You must be the server owner to execute this command.");
         }
     }
 }

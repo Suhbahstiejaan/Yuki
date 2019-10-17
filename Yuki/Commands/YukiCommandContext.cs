@@ -9,12 +9,10 @@ using Yuki.Extensions;
 
 namespace Yuki.Commands
 {
-    public sealed class YukiCommandContext : ICommandContext
+    public sealed class YukiCommandContext : CommandContext
     {
 
         public DiscordShardedClient Client { get; }
-
-        public IServiceProvider ServiceProvider { get; }
 
         public IGuild Guild { get; }
 
@@ -24,11 +22,8 @@ namespace Yuki.Commands
 
         public IUserMessage Message { get; }
 
-        public Command Command { get; set; }
-
-        public YukiCommandContext(DiscordShardedClient client, IUserMessage msg, IServiceProvider provider)
+        public YukiCommandContext(DiscordShardedClient client, IUserMessage msg, IServiceProvider provider) : base(provider)
         {
-            ServiceProvider = provider;
 
             Client = client;
             Guild = (msg.Channel as IGuildChannel)?.Guild;

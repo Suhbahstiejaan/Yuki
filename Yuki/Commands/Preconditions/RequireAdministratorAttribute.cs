@@ -7,9 +7,9 @@ using Yuki.Services.Database;
 
 namespace Yuki.Commands.Preconditions
 {
-    public class RequireAdministratorAttribute : CheckBaseAttribute
+    public class RequireAdministratorAttribute : CheckAttribute
     {
-        public override Task<CheckResult> CheckAsync(ICommandContext c, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(CommandContext c)
         {
             YukiCommandContext context = c as YukiCommandContext;
 
@@ -17,7 +17,7 @@ namespace Yuki.Commands.Preconditions
 
             if (context.Guild.OwnerId == context.User.Id)
             {
-                return Task.FromResult(CheckResult.Successful);
+                return CheckResult.Successful;
             }
 
             foreach (ulong role in GuildSettings.GetGuild(context.Guild.Id).AdministratorRoles)
@@ -29,7 +29,7 @@ namespace Yuki.Commands.Preconditions
                 }
             }
 
-            return Task.FromResult(result);
+            return result;
         }
     }
 }
