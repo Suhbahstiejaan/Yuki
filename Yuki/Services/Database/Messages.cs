@@ -18,23 +18,25 @@ namespace Yuki.Services.Database
                 {
                     LiteCollection<YukiMessage> messages = db.GetCollection<YukiMessage>("messages");
 
-                    YukiMessage userMessage = messages.Find(x => x.Id == message.Id).FirstOrDefault();
-
-                    if (!userMessage.Equals(default))
+                    if (messages.FindAll().Any(x => x.Id == message.Id))
                     {
                         messages.Update(message);
                     }
                     else
                     {
-                        List<YukiMessage> msgs = messages.FindAll().Where(msg => msg.AuthorId == message.AuthorId).OrderBy(msg => msg.SendDate).ToList();
-
-                        if (msgs.Count > MaxMessages)
+                        if(messages != null && messages.FindAll().Count() > 0)
                         {
-                            foreach(YukiMessage m in msgs.Take(msgs.Count - MaxMessages))
+                            List<YukiMessage> msgs = messages.FindAll().Where(msg => msg.AuthorId == message.AuthorId).OrderBy(msg => msg.SendDate).ToList();
+
+                            if (msgs.Count > MaxMessages)
                             {
-                                Remove(m.Id);
+                                foreach (YukiMessage m in msgs.Take(msgs.Count - MaxMessages))
+                                {
+                                    Remove(m.Id);
+                                }
                             }
                         }
+                        
                         messages.Insert(message);
                     }
                 }

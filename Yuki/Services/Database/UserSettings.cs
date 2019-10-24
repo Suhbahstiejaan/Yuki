@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 
@@ -10,6 +11,18 @@ namespace Yuki.Services.Database
     public static class UserSettings
     {
         private const string collection = "user_settings";
+
+        private static YukiUser DefaultUser(ulong userId)
+        {
+            return new YukiUser()
+            {
+                Id = userId,
+                CanGetMsgs = false,
+                IsPatron = false,
+                langCode = Config.GetConfig().default_lang,
+                Reminders = new List<YukiReminder>()
+            };
+        }
 
         public static void AddOrUpdate(YukiUser user)
         {
@@ -79,13 +92,7 @@ namespace Yuki.Services.Database
 
                 if (!users.FindAll().Any(usr => usr.Id == reminder.AuthorId))
                 {
-                    AddOrUpdate(new YukiUser()
-                    {
-                        Id = reminder.AuthorId,
-                        CanGetMsgs = false,
-                        IsPatron = false,
-                        Reminders = new List<YukiReminder>()
-                    });
+                    AddOrUpdate(DefaultUser(reminder.AuthorId));
 
                     AddReminder(reminder);
                 }
@@ -120,7 +127,7 @@ namespace Yuki.Services.Database
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
-                if (users.FindAll().Any(usr => usr.Reminders.Count > 0))
+                if (users.FindAll().Any(usr => usr.Reminders != null && usr.Reminders.Count > 0))
                 {
                     return users.FindAll().SelectMany(usr => usr.Reminders).Where(reminder => reminder.Time <= dateTime).ToList();
                 }
@@ -133,15 +140,18 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
+                Console.WriteLine(userId);
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
-                if (users.FindAll().Any(usr => usr.Id == userId))
+                if(!users.FindAll().Any(usr => usr.Id == userId))
                 {
-                    YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
-                    user.CanGetMsgs = state;
-
-                    users.Update(user);
+                    AddOrUpdate(DefaultUser(userId));
                 }
+
+                YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
+                user.CanGetMsgs = state;
+
+                users.Update(user);
             }
         }
     }

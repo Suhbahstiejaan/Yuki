@@ -9,59 +9,66 @@ namespace Yuki.Commands.Modules.FunModule
 {
     public partial class FunModule
     {
-        [Command("scramblr", "scrambler")]
-        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task ScramblrAsync(IUser user = null)
+        [Group("scramblr", "scrambler")]
+        public class ScramblrGroup : YukiModule
         {
-            Scramblr scramblr = new Scramblr();
-
-            if(UserSettings.CanGetMsgs(Context.User.Id))
+            [Command]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
+            public async Task Base(IUser user = null)
             {
-                if (user != null)
+                Scramblr scramblr = new Scramblr();
+
+                if (UserSettings.CanGetMsgs(Context.User.Id))
                 {
-                    if (UserSettings.CanGetMsgs(user.Id))
+                    if (user != null)
                     {
-                        await ReplyAsync(scramblr.GetMessage(Context.User, user));
+                        if (UserSettings.CanGetMsgs(user.Id))
+                        {
+                            await ReplyAsync(scramblr.GetMessage(Context.User, user));
+                        }
+                        else
+                        {
+                            await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                        }
                     }
                     else
                     {
-                        await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                        await ReplyAsync(scramblr.GetMessage(Context.User));
                     }
                 }
                 else
                 {
-                    await ReplyAsync(scramblr.GetMessage(Context.User));
+                    await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{Context.User.Username}#{Context.User.Discriminator}"));
                 }
             }
-            else
+
+            [Command("info")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
+            public async Task ScramblrInfo()
             {
-                await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{Context.User.Username}#{Context.User.Discriminator}"));
+                await ReplyAsync(Language.GetString("scramblr_info"));
             }
-        }
 
-        [Command("scramblr", "scrambler")]
-        [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task ScramblrAsync(string text)
-        {
-            switch(text)
+            [Command("enable")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
+            public async Task ScramblrEnable()
             {
-                case "info":
-                    await ReplyAsync(Language.GetString("scramblr_info"));
-                    break;
-                case "enable":
-                    UserSettings.SetCanGetMessages(Context.User.Id, true);
-                    await ReplyAsync(Language.GetString("scramblr_enabled"));
-                    break;
-                case "disable":
-                    UserSettings.SetCanGetMessages(Context.User.Id, true);
-                    
-                    foreach(YukiMessage message in Messages.GetFrom(Context.User.Id))
-                    {
-                        Messages.Remove(message.Id);
-                    }
+                UserSettings.SetCanGetMessages(Context.User.Id, true);
+                await ReplyAsync(Language.GetString("scramblr_enabled"));
+            }
 
-                    await ReplyAsync(Language.GetString("scramblr_disabled"));
-                    break;
+            [Command("disable")]
+            [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
+            public async Task ScramblrDisable()
+            {
+                UserSettings.SetCanGetMessages(Context.User.Id, true);
+
+                foreach (YukiMessage message in Messages.GetFrom(Context.User.Id))
+                {
+                    Messages.Remove(message.Id);
+                }
+
+                await ReplyAsync(Language.GetString("scramblr_disabled"));
             }
         }
     }
