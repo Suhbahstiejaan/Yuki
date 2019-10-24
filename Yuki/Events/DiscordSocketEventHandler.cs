@@ -2,6 +2,7 @@
 using Discord.Rest;
 using Discord.WebSocket;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -231,6 +232,24 @@ namespace Yuki.Events
                 YukiContextMessage msg = new YukiContextMessage(user, user.Guild);
 
                 await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(guild.WelcomeMessage, msg));
+            }
+
+            if(guild.EnableWarnings)
+            {
+                GuildWarnedUser warnedUser = GuildSettings.GetWarnedUser(user.Id, user.Guild.Id);
+
+                if(!warnedUser.Equals(default))
+                {
+                    List<GuildWarningAction> warnings = GuildSettings.GetGuild(user.Guild.Id).WarningActions;
+
+                    for(int i = 0; i < warnedUser.Warning; ++i)
+                    {
+                        if(warnings.Count <= (i - 1) && warnings[i].WarningAction == WarningAction.GiveRole)
+                        {
+                            await user.AddRoleAsync(user.Guild.GetRole(warnings[i].RoleId));
+                        }
+                    }
+                }
             }
         }
 

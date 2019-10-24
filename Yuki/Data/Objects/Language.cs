@@ -358,6 +358,22 @@ namespace Yuki.Data.Objects
 
         public string command_reactionrole_desc { get; set; }
         public string command_reactionrole_usage { get; set; }
+
+        public string command_warningaction_add_desc { get; set; }
+        public string command_warningaction_add_usage { get; set; }
+
+        public string command_warningaction_remove_desc { get; set; }
+        public string command_warningaction_remove_usage { get; set; }
+
+
+        public string command_scramblr_info_desc { get; set; }
+        public string command_scramblr_info_usage { get; set; }
+        
+        public string command_scramblr_enable_desc { get; set; }
+        public string command_scramblr_enable_usage { get; set; }
+        
+        public string command_scramblr_disable_desc { get; set; }
+        public string command_scramblr_disable_usage { get; set; }
         
 
         /* Strings */
@@ -668,5 +684,12 @@ namespace Yuki.Data.Objects
         public string starboard_enabled_in_channel { get; set; }
         public string starboard_disabled_in_channel { get; set; }
         public string starboard_channel_ignored { get; set; }
+
+
+        public string warningaction_added { get; set; }
+        public string warningaction_invalid_action { get; set; }
+        public string warningaction_exists { get; set; }
+        public string warningaction_removed { get; set; }
+        public string warningaction_not_found { get; set; }
     }
 }

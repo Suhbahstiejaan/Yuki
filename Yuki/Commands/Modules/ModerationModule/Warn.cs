@@ -18,11 +18,34 @@ namespace Yuki.Commands.Modules.ModerationModule
 
             if (config.EnableWarnings)
             {
-                await user.AddRoleAsync(Context.Guild.GetRole(config.MuteRole));
-
                 GuildSettings.AddWarning(user.Id, reason, Context.Guild.Id);
 
-                await ReplyAsync(Language.GetString("user_warned"));
+                int warningIndex = GuildSettings.GetWarnedUser(user.Id, Context.Guild.Id).Warning - 1;
+                GuildWarningAction userWarning = config.WarningActions[warningIndex];
+
+                switch (userWarning.WarningAction)
+                {
+                    case WarningAction.GiveRole:
+                        await user.AddRoleAsync(Context.Guild.GetRole(userWarning.RoleId));
+
+                        if(warningIndex > 0)
+                        {
+                            await user.RemoveRoleAsync(Context.Guild.GetRole(config.WarningActions[warningIndex - 1].RoleId));
+                        }
+
+                        await ReplyAsync(Language.GetString("user_warned").Replace("%user%", user.Mention));
+                        break;
+                    case WarningAction.Kick:
+                        await user.KickAsync(reason);
+
+                        await ReplyAsync(Language.GetString("user_kicked").Replace("%user%", user.Mention));
+                        break;
+                    case WarningAction.Ban:
+                        await user.BanAsync(0, reason);
+
+                        await ReplyAsync(Language.GetString("user_banned").Replace("%user%", user.Mention));
+                        break;
+                }
             }
             else
             {
