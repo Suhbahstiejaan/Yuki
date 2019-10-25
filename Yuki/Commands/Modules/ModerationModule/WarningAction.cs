@@ -1,4 +1,7 @@
-﻿using Qmmands;
+﻿using Discord;
+using Discord.WebSocket;
+using InteractivityAddon;
+using Qmmands;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
@@ -37,11 +40,35 @@ namespace Yuki.Commands.Modules.ModerationModule
 
                     if(action != default)
                     {
-                        GuildSettings.AddWarningAction(new GuildWarningAction()
+                        GuildWarningAction _action = new GuildWarningAction()
                         {
                             Warning = warning,
                             WarningAction = action,
-                        }, Context.Guild.Id);
+                        };
+
+                        if(action == WarningAction.GiveRole)
+                        {
+                            IUserMessage _msg = await ReplyAsync(Language.GetString("warningaction_role_name"));
+                            InteractivityResult<SocketMessage> result = await Interactivity.NextMessageAsync(msg => msg.Author == Context.User && msg.Channel == Context.Channel);
+
+                            if (result.IsSuccess)
+                            {
+                                string roleName = result.Value.Content;
+
+                                IRole role = Context.Guild.Roles.FirstOrDefault(_role => _role.Name.ToLower() == roleName.ToLower());
+
+                                if(!role.Equals(default))
+                                {
+                                    _action.RoleId = role.Id;
+                                }
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+
+                        GuildSettings.AddWarningAction(_action, Context.Guild.Id);
 
                         await ReplyAsync(Language.GetString("warningaction_added").Replace("%action%", action.ToString()));
                     }

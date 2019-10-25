@@ -590,6 +590,7 @@ namespace Yuki.Data.Objects
         public string user_unmuted { get; set; }
         public string user_warned { get; set; }
         public string user_remwarn { get; set; }
+        public string no_reason { get; set; }
 
         public string clear_result { get; set; }
 
@@ -691,5 +692,7 @@ namespace Yuki.Data.Objects
         public string warningaction_exists { get; set; }
         public string warningaction_removed { get; set; }
         public string warningaction_not_found { get; set; }
+
+        public string warningaction_role_name { get; set; }
     }
 }
