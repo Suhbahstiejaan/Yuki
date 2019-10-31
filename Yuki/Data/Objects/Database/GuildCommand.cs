@@ -6,7 +6,6 @@ namespace Yuki.Data.Objects.Database
     {
         [BsonId]
         public string Name { get; set; }
-        public bool IsParsable { get; set; }
         public string Response { get; set; }
     }
 }

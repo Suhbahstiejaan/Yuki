@@ -18,7 +18,6 @@ namespace Yuki.Commands.Modules.ModerationModule
 
                 GuildCommand command = new GuildCommand()
                 {
-                    IsParsable = false,
                     Name = split[0].ToLower(),
                     Response = split[1]
                 };

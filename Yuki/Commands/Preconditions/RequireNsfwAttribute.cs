@@ -13,21 +13,15 @@ namespace Yuki.Commands.Preconditions
         {
             YukiCommandContext context = c as YukiCommandContext;
 
-            CheckResult result;
-
             if(context.Channel is IDMChannel)
             {
-                result = CheckResult.Successful;
-            }
-            else
-            {
-                GuildConfiguration config = GuildSettings.GetGuild(context.Guild.Id);
-
-                result = (config.EnableNsfw && config.NsfwChannels.Contains(context.Channel.Id)) ?
-                    CheckResult.Successful : CheckResult.Unsuccessful("Not an NSFW channel");
+                return CheckResult.Successful;
             }
 
-            return result;
+            GuildConfiguration config = GuildSettings.GetGuild(context.Guild.Id);
+
+            return (config.EnableNsfw && config.NsfwChannels.Contains(context.Channel.Id)) ?
+                        CheckResult.Successful : CheckResult.Unsuccessful("Not an NSFW channel");
         }
     }
 }

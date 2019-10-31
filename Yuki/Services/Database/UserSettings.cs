@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yuki.Data;
-using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 
 namespace Yuki.Services.Database
@@ -67,6 +66,21 @@ namespace Yuki.Services.Database
             }
 
             return false;
+        }
+
+        public static ulong[] GetPatrons()
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+
+                if (users.FindAll().Any(usr => usr.IsPatron))
+                {
+                    return users.FindAll().Where(usr => usr.IsPatron).Select(usr => usr.Id).ToArray();
+                }
+            }
+
+            return null;
         }
 
         public static bool CanGetMsgs(ulong userId)
@@ -140,7 +154,6 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                Console.WriteLine(userId);
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if(!users.FindAll().Any(usr => usr.Id == userId))
@@ -150,6 +163,42 @@ namespace Yuki.Services.Database
 
                 YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
                 user.CanGetMsgs = state;
+
+                users.Update(user);
+            }
+        }
+
+        public static void AddPatron(ulong userId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+
+                if (!users.FindAll().Any(usr => usr.Id == userId))
+                {
+                    AddOrUpdate(DefaultUser(userId));
+                }
+
+                YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
+                user.IsPatron = true;
+
+                users.Update(user);
+            }
+        }
+
+        public static void RemovePatron(ulong userId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+
+                if (!users.FindAll().Any(usr => usr.Id == userId))
+                {
+                    AddOrUpdate(DefaultUser(userId));
+                }
+
+                YukiUser user = users.Find(usr => usr.Id == userId).FirstOrDefault();
+                user.IsPatron = false;
 
                 users.Update(user);
             }

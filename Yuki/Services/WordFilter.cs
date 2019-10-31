@@ -17,7 +17,7 @@ namespace Yuki.Services
 {
     public static class WordFilter
     {
-        public static async Task CheckFilter(SocketUserMessage message)
+        public static Task CheckFilter(SocketUserMessage message)
         {
             IGuildChannel guildChannel = (message.Channel as IGuildChannel);
 
@@ -38,7 +38,7 @@ namespace Yuki.Services
                             guildChannel.Guild.OwnerId == message.Author.Id)
                         {
                             /* Add exclamation mark emote */
-                            await message.AddReactionAsync(new Emoji("❗"));
+                            message.AddReactionAsync(new Emoji("❗"));
                         }
                         else
                         {
@@ -50,13 +50,15 @@ namespace Yuki.Services
                             .AddField(lang.GetString("message_content"), message.Content)
                             .WithColor(Color.Purple);
 
-                            await message.DeleteAsync();
-                            await DiscordSocketEventHandler.LogMessageAsync(embed, guildChannel.GuildId);
+                            message.DeleteAsync();
+                            DiscordSocketEventHandler.LogMessage(embed, guildChannel.GuildId);
                         }
                         break;
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         private static string Sanitize(string str)

@@ -311,6 +311,34 @@ command_starboard_ignore_usage = "y!starboard ignore"
 
 command_reactionrole_desc = "Add a reaction role"
 command_reactionrole_usage = "y!reactionrole :emote: Role Name"
+
+command_warningaction_add_desc = "Add a warning action"
+command_warningaction_add_usage = "y!warningaction add 1 ban\ny!warningaction add 1 kick\ny!warningaction add 1 giverole"
+
+command_warningaction_remove_desc = "Remove a warning action"
+command_warningaction_remove_usage = "y!warningaction remove 1"
+
+command_blacklist_add_desc = "Add a word/Regex filter to the blacklist"
+command_blacklist_add_usage = "y!blacklist add porn"
+
+command_blacklist_remove_desc = "Remove a blacklisted word/Regex filter (done by index!)"
+command_blacklist_remove_usage = "y!blacklist remove 1"
+
+
+command_scramblr_info_desc = "Get info on scramblr"
+command_scramblr_info_usage = "y!scramblr info"
+        
+command_scramblr_enable_desc = "Enable scramblr"
+command_scramblr_enable_usage = "y!scramblr enable"
+
+command_scramblr_disable_desc = "Disable scramblr"
+command_scramblr_disable_usage = "y!scramblr disable"
+
+command_addpatron_desc = "Register a user with a specified ID as a patron"
+command_addpatron_usage = "y!addpatron 1234567890"
+
+command_removepatron_desc = "Remove a user's patron status"
+command_removepatron_usage = "y!removepatron 1234567890"
         
 
 
@@ -532,6 +560,7 @@ user_muted = "***%user% has been muted. Reason: %mutereason%***"
 user_unmuted = "***%user% has been unmuted.***"
 user_warned = "***%user% has been warned. Reason: %warnreason%***"
 user_remwarn = "***%user% has had a warning removed.***"
+no_reason = "Unknown Reason"
 
 clear_result = "%msgs% cleared!"
 
@@ -607,6 +636,7 @@ bot_stats_guilds = "Guilds"
 bot_stats_creator = "Creator"
 bot_stats_uptime = "Uptime"
 bot_stats_shard = "Currrent Shard"
+bot_stats_memory = "Memory Usage"
 
 filter_added = "Filter added!"
 filter_removed = "Filter removed!"
@@ -625,3 +655,19 @@ starboard_stars = "stars"
 starboard_enabled_in_channel = "Starboard starring is enabled in this channel."
 starboard_disabled_in_channel = "Starboard starring is disabled in this channel."
 starboard_channel_ignored = "Starboard starring has been toggled for this channel. Status: %channel_status%"
+
+warningaction_added = "Added warning action %action%"
+warningaction_invalid_action = "Action invalid!"
+warningaction_exists = "Warning action already exists! Please remove it first."
+warningaction_removed = "Warning action removed"
+warningaction_not_found = "Warning action not found!"
+warningaction_role_name = "Please type the name of the role you'd like to set for this action."
+
+patron_added = "Patron added"
+patron_removed = "Patron removed"
+
+
+donators_none = "There are currently no donators. To donate, use y!donate!"
+donators_title = "Donators"
+donators_footer = "Wanna get your name here and support me? Use y!donate to find out how!"
+

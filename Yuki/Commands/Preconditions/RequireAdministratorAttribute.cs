@@ -13,8 +13,6 @@ namespace Yuki.Commands.Preconditions
         {
             YukiCommandContext context = c as YukiCommandContext;
 
-            CheckResult result = CheckResult.Unsuccessful("You must be an administrator to execute this command.");
-
             if (context.Guild.OwnerId == context.User.Id)
             {
                 return CheckResult.Successful;
@@ -24,12 +22,11 @@ namespace Yuki.Commands.Preconditions
             {
                 if ((context.User as IGuildUser).RoleIds.Contains(role))
                 {
-                    result = CheckResult.Successful;
-                    break;
+                    return CheckResult.Successful;
                 }
             }
 
-            return result;
+            return CheckResult.Unsuccessful("You must be an administrator or the server owner to execute this command.");
         }
     }
 }

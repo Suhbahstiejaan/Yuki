@@ -374,6 +374,15 @@ namespace Yuki.Data.Objects
         
         public string command_scramblr_disable_desc { get; set; }
         public string command_scramblr_disable_usage { get; set; }
+
+        public string command_addpatron_desc { get; set; }
+        public string command_addpatron_usage { get; set; }
+
+        public string command_removepatron_desc { get; set; }
+        public string command_removepatron_usage { get; set; }
+
+        public string command_donators_desc { get; set; }
+        public string command_donators_usage { get; set; }
         
 
         /* Strings */
@@ -694,5 +703,12 @@ namespace Yuki.Data.Objects
         public string warningaction_not_found { get; set; }
 
         public string warningaction_role_name { get; set; }
+
+        public string patron_added { get; set; }
+        public string patron_removed { get; set; }
+
+        public string donators_none { get; set; }
+        public string donators_title { get; set; }
+        public string donators_footer { get; set; }
     }
 }
