@@ -5,8 +5,8 @@ namespace Yuki
     public static class Version
     {
         public static int Major  { get; } = 2;
-        public static int Minor  { get; } = 0;
-        public static int Hotfix { get; } = 1;
+        public static int Minor  { get; } = 1;
+        public static int Hotfix { get; } = 0;
         
         public static ReleaseType ReleaseType { get; } = ReleaseType.Release;
 
