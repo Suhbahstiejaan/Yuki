@@ -72,6 +72,20 @@ namespace Yuki.Events
                 }
             }
 
+            if(UserSettings.IsPatron(message.Author.Id))
+            {
+                PatronCommand cmd = Patreon.GetCommand(message.Author.Id, trimmedContent.ToLower());
+
+                if(!cmd.Equals(default))
+                {
+                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(cmd.Response, msg));
+
+                    return;
+                }
+            }
+
             if (message.Channel is IDMChannel)
             {
                 return;
