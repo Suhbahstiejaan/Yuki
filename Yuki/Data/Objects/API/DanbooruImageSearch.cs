@@ -55,7 +55,7 @@ namespace Yuki.Data.Objects.API
                 }
             }
 
-            return imgs[new YukiRandom().Next(imgs.Count)];
+            return imgs[new Random().Next(imgs.Count)];
         }
     }
 }

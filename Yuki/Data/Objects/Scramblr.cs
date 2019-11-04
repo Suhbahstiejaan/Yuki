@@ -1,8 +1,8 @@
 ﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Yuki.Core;
 using Yuki.Data.Objects.Database;
 using Yuki.Extensions;
 using Yuki.Services.Database;
@@ -27,7 +27,7 @@ namespace Yuki.Data.Objects
             ScramblrData[] data;
             YukiMessage[] user1_data = Messages.GetFrom(user1.Id).ToArray();
 
-            YukiRandom yRandom = new YukiRandom();
+            Random yRandom = new Random();
 
             if (user1.IsBot || (user2 != null && user2.IsBot))
                 return "I can't scramble bots, silly!";
@@ -76,7 +76,7 @@ namespace Yuki.Data.Objects
         /// <returns></returns>
         private string ScrambledMessage(ScramblrData data, IUser user2)
         {
-            YukiRandom yRandom = new YukiRandom();
+            Random yRandom = new Random();
 
             //split the messages each into 2 separete strings where the like word is
             string[] sanitized_dat1 = Regex.Split(data.Message1.Content, $@"\b{Regex.Escape(data.likeWord)}\b");

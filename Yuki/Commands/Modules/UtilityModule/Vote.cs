@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using InteractivityAddon;
+using Interactivity;
 using Qmmands;
 using System;
 using System.Threading.Tasks;

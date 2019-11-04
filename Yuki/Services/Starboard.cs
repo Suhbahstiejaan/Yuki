@@ -39,7 +39,7 @@ namespace Yuki.Services
 
                 bool starUpdated = false;
 
-                foreach (IMessage imessage in (await AsyncEnumerable.ToList((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
+                foreach (IMessage imessage in (await AsyncEnumerable.ToListAsync((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
                 {
                     if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id && imessage.Embeds != null && imessage.Embeds.Count > 0)
                     {

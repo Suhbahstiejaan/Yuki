@@ -14,7 +14,7 @@ namespace Yuki.Commands.Modules.FunModule
         {
             try
             {
-                int num = new YukiRandom().Next(1, 20);
+                int num = new Random().Next(1, 20);
 
                 EmbedAuthorBuilder author = new EmbedAuthorBuilder()
                 {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Yuki.Core;
 
 namespace Yuki.Data
@@ -17,7 +18,7 @@ namespace Yuki.Data
             string chars = alphabetLower + alphabetCap + numbers + symbols;
 
             string phrase = new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[(new YukiRandom()).Next(s.Length)]).ToArray());
+              .Select(s => s[(new Random()).Next(s.Length)]).ToArray());
 
             return phrase;
         }
@@ -27,7 +28,7 @@ namespace Yuki.Data
             string chars = alphabetLower + alphabetCap;
 
             string phrase = new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[(new YukiRandom()).Next(s.Length)]).ToArray());
+              .Select(s => s[(new Random()).Next(s.Length)]).ToArray());
             return phrase;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Qmmands;
+using System;
 using System.Threading.Tasks;
 using Yuki.Core;
 
@@ -33,7 +34,7 @@ namespace Yuki.Commands.Modules.UtilityModule
             };
 
             EmbedBuilder embed = Context.CreateEmbedBuilder(Language.GetString("goodnight_title").Replace("%user%", Context.User.Username))
-                .WithImageUrl(gn[new YukiRandom().Next(gn.Length)]);
+                .WithImageUrl(gn[new Random().Next(gn.Length)]);
 
             await ReplyAsync(embed);
         }

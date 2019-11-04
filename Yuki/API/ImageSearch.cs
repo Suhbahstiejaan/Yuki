@@ -163,7 +163,7 @@ namespace Yuki.API
             images = CachedImages.Where(img => (img.type == ImageType.Danbooru || img.type == ImageType.Gelbooru) &&
                                     img.tags.Any(tag => tags.Contains(tag) && !blacklist.Contains(tag))).ToArray();
 
-            return images[new YukiRandom().Next(images.Length)];
+            return images[new Random().Next(images.Length)];
         }
 
         public static async Task<T[]> FetchImages<T>(string pageUrl)

@@ -1,4 +1,5 @@
 ﻿using Discord;
+using System;
 using System.Collections.Generic;
 
 namespace Yuki.Core
@@ -24,7 +25,7 @@ namespace Yuki.Core
         }
 
         public static Color RandomColor
-            => Get()[new YukiRandom().Next(Get().Length)];
+            => Get()[new Random().Next(Get().Length)];
 
         public static Color Pink = new Color(228, 11, 210);
 

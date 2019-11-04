@@ -207,7 +207,7 @@ namespace Yuki.Services
         public RouletteGame(ulong channelId)
         {
             Id = channelId;
-            BulletLocation = new YukiRandom().Next(6);
+            BulletLocation = new Random().Next(6);
             CurrentChamber = 0;
             CurrentPlayer = 0;
             GameState = RouletteGameState.Waiting;
@@ -290,7 +290,7 @@ namespace Yuki.Services
                     if (CurrentChamber == BulletLocation)
                     {
                         CurrentChamber = 0;
-                        BulletLocation = new YukiRandom().Next(6);
+                        BulletLocation = new Random().Next(6);
                         RemovePlayer(userId);
 
                         if(Players.Count > 1)

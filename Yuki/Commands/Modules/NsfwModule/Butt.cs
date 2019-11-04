@@ -27,7 +27,7 @@ namespace Yuki.Commands.Modules.NsfwModule
                         buttCount = JsonConvert.DeserializeObject<Butts[]>(await reader.ReadToEndAsync())[0].id;
                     }
 
-                    using (StreamReader reader = new StreamReader(await client.GetStreamAsync($"http://api.obutts.ru/butts/{new YukiRandom().Next(buttCount)}")))
+                    using (StreamReader reader = new StreamReader(await client.GetStreamAsync($"http://api.obutts.ru/butts/{new Random().Next(buttCount)}")))
                     {
                         Butts butt = JsonConvert.DeserializeObject<Butts[]>(await reader.ReadToEndAsync())[0];
 

@@ -25,7 +25,7 @@ namespace Yuki.Commands.Modules.NsfwModule
                     boobCount = JsonConvert.DeserializeObject<Butts[]>(await reader.ReadToEndAsync())[0].id;
                 }
 
-                using (StreamReader reader = new StreamReader(await client.GetStreamAsync($"http://api.oboobs.ru/boobs/{new YukiRandom().Next(boobCount)}")))
+                using (StreamReader reader = new StreamReader(await client.GetStreamAsync($"http://api.oboobs.ru/boobs/{new Random().Next(boobCount)}")))
                 {
                     Butts boob = JsonConvert.DeserializeObject<Butts[]>(await reader.ReadToEndAsync())[0];
 

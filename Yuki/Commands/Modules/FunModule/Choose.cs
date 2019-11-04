@@ -1,7 +1,7 @@
 ﻿using Qmmands;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Yuki.Core;
 
 namespace Yuki.Commands.Modules.FunModule
 {
@@ -13,7 +13,7 @@ namespace Yuki.Commands.Modules.FunModule
         {
             string[] items = Regex.Split(args, @"\s*[|]\s*");
 
-            await ReplyAsync(items[new YukiRandom().Next(items.Length)]);
+            await ReplyAsync(items[new Random().Next(items.Length)]);
         }
     }
 }

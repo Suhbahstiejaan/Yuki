@@ -1,5 +1,5 @@
 ﻿using Discord;
-using InteractivityAddon;
+using Interactivity;
 using Microsoft.Extensions.DependencyInjection;
 using Qmmands;
 using System.Threading.Tasks;
