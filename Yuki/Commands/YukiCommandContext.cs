@@ -2,15 +2,16 @@
 using Discord.WebSocket;
 using Qmmands;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Core;
+using Yuki.Data.Objects;
 using Yuki.Extensions;
 
 namespace Yuki.Commands
 {
     public sealed class YukiCommandContext : CommandContext
     {
+        public Language Language => Localization.GetLanguage(this);
 
         public DiscordShardedClient Client { get; }
 

@@ -710,5 +710,9 @@ namespace Yuki.Data.Objects
         public string donators_none { get; set; }
         public string donators_title { get; set; }
         public string donators_footer { get; set; }
+
+        public string command_is_submodule { get; set; }
+        public string help_commands_require_nsfw { get; set; }
+        public string help_command_requires_nsfw { get; set; }
     }
 }

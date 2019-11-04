@@ -671,3 +671,6 @@ donators_none = "There are currently no donators. To donate, use y!donate!"
 donators_title = "Donators"
 donators_footer = "Wanna get your name here and support me? Use y!donate to find out how!"
 
+command_is_submodule = "Submodule"
+help_commands_require_nsfw = "%count% command(s) require NSFW content to be enabled. To see what these commands are and use them, ask a moderator to enable NSFW commands."
+help_command_requires_nsfw = "This command requires NSFW to be enabled"
