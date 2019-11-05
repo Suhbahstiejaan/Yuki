@@ -10,7 +10,7 @@ namespace Yuki.Data
         {
             string rebuilt = string.Empty;
 
-            foreach(string _str in _string.Split(' ').ToList().Select(s => s.ToLower()))
+            foreach(string _str in _string.Split(' ').ToList())
             {
                 string substring = _str.ToLower();
                 string str = _str;
