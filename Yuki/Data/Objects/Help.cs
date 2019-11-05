@@ -171,7 +171,17 @@ namespace Yuki.Data.Objects
 
                         foreach (string mod in subModules)
                         {
-                            embed.AddField(mod, Context.Language.GetString("command_is_submodule"), true);
+                            if(embed.Fields.Count < 25)
+                            {
+                                embed.AddField(mod, Context.Language.GetString("command_is_submodule"), true);
+                            }
+                            else
+                            {
+                                Context.Channel.SendMessageAsync("", false, embed.Build());
+
+                                embed.Fields.Clear();
+                                embed.AddField(mod, Context.Language.GetString("command_is_submodule"), true);
+                            }
                         }
 
                         isNsfw = false;

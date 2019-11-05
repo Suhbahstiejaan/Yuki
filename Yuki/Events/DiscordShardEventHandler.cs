@@ -105,7 +105,7 @@ namespace Yuki.Events
 
         private static void SetClientEvents(DiscordSocketClient client)
         {
-            client.MessageReceived += CommandHandler.HandleCommand;
+            client.MessageReceived += DiscordSocketEventHandler.MessageReceived;
 
             client.MessageUpdated += DiscordSocketEventHandler.MessageUpdated;
             client.MessageDeleted += DiscordSocketEventHandler.MessageDeleted;
@@ -114,10 +114,7 @@ namespace Yuki.Events
             client.ReactionAdded += DiscordSocketEventHandler.ReactionAdded;
             client.ReactionRemoved += DiscordSocketEventHandler.ReactionRemoved;
 
-            /* To uncomment once reaction roles are implemented
-             
-                client.ReactionsCleared += DiscordSocketEventHandler.ReactionsCleared;
-            */
+            /* client.ReactionsCleared += DiscordSocketEventHandler.ReactionsCleared; */
 
             client.UserBanned += DiscordSocketEventHandler.UserBanned;
             client.UserJoined += DiscordSocketEventHandler.UserJoined;

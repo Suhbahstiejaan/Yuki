@@ -706,6 +706,7 @@ namespace Yuki.Data.Objects
 
         public string patron_added { get; set; }
         public string patron_removed { get; set; }
+        public string patron_cmd_added { get; set; }
 
         public string donators_none { get; set; }
         public string donators_title { get; set; }

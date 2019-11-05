@@ -1,11 +1,11 @@
 ﻿using Discord;
-using Discord.Rest;
 using Discord.WebSocket;
+using Qmmands;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Yuki.Commands;
 using Yuki.Core;
 using Yuki.Data;
 using Yuki.Data.Objects;
@@ -33,12 +33,113 @@ namespace Yuki.Events
             return Localization.GetLanguage(GuildSettings.GetGuild(guildId).LangCode);
         }
 
-        public static async Task MessageReceived(SocketMessage message)
+        private static bool HasPrefix(SocketUserMessage message, out string output)
         {
+            output = string.Empty;
+            if (!(message.Channel is IDMChannel))
+            {
+                GuildConfiguration config = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId);
 
+                if (config.EnablePrefix && config.Prefix != null)
+                {
+                    return CommandUtilities.HasPrefix(message.Content, config.Prefix, out output);
+                }
+            }
+
+            return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
         }
 
-        public static async Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
+
+
+        public static Task MessageReceived(SocketMessage socketMessage)
+        {
+            _ = Task.Run(() => {
+                if (!(socketMessage is SocketUserMessage message))
+                    return;
+                if (message.Source != MessageSource.User)
+                    return;
+
+                DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
+                                                YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
+                                                YukiBot.Discord.Client.GetShard(0);
+
+                bool hasPrefix = HasPrefix(message, out string trimmedContent);
+
+
+                if (!(message.Channel is IDMChannel))
+                {
+                    WordFilter.CheckFilter(message);
+                }
+
+                if (!hasPrefix)
+                {
+                    Messages.InsertOrUpdate(new YukiMessage()
+                    {
+                        Id = message.Id,
+                        AuthorId = message.Author.Id,
+                        ChannelId = message.Channel.Id,
+                        SendDate = DateTime.UtcNow,
+                        Content = (socketMessage as SocketUserMessage)
+                                .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
+                    });
+
+                    return;
+                }
+
+                IResult result = YukiBot.Discord.CommandService
+                                    .ExecuteAsync(trimmedContent, new YukiCommandContext(
+                                            YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services)).Result;
+
+                if (result is FailedResult failedResult)
+                {
+                    if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
+                    {
+                        if (checksFailed.FailedChecks.Count == 1)
+                        {
+                            message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Result.Reason);
+                        }
+                        else
+                        {
+                            message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
+                                    $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Result.Reason))}");
+                        }
+                    }
+                }
+
+                if (UserSettings.IsPatron(message.Author.Id))
+                {
+                    PatronCommand cmd = Patreon.GetCommand(message.Author.Id, trimmedContent.Split(' ')[0].ToLower());
+
+                    if (!cmd.Equals(default))
+                    {
+                        YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                        message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, cmd.Response, msg));
+
+                        return;
+                    }
+                }
+
+                if (message.Channel is IDMChannel)
+                {
+                    return;
+                }
+
+                GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
+                                                        .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.Split(' ')[0].ToLower());
+
+                if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
+                {
+                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                    message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, execCommand.Response, msg));
+                }
+            });
+
+            return Task.CompletedTask;
+        }
+
+        public static Task MessageUpdated(Cacheable<IMessage, ulong> messageOld, SocketMessage current, ISocketMessageChannel channel)
         {
             _ = Task.Run(() => {
                 try
@@ -86,9 +187,11 @@ namespace Yuki.Events
                 }
                 catch (Exception e) { Console.WriteLine(e); }
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
+        public static Task MessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
         {
             _ = Task.Run(() => {
                 message.DownloadAsync();
@@ -143,9 +246,11 @@ namespace Yuki.Events
                     LogMessage(embed, ((IGuildChannel)channel).GuildId);
                 }
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        public static Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
             _ = Task.Run(() => {
                 try
@@ -179,9 +284,11 @@ namespace Yuki.Events
                     channel.SendMessageAsync(e.ToString());
                 }
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        public static Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
             _ = Task.Run(() =>
             {
@@ -209,12 +316,14 @@ namespace Yuki.Events
                     channel.SendMessageAsync(e.ToString());
                 }
             });
+
+            return Task.CompletedTask;
         }
 
         /*public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }*/
 
 
-        public static async Task UserBanned(SocketUser user, SocketGuild guild)
+        public static Task UserBanned(SocketUser user, SocketGuild guild)
         {
             _ = Task.Run(() =>
             {
@@ -227,9 +336,11 @@ namespace Yuki.Events
 
                 LogMessage(embed, guild.Id);
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task UserJoined(SocketGuildUser user)
+        public static Task UserJoined(SocketGuildUser user)
         {
             _ = Task.Run(() => {
                 Language lang = GetLanguage(user.Guild.Id);
@@ -247,7 +358,7 @@ namespace Yuki.Events
                 {
                     YukiContextMessage msg = new YukiContextMessage(user, user.Guild);
 
-                    user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(guild.WelcomeMessage, msg));
+                    user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(null, guild.WelcomeMessage, msg));
                 }
 
                 if (guild.EnableWarnings)
@@ -268,9 +379,11 @@ namespace Yuki.Events
                     }
                 }
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task UserLeft(SocketGuildUser user)
+        public static Task UserLeft(SocketGuildUser user)
         {
             _ = Task.Run(() => {
                 Language lang = GetLanguage(user.Guild.Id);
@@ -288,12 +401,14 @@ namespace Yuki.Events
                 {
                     YukiContextMessage msg = new YukiContextMessage(user, user.Guild);
 
-                    user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(guild.GoodbyeMessage, msg));
+                    user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(null, guild.GoodbyeMessage, msg));
                 }
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task UserUnbanned(SocketUser user, SocketGuild guild)
+        public static Task UserUnbanned(SocketUser user, SocketGuild guild)
         {
             _ = Task.Run(() =>
             {
@@ -306,9 +421,11 @@ namespace Yuki.Events
 
                 LogMessage(embed, guild.Id);
             });
+
+            return Task.CompletedTask;
         }
 
-        public static async Task LogMessage(EmbedBuilder embed, ulong guildId)
+        public static Task LogMessage(EmbedBuilder embed, ulong guildId)
         {
             _ = Task.Run(() => {
                 embed.WithFooter(DateTime.UtcNow.ToPrettyTime(false, true));
@@ -320,6 +437,8 @@ namespace Yuki.Events
                     YukiBot.Discord.Client.GetGuild(guildId).GetTextChannel(config.LogChannel).SendMessageAsync("", false, embed.Build());
                 }
             });
+
+            return Task.CompletedTask;
         }
     }
 }

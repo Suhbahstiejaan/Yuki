@@ -665,7 +665,7 @@ warningaction_role_name = "Please type the name of the role you'd like to set fo
 
 patron_added = "Patron added"
 patron_removed = "Patron removed"
-
+patron_cmd_added = "Patron command added"
 
 donators_none = "There are currently no donators. To donate, use y!donate!"
 donators_title = "Donators"

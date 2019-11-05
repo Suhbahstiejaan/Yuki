@@ -1,13 +1,12 @@
 ﻿using Discord;
 using System;
 using System.Linq;
-using Yuki.Commands;
 
 namespace Yuki.Data
 {
     public static class StringReplacements
     {
-        public static string GetReplacement(string _string, YukiContextMessage Context)
+        public static string GetReplacement(string msgContent, string _string, YukiContextMessage Context)
         {
             string rebuilt = string.Empty;
 
@@ -22,7 +21,20 @@ namespace Yuki.Data
 
                 if(substring.Contains("{user.mention}"))
                 {
-                    str = substring.Replace("{user.mention}", Context.User.Mention);
+                    bool origHasMention = false;
+
+                    foreach(string s in _string.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if(MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{user.mention}", Context.User.Mention);
+                        }
+                    }
+
+                    if(!origHasMention)
+                    {
+                        str = substring.Replace("{user.mention}", Context.User.Mention);
+                    }
                 }
 
                 if (substring.Contains("{user.id}"))
@@ -49,6 +61,92 @@ namespace Yuki.Data
                 {
                     str = substring.Replace("{user.avatar}", Context.User.GetAvatarUrl());
                 }
+
+
+
+                if (substring.Contains("{otheruser}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{otheruser}", MentionUtils.MentionUser(user));
+                        }
+                    }
+                    str = substring.Replace("{otheruser}", Context.User.Mention);
+                }
+
+                if (substring.Contains("{otheruser.mention}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{otheruser.mention}", MentionUtils.MentionUser(user));
+                        }
+                    }
+                }
+
+                if (substring.Contains("{otheruser.id}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{otheruser.id}", user.ToString());
+                        }
+                    }
+                }
+
+                if (substring.Contains("{otheruser.name}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{otheruser.name}", Context.Guild.GetUserAsync(user).ToString());
+                        }
+                    }
+                }
+
+                if (substring.Contains("{otheruser.discrim}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            str = substring.Replace("{otheruser.discrim}", Context.Guild.GetUserAsync(user).Result.Discriminator.ToString());
+                        }
+                    }
+                }
+
+                if (substring.Contains("{otheruser.tag}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            IGuildUser _user = Context.Guild.GetUserAsync(user).Result;
+                            str = substring.Replace("{otheruser.tag}", $"{_user.Username}#{_user.Discriminator}");
+                        }
+                    }
+                }
+
+                if (substring.Contains("{otheruser.avatar}") && msgContent != null)
+                {
+                    foreach (string s in msgContent.Split(' ').ToList().Select(_s => _s.ToLower()))
+                    {
+                        if (MentionUtils.TryParseUser(s, out ulong user))
+                        {
+                            IGuildUser _user = Context.Guild.GetUserAsync(user).Result;
+                            str = substring.Replace("{otheruser.avatar}", _user.GetAvatarUrl());
+                        }
+                    }
+                }
+
+
+
+
 
                 if (substring.Contains("{server}"))
                 {
