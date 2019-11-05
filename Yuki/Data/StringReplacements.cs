@@ -10,9 +10,10 @@ namespace Yuki.Data
         {
             string rebuilt = string.Empty;
 
-            foreach(string substring in _string.Split(' ').ToList().Select(s => s.ToLower()))
+            foreach(string _str in _string.Split(' ').ToList().Select(s => s.ToLower()))
             {
-                string str = substring;
+                string substring = _str.ToLower();
+                string str = _str;
 
                 if(substring.Contains("{user}"))
                 {
