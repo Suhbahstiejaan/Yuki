@@ -73,7 +73,6 @@ namespace Yuki.Data
                             str = substring.Replace("{otheruser}", MentionUtils.MentionUser(user));
                         }
                     }
-                    str = substring.Replace("{otheruser}", Context.User.Mention);
                 }
 
                 if (substring.Contains("{otheruser.mention}") && msgContent != null)
