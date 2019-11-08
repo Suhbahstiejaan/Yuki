@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -45,24 +46,70 @@ namespace Yuki.API
             }
         }
 
-        public static async Task SendImageAsync(YukiCommandContext context, Language lang, string imgType, bool isNsfw, params IUser[] mentionedUser)
+        public static async Task SendImageAsync(YukiCommandContext context, Language lang, string imgType, bool isNsfw, string mentionStr)
         {
             try
             {
+                List<IUser> mentionedUsers = new List<IUser>();
+
                 string embedStringTitle = "rammoe_" + imgType;
 
-                if ((mentionedUser == null || mentionedUser.Length == 0) && lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
+                string userString = null;
+
+                if (mentionStr != null)
                 {
-                    embedStringTitle += "_alt";
-                    mentionedUser = new IUser[]
+                    foreach (string substr in mentionStr.Split(' '))
                     {
-                        context.Client.CurrentUser
-                    };
+                        if (MentionUtils.TryParseUser(substr, out ulong userId))
+                        {
+                            mentionedUsers.Add(context.Client.GetUser(userId));
+                        }
+                    }
+
+                    if(mentionedUsers.Count < 1)
+                    {
+                        userString = mentionStr;
+                    }
+                }
+                else
+                {
+                    if(lang.GetString(embedStringTitle + "_alt") != embedStringTitle + "_alt")
+                    {
+                        embedStringTitle += "_alt";
+
+                        mentionedUsers.Add(context.Client.CurrentUser);
+                    }
+                }
+
+                if(userString == null)
+                {
+                    if(mentionedUsers.Count == 1)
+                    {
+                        userString = mentionedUsers[0].Username;
+                    }
+                    else if(mentionedUsers.Count == 2)
+                    {
+                        userString = $"{mentionedUsers[0].Username} and {mentionedUsers[1].Username}";
+                    }
+                    else
+                    {
+                        for(int i = 0; i < mentionedUsers.Count; i++)
+                        {
+                            if(i == mentionedUsers.Count - 1)
+                            {
+                                userString += "and " + mentionedUsers[i].Username;
+                            }
+                            else
+                            {
+                                userString += mentionedUsers[i].Username + ", ";
+                            }
+                        }
+                    }
                 }
 
                 string translatedTitle = lang.GetString(embedStringTitle)
                     .Replace("%executor%", context.User.Username)
-                    .Replace("%user%", ((mentionedUser != null) || mentionedUser.Length != 0) ? string.Join(", ", mentionedUser.Select(u => u.Username)) : "");
+                    .Replace("%user%", userString);
 
                 await context.ReplyAsync(context.CreateImageEmbedBuilder(translatedTitle, await GetImageAsync(imgType, isNsfw)));
             }

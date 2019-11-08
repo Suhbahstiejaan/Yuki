@@ -1,8 +1,6 @@
-﻿using Discord;
-using Qmmands;
+﻿using Qmmands;
 using System.Threading.Tasks;
 using Yuki.API;
-using Yuki.Services;
 
 namespace Yuki.Commands.Modules.ImageModule
 {
@@ -17,44 +15,44 @@ namespace Yuki.Commands.Modules.ImageModule
 
         [Command("cuddle")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task CuddleAsync(params IUser[] users)
+        public async Task CuddleAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "cuddle", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "cuddle", false, str);
         }
 
         [Command("hug")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task HugAsync(params IUser[] users)
+        public async Task HugAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "hug", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "hug", false, str);
         }
 
         [Command("kiss")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task KissAsync(params IUser[] users)
+        public async Task KissAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "kiss", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "kiss", false, str);
         }
 
         [Command("lewd")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task LewdAsync(params IUser[] users)
+        public async Task LewdAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "lewd", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "lewd", false, str);
         }
 
         [Command("lick")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task LickAsync(params IUser[] users)
+        public async Task LickAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "lick", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "lick", false, str);
         }
 
         [Command("nom")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task NomAsync(params IUser[] users)
+        public async Task NomAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "nom", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "nom", false, str);
         }
 
         [Command("nyan")]
@@ -73,9 +71,9 @@ namespace Yuki.Commands.Modules.ImageModule
 
         [Command("pat")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task PatAsync(params IUser[] users)
+        public async Task PatAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "pat", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "pat", false, str);
         }
 
         [Command("pout")]
@@ -94,30 +92,30 @@ namespace Yuki.Commands.Modules.ImageModule
 
         [Command("slap")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task SlapAsync(params IUser[] users)
+        public async Task SlapAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "slap", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "slap", false, str);
         }
 
         [Command("smug")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task SmugAsync(params IUser[] users)
+        public async Task SmugAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "smug", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "smug", false, str);
         }
 
         [Command("stare")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task StareAsync(params IUser[] users)
+        public async Task StareAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "stare", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "stare", false, str);
         }
 
         [Command("tickle")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task TickleAsync(params IUser[] users)
+        public async Task TickleAsync([Remainder] string str = null)
         {
-            await RamMoe.SendImageAsync(Context, Language, "tickle", false, users);
+            await RamMoe.SendImageAsync(Context, Language, "tickle", false, str);
         }
 
         /*[Command("nsfwgtn")]
