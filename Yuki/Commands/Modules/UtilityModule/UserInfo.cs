@@ -1,44 +1,55 @@
 ﻿using Discord;
 using Qmmands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Yuki.Core;
 using Yuki.Extensions;
 
 namespace Yuki.Commands.Modules.UtilityModule
 {
     public partial class UtilityModule
     {
+        /* Basic perms that just fill up the perm list, no need to list them */
+        GuildPermission[] blacklisterPerms = new GuildPermission[]
+        {
+            GuildPermission.AddReactions,
+            GuildPermission.AttachFiles,
+            GuildPermission.ChangeNickname,
+            GuildPermission.Connect,
+            GuildPermission.CreateInstantInvite,
+            GuildPermission.EmbedLinks,
+            GuildPermission.PrioritySpeaker,
+            GuildPermission.ReadMessageHistory,
+            GuildPermission.SendMessages,
+            GuildPermission.SendTTSMessages,
+            GuildPermission.Speak,
+            GuildPermission.Stream,
+            GuildPermission.UseExternalEmojis,
+            GuildPermission.UseVAD,
+            GuildPermission.ViewAuditLog,
+            GuildPermission.ViewChannel
+        };
+
         [Command("userinfo")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task GetUserInfoAsync(IUser userParam = default)
+        public async Task GetUserInfoAsync(string userString = null)
         {
-                if (Context.Channel is IDMChannel)
+            try
+            {
+                IUser user = Context.User;
+
+                if (userString != null && MentionUtils.TryParseUser(userString, out ulong userId))
                 {
-                    return;
+                    user = Context.Client.GetUser(userId);
                 }
 
-                IGuildUser user = userParam as IGuildUser;
+                string activity = (user.Activity != null && user.Activity.Type.ToString() != "4") ? Language.GetString(user.Activity.Type.ToString().ToLower()) : Language.GetString("activity");
 
-                if (user == default)
-                {
-                    user = Context.User as IGuildUser;
-                }
-
-                string perms = (!user.GuildPermissions.ToList().Equals(null) && user.GuildPermissions.ToList().Count > 0) ?
-                                string.Join(", ", user.GuildPermissions.ToList()) : Language.GetString("none");
-
-                string roles = (user.RoleIds != null && user.RoleIds.Count > 0) ?
-                                string.Join(", ", Context.Guild.Roles.Where(role => user.RoleIds.Contains(role.Id)).Select(role => role.Name))
-                                : Language.GetString("none");
-
-                string activity = user.Activity != null ? Language.GetString(user.Activity.Type.ToString().ToLower()) : Language.GetString("activity");
-                string game = !user.Activity.Equals(null) ? user.Activity.Name.ToString().ToLower() : Language.GetString("none");
+                string game = user.Activity != null ? user.Activity.Name.ToString().ToLower() : Language.GetString("none");
 
                 EmbedBuilder embed = new EmbedBuilder()
-                    .WithColor(user.HighestRole().Color)
+                    .WithColor(Colors.Pink)
                     .WithImageUrl(user.GetAvatarUrl())
                     .WithAuthor(new EmbedAuthorBuilder()
                     {
@@ -49,12 +60,34 @@ namespace Yuki.Commands.Modules.UtilityModule
                     .AddField(activity, game, true)
                     .AddField(Language.GetString("uinf_status"), Language.GetString(user.Status.ToString().ToLower()), true)
                     .AddField(Language.GetString("uinf_acc_create"), user.CreatedAt.DateTime.ToPrettyTime(false, false), true)
-                    .AddField(Language.GetString("uinf_acc_join"), user.JoinedAt.Value.DateTime.ToPrettyTime(false, false), true)
-                    .AddField(Language.GetString("uinf_permissions"), string.Join(", ", perms), true)
-                    .AddField(Language.GetString("uinf_roles").Replace("%count%", user.RoleIds.Count.ToString()),
-                                                roles, true);
+                    .WithCurrentTimestamp();
+
+                if (user is IGuildUser guildUser)
+                {
+                    string perms = (!guildUser.GuildPermissions.ToList().Equals(null) && guildUser.GuildPermissions.ToList().Count > 0) ?
+                        string.Join(", ", guildUser.GuildPermissions.ToList().Where(perm => !blacklisterPerms.Contains(perm))) : Language.GetString("none");
+
+                    string roles = (guildUser.RoleIds != null && guildUser.RoleIds.Count > 0) ?
+                                    string.Join(", ", Context.Guild.Roles.Where(role => guildUser.RoleIds.Contains(role.Id)).Select(role => role.Name))
+                                    : Language.GetString("none");
+
+                    if(guildUser.RoleIds.Count > 0 && guildUser.HighestRole().Color != Color.Default)
+                    {
+                        embed.WithColor(guildUser.HighestRole().Color);
+                    }
+
+                    embed.AddField(Language.GetString("uinf_acc_join"), guildUser.JoinedAt.Value.DateTime.ToPrettyTime(false, false), true)
+                         .AddField(Language.GetString("uinf_permissions"), string.Join(", ", perms), true)
+                         .AddField(Language.GetString("uinf_roles").Replace("%count%", guildUser.RoleIds.Count.ToString()), roles, true)
+                         .AddField(Language.GetString("booster_since"), guildUser.PremiumSince.Value.DateTime.ToPrettyTime(false, false), true);
+                }
 
                 await ReplyAsync(embed);
+            }
+            catch(Exception e)
+            {
+                Logger.Write(LogLevel.Error, e);
+            }
         }
     }
 }

@@ -715,5 +715,8 @@ namespace Yuki.Data.Objects
         public string command_is_submodule { get; set; }
         public string help_commands_require_nsfw { get; set; }
         public string help_command_requires_nsfw { get; set; }
+        
+        public string starboard_jump_to { get; set; }
+        public string booster_since { get; set; }
     }
 }
