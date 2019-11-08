@@ -181,58 +181,74 @@ namespace Yuki.Events
 
         public static async Task MessageDeleted(Cacheable<IMessage, ulong> _message, ISocketMessageChannel channel)
         {
-            if (_message.HasValue)
+            try
             {
-                IMessage message = _message.Value;
-
-                Messages.Remove(message.Id);
-
-                if (!message.Author.IsBot)
+                if(_message.HasValue)
                 {
-                    string content = message.Content;
+                    IMessage message = _message.Value;
 
-                    if (content.Length > 1000)
+                    Messages.Remove(message.Id);
+
+                    if (!message.Author.IsBot)
                     {
-                        content = content.Substring(0, 997) + "...";
-                    }
+                        string content = message.Content;
 
-                    Language lang = GetLanguage(channel);
-
-                    EmbedBuilder embed = new EmbedBuilder()
-                        .WithAuthor(lang.GetString("event_message_deleted"), message.Author.GetAvatarUrl())
-                        .WithDescription($"{lang.GetString("event_message_id")}: {message.Id}\n" +
-                                         $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
-                                         $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(message.Author.Id)}")
-                        .WithColor(Color.Red);
-
-                    if (!string.IsNullOrEmpty(content))
-                    {
-                        embed.AddField(lang.GetString("message_content"), content);
-                    }
-
-                    if (message.Attachments != null && message.Attachments.Count > 0)
-                    {
-                        string attachments = string.Empty;
-                        string imageUrl = null;
-
-                        IAttachment[] _attachments = message.Attachments.ToArray();
-
-                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
-
-                        for (int i = 0; i < _attachments.Length; i++)
+                        if (content.Length > 1000)
                         {
-                            attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                            content = content.Substring(0, 997) + "...";
                         }
 
-                        if (imageUrl != null)
+                        Language lang = GetLanguage(channel);
+
+                        EmbedBuilder embed = new EmbedBuilder()
+                            .WithAuthor(lang.GetString("event_message_deleted"), message.Author.GetAvatarUrl())
+                            .WithDescription($"{lang.GetString("event_message_id")}: {message.Id}\n" +
+                                             $"{lang.GetString("event_message_channel")}: {MentionUtils.MentionChannel(channel.Id)} ({channel.Id})\n" +
+                                             $"{lang.GetString("event_message_author")}: {MentionUtils.MentionUser(message.Author.Id)}")
+                            .WithColor(Color.Red);
+
+                        if (!string.IsNullOrEmpty(content))
                         {
-                            embed.WithImageUrl(imageUrl);
+                            embed.AddField(lang.GetString("message_content"), content);
                         }
 
-                        embed.AddField(lang.GetString("message_attachments"), attachments);
-                    }
+                        if (message.Attachments != null && message.Attachments.Count > 0)
+                        {
+                            string attachments = string.Empty;
+                            string imageUrl = null;
 
-                    await LogMessage(embed, ((IGuildChannel)channel).GuildId);
+                            IAttachment[] _attachments = message.Attachments.ToArray();
+
+                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+
+                            for (int i = 0; i < _attachments.Length; i++)
+                            {
+                                attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                            }
+
+                            if (imageUrl != null)
+                            {
+                                embed.WithImageUrl(imageUrl);
+                            }
+
+                            embed.AddField(lang.GetString("message_attachments"), attachments);
+                        }
+
+                        await LogMessage(embed, ((IGuildChannel)channel).GuildId);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                ulong guildId = ((IGuildChannel)_message.Value.Channel).GuildId;
+
+                GuildConfiguration config = GuildSettings.GetGuild(guildId);
+
+                if (!config.Equals(null) && config.EnableLogging && config.LogChannel != 0 && YukiBot.Discord.Client.GetGuild(guildId).TextChannels.Any(c => c.Id == config.LogChannel))
+                {
+                    await YukiBot.Discord.Client.GetGuild(guildId).GetTextChannel(config.LogChannel).SendMessageAsync("An error ocurred while trying to log the deleted message. Please join the support server and contact my owner IMMEDIATELY");
+                    
+                    Logger.Write(LogLevel.Error, e);
                 }
             }
         }
