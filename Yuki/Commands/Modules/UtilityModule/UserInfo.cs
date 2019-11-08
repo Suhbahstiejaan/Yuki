@@ -68,7 +68,7 @@ namespace Yuki.Commands.Modules.UtilityModule
                         string.Join(", ", guildUser.GuildPermissions.ToList().Where(perm => !blacklisterPerms.Contains(perm))) : Language.GetString("none");
 
                     string roles = (guildUser.RoleIds != null && guildUser.RoleIds.Count > 0) ?
-                                    string.Join(", ", Context.Guild.Roles.Where(role => guildUser.RoleIds.Contains(role.Id)).Select(role => role.Name))
+                                    string.Join(", ", Context.Guild.Roles.Where(role => guildUser.RoleIds.Contains(role.Id) && role != Context.Guild.EveryoneRole).Select(role => role.Name))
                                     : Language.GetString("none");
 
                     if(guildUser.RoleIds.Count > 0 && guildUser.HighestRole().Color != Color.Default)
@@ -76,10 +76,23 @@ namespace Yuki.Commands.Modules.UtilityModule
                         embed.WithColor(guildUser.HighestRole().Color);
                     }
 
-                    embed.AddField(Language.GetString("uinf_acc_join"), guildUser.JoinedAt.Value.DateTime.ToPrettyTime(false, false), true)
-                         .AddField(Language.GetString("uinf_permissions"), string.Join(", ", perms), true)
-                         .AddField(Language.GetString("uinf_roles").Replace("%count%", guildUser.RoleIds.Count.ToString()), roles, true)
-                         .AddField(Language.GetString("booster_since"), guildUser.PremiumSince.Value.DateTime.ToPrettyTime(false, false), true);
+                    embed.AddField(Language.GetString("uinf_acc_join"), guildUser.JoinedAt.Value.DateTime.ToPrettyTime(false, false), true);
+
+
+                    if(!string.IsNullOrWhiteSpace(perms))
+                    {
+                        embed.AddField(Language.GetString("uinf_permissions"), string.Join(", ", perms), true);
+                    }
+
+                    if(!string.IsNullOrWhiteSpace(roles))
+                    {
+                        embed.AddField(Language.GetString("uinf_roles").Replace("%count%", guildUser.RoleIds.Count.ToString()), roles, true);
+                    }
+
+                    if (guildUser.PremiumSince.HasValue)
+                    {
+                        embed.AddField(Language.GetString("booster_since"), guildUser.PremiumSince.Value.DateTime.ToPrettyTime(false, false), true);
+                    }
                 }
 
                 await ReplyAsync(embed);
