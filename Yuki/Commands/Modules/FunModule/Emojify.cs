@@ -36,7 +36,7 @@ namespace Yuki.Commands.Modules.FunModule
                     }
                     else if (text[i] >= '0' && text[i] <= '9')
                     {
-                        text += $":{numbers[text[i] - '0']}:";
+                        value += $":{numbers[text[i] - '0']}:";
                     }
                     else
                     {
