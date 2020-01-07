@@ -26,7 +26,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                     {
                         string attachments = string.Join("\n", message.Attachments.Select(att => att.Url));
 
-                        file.WriteLine($"[{message.Timestamp}]{ (message.EditedTimestamp.HasValue ? $" [{Language.GetString("edited")} {message.EditedTimestamp}]" : "")} <{message.Author}> {message.Content}{(!string.IsNullOrEmpty(attachments) ? $"\n{Language.GetString("message_attachments")}: {attachments})" : "")}");
+                        file.WriteLine($"[{message.Timestamp.UtcDateTime}]{ (message.EditedTimestamp.HasValue ? $" [{Language.GetString("edited")} {message.EditedTimestamp.Value.UtcDateTime}]" : "")} <{message.Author}> {message.Content}{(!string.IsNullOrEmpty(attachments) ? $"\n{Language.GetString("message_attachments")}: {attachments})" : "")}");
                     }
                 }
                 await SendFileAsync(filename, Language.GetString("archiving_done"));
@@ -47,7 +47,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                     {
                         string attachments = string.Join("\n", message.Attachments.Select(att => att.Url));
 
-                        file.WriteLine($"[{message.Timestamp}]{ (message.EditedTimestamp.HasValue ? $" [{Language.GetString("edited")} {message.EditedTimestamp}]" : "")} <{message.Author}> {message.Content}{(!string.IsNullOrEmpty(attachments) ? $"\n{Language.GetString("message_attachments")}: {attachments})" : "")}");
+                        file.WriteLine($"[{message.Timestamp.UtcDateTime}]{ (message.EditedTimestamp.HasValue ? $" [{Language.GetString("edited")} {message.EditedTimestamp.Value.UtcDateTime}]" : "")} <{message.Author}> {message.Content}{(!string.IsNullOrEmpty(attachments) ? $"\n{Language.GetString("message_attachments")}: {attachments})" : "")}");
                     }
                 }
                 await SendFileAsync(filename, Language.GetString("archiving_done"));
