@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
-using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.OwnerModule

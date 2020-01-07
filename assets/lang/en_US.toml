@@ -680,3 +680,6 @@ help_command_requires_nsfw = "This command requires NSFW to be enabled"
 
 starboard_jump_to = "Jump to"
 booster_since = "Booster Since"
+archiving = "Archiving...This *might* take a long time, so be patient!"
+edited = "Edited"
+archiving_done = "Archival complete! Your file:"

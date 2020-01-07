@@ -12,6 +12,7 @@ namespace Yuki
         internal static string ImageRoot { get; } = AssetRoot + "images/";
         internal static string LogRoot  { get; } = DataRoot + "log/";
         internal static string PollRoot { get; } = DataRoot + "polls/";
+        internal static string TempArchiveRoot { get; } = DataRoot + "tempChannelArchives/";
         internal static string DBRoot { get; } = DataRoot + "databases/";
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
@@ -45,6 +46,11 @@ namespace Yuki
             if(!Directory.Exists(DBRoot))
             {
                 Directory.CreateDirectory(DBRoot);
+            }
+            
+            if(!Directory.Exists(TempArchiveRoot))
+            {
+                Directory.CreateDirectory(TempArchiveRoot);
             }
         }
     }

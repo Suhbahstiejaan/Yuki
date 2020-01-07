@@ -124,6 +124,7 @@ namespace Yuki.Commands
 
         public Task<IUserMessage> SendFileAsync(string fileName, EmbedBuilder embed) => SendFileAsync(fileName, embed.Build());
         public Task<IUserMessage> SendFileAsync(string fileName, Embed embed) => Channel.SendFileAsync(fileName, null, false, embed, null, false);
+        public Task<IUserMessage> SendFileAsync(string fileName, string text, Embed embed) => Channel.SendFileAsync(fileName, text, false, embed, null, false);
 
         public Task PagedReplyAsync(string title, IEnumerable<object> pages, int contentPerPage)
         {

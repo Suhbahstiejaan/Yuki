@@ -721,5 +721,9 @@ namespace Yuki.Data.Objects
         
         public string starboard_jump_to { get; set; }
         public string booster_since { get; set; }
+
+        public string archiving { get; set; }
+        public string edited { get; set; }
+        public string archiving_done { get; set; }
     }
 }
