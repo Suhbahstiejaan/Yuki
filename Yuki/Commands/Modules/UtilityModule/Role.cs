@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Yuki.Commands.Preconditions;
+using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.UtilityModule
@@ -39,13 +40,31 @@ namespace Yuki.Commands.Modules.UtilityModule
                 }
             }
 
-            if(GuildSettings.GetGuild(Context.Guild.Id).AssignableRoles.Contains(queriedRole.Id))
+            GuildRole assignedRole = GuildSettings.GetGuild(Context.Guild.Id).GuildRoles.FirstOrDefault(role => role.Id == queriedRole.Id);
+
+            if (!assignedRole.Equals(default(GuildRole)))
             {
-                if (!(await Context.Guild.GetUserAsync(Context.User.Id)).RoleIds.Contains(queriedRole.Id))
+                if (!((IGuildUser)Context.User).RoleIds.Contains(queriedRole.Id))
                 {
-                    await (await Context.Guild.GetUserAsync(Context.User.Id)).AddRoleAsync(Context.Guild.GetRole(queriedRole.Id));
+                    await ((IGuildUser)Context.User).AddRoleAsync(Context.Guild.GetRole(queriedRole.Id));
 
                     await ReplyAsync(Language.GetString("role_given").Replace("%rolename%", queriedRole.Name).Replace("%user%", Context.User.Username));
+
+                    if(assignedRole.IsTeamRole)
+                    {
+                        foreach(ulong roleId in (await Context.Guild.GetUserAsync(Context.User.Id)).RoleIds)
+                        {
+                            GuildRole role = GuildSettings.GetGuild(Context.Guild.Id).GuildRoles.FirstOrDefault(_role => _role.Id == roleId);
+                            
+                            if(!role.Equals(default) && role.IsTeamRole&& role.Id != assignedRole.Id)
+                            {
+                                IRole _role = Context.Guild.GetRole(role.Id);
+                                await ((IGuildUser)Context.User).RemoveRoleAsync(_role);
+
+                                await ReplyAsync(Language.GetString("role_taken").Replace("%rolename%", _role.Name).Replace("%user%", Context.User.Username));
+                            }
+                        }
+                    }
                 }
                 else
                 {

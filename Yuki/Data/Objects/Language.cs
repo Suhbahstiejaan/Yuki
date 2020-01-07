@@ -558,6 +558,7 @@ namespace Yuki.Data.Objects
         public string roleinfo_mentionable { get; set; }
         public string roleinfo_managed { get; set; }
         public string roleinfo_permissions { get; set; }
+        public string roleinfo_count { get; set; }
 
         public string modules_title { get; set; }
         public string modules_help { get; set; }
@@ -650,6 +651,8 @@ namespace Yuki.Data.Objects
         public string welcome_channel_set { get; set; }
         public string welcome_channel_removed { get; set; }
         public string welcome_message_removed { get; set; }
+        
+        public string team_role_state { get; set; }
 
         /* Events */
         public string event_message_updated { get; set; }

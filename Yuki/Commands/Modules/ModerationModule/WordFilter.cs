@@ -1,5 +1,4 @@
 ﻿using Qmmands;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Yuki.Data.Objects;
@@ -25,9 +24,7 @@ namespace Yuki.Commands.Modules.ModerationModule
             {
                 string[] filters = GuildSettings.GetGuild(Context.Guild.Id).WordFilter.ToArray();
 
-                PageManager manager = new PageManager(filters, "filters");
-
-                await ReplyAsync(manager.GetPage(page));
+                await PagedReplyAsync("Filters", filters, 20);
             }
 
             [Command("remove", "rem")]

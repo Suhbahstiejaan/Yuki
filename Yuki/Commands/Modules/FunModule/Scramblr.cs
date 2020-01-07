@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Qmmands;
+using System;
 using System.Threading.Tasks;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
@@ -16,29 +17,36 @@ namespace Yuki.Commands.Modules.FunModule
             [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
             public async Task Base(IUser user = null)
             {
-                Scramblr scramblr = new Scramblr();
-
-                if (UserSettings.CanGetMsgs(Context.User.Id))
+                try
                 {
-                    if (user != null)
+                    Scramblr scramblr = new Scramblr();
+
+                    if (UserSettings.CanGetMsgs(Context.User.Id))
                     {
-                        if (UserSettings.CanGetMsgs(user.Id))
+                        if (user != null)
                         {
-                            await ReplyAsync(scramblr.GetMessage(Context.User, user));
+                            if (UserSettings.CanGetMsgs(user.Id))
+                            {
+                                await ReplyAsync(scramblr.GetMessage(Context.User, user));
+                            }
+                            else
+                            {
+                                await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                            }
                         }
                         else
                         {
-                            await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{user.Username}#{user.Discriminator}"));
+                            await ReplyAsync(scramblr.GetMessage(Context.User));
                         }
                     }
                     else
                     {
-                        await ReplyAsync(scramblr.GetMessage(Context.User));
+                        await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{Context.User.Username}#{Context.User.Discriminator}"));
                     }
                 }
-                else
+                catch(Exception e)
                 {
-                    await ReplyAsync(Language.GetString("scramblr_not_enabled").Replace("%user%", $"{Context.User.Username}#{Context.User.Discriminator}"));
+                    await ReplyAsync("An error occurred!\n```" + e + "```\nPlease let my creator know ASAP");
                 }
             }
 

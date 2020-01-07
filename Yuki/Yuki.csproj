@@ -4,21 +4,20 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationIcon></ApplicationIcon>
+    <AssemblyVersion>1.0.7.19360</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BotSharp.Core" Version="0.4.0" />
     <PackageReference Include="ByteSize" Version="2.0.0-beta1" />
-    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.0-alpha-011" />
+    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.1" />
     <PackageReference Include="Discord.Net.Core" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.Rest" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.Webhook" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.WebSocket" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0-preview2.19525.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Nett" Version="0.13.0" />
     <PackageReference Include="Qmmands" Version="3.0.0" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0-preview2.19523.17" />
   </ItemGroup>
 
 </Project>

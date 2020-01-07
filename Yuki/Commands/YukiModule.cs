@@ -1,10 +1,10 @@
 ﻿using Discord;
-using Interactivity;
-using Microsoft.Extensions.DependencyInjection;
 using Qmmands;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yuki.Core;
 using Yuki.Data.Objects;
+using Interactivity;
+using Yuki.Core;
 
 namespace Yuki.Commands
 {
@@ -12,7 +12,7 @@ namespace Yuki.Commands
     {
         public Language Language => Localization.GetLanguage(Context);
 
-        public InteractivityService Interactivity { get; } = YukiBot.Discord.Services.GetRequiredService<InteractivityService>();
+        public InteractivityService Interactivity { get { return Context.Interactivity; } }
 
         public bool UserHasPriority(IUser executor, IUser otherUser) => Context.UserHasPriority(executor, otherUser);
         public bool RoleHasPriority(IRole role, IRole otherRole) => Context.RoleHasPriority(role, otherRole);
@@ -25,6 +25,8 @@ namespace Yuki.Commands
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => Context.ReplyAsync(embed);
         public Task<IUserMessage> SendFileAsync(string file, EmbedBuilder embed) => Context.SendFileAsync(file, embed);
         public Task<IUserMessage> SendFileAsync(string file, Embed embed) => Context.SendFileAsync(file, embed);
+
+        public Task PagedReplyAsync(string title, IEnumerable<object> pages, int contentPerPage = 20) => Context.PagedReplyAsync(title, pages, contentPerPage);
 
         public Task ReactAsync(string unicode) => Context.ReactAsync(unicode);
     }

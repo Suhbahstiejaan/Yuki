@@ -1,6 +1,8 @@
 ﻿using Discord;
+using Nett;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +39,19 @@ namespace Yuki
 
         public async Task RunAsync()
         {
-            string token = Config.GetConfig(reload: true).token;
+            string token;
+
+            if (!File.Exists(FileDirectories.ConfigFile))
+            {
+                Config c = new Config();
+
+                Console.Write("Please enter your bot's token: ");
+                c.token = Console.ReadLine();
+
+                Toml.WriteFile(c, FileDirectories.ConfigFile);
+            }
+
+            token = Config.GetConfig(reload: true).token;
 
             await Discord.LoginAsync(token);
             Logger.Write(LogLevel.Info, $"Client has been recommended {Discord.ShardCount} shards");

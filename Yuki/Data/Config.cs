@@ -5,16 +5,16 @@ namespace Yuki.Data
 {
     public class Config
     {
-        public string default_lang { get; set; }
-        public List<string> prefix { get; set; }
-        public int playing_seconds { get; set; }
-        public int command_timeout_seconds { get; set; }
-        
-        public List<ulong> owners { get; set; }
-        
-        public string token { get; set; }
-        public string cat_api { get; set; }
-        public string encryption_key { get; set; }
+        public string default_lang { get; set; } = "en_US";
+        public List<string> prefix { get; set; } = new List<string>() { "y!" };
+        public int playing_seconds { get; set; } = 300;
+        public int command_timeout_seconds { get; set; } = 10;
+
+        public List<ulong> owners { get; set; } = new List<ulong>() { 0 };
+
+        public string token { get; set; } = "YOUR TOKEN HERE";
+        public string cat_api { get; set; } = "YOUR KEY HERE";
+        public string encryption_key { get; set; } = "YOUR KEY HERE";
         
         private static Config Instance;
 

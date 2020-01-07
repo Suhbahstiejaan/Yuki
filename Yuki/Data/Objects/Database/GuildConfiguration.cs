@@ -43,6 +43,8 @@ namespace Yuki.Data.Objects.Database
         public List<GuildWarningAction> WarningActions { get; set; }
         public List<ReactionMessage> ReactableMessages { get; set; }
 
+        public List<GuildRole> GuildRoles { get; set; }
+
         public List<string> NsfwBlacklist { get; set; }
         public List<string> WordFilter { get; set; }
 

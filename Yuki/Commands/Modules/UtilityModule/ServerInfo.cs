@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Discord.WebSocket;
 using Qmmands;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,16 +16,17 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task ServerInfoAsync()
         {
-            IGuild guild = Context.Guild;
 
-            IGuildUser guildOwner = await guild.GetOwnerAsync();
+            SocketGuild guild = Context.Client.GetShardFor(Context.Guild).GetGuild(Context.Guild.Id);
 
-            int voiceCount = (await guild.GetVoiceChannelsAsync()).Count;
-            int textCount = (await guild.GetTextChannelsAsync()).Count;
+            SocketGuildUser owner = guild.Owner;
+
+            int voiceCount = guild.VoiceChannels.Count;
+            int textCount = guild.TextChannels.Count;
 
             string channels = textCount + " " + Language.GetString("serverinfo_channels_text") + "\n" +
                               voiceCount + " " + Language.GetString("serverinfo_channels_voice") + "\n\n" +
-                              (await guild.GetCategoriesAsync()).Count + " " + Language.GetString("serverinfo_categories") + "\n";
+                              guild.CategoryChannels.Count + " " + Language.GetString("serverinfo_categories") + "\n";
 
             Embed embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()
@@ -34,14 +36,14 @@ namespace Yuki.Commands.Modules.UtilityModule
                 })
                 .WithThumbnailUrl(guild.IconUrl)
                 .WithColor(Colors.Pink)
-                .AddField(Language.GetString("serverinfo_owner"), $"{guildOwner.Username}#{guildOwner.Discriminator} ({guildOwner.Id})")
+                .AddField(Language.GetString("serverinfo_owner"), $"{owner.Username}#{owner.Discriminator} ({owner.Id})")
                 .AddField("ID", guild.Id, true)
-                .AddField("Shard", Context.Client.GetShardFor(guild).ShardId, true)
+                .AddField("Shard", Context.Client.GetShardFor(Context.Guild).ShardId, true)
                 .AddField(Language.GetString("serverinfo_region"), guild.VoiceRegionId, true)
                 .AddField(Language.GetString("serverinfo_verification_level"), guild.VerificationLevel, true)
-                .AddField(Language.GetString("serverinfo_channels") + $"[{textCount + voiceCount}]", channels, true)
-                .AddField(Language.GetString("serverinfo_members") + $"[{(await guild.GetUsersAsync()).Count}]", $"{(await guild.GetUsersAsync()).Where(user => user.Status != UserStatus.Offline).Count()} {Language.GetString("serverinfo_online")}", true)
-                .AddField(Language.GetString("serverinfo_roles") + $"[{guild.Roles.Count}]", Language.GetString("serverinfo_roles_view"), true)
+                .AddField(Language.GetString("serverinfo_channels") + $" [{textCount + voiceCount}]", channels, true)
+                .AddField(Language.GetString("serverinfo_members") + $" [{guild.MemberCount}]", $"{guild.Users.Where(user => user.Status != UserStatus.Offline).Count()} {Language.GetString("serverinfo_online")}", true)
+                .AddField(Language.GetString("serverinfo_roles") + $" [{guild.Roles.Count}]", Language.GetString("serverinfo_roles_view"), true)
                 .WithFooter(Language.GetString("serverinfo_created") + ": " + guild.CreatedAt.DateTime.ToPrettyTime(false, false))
                 .Build();
 

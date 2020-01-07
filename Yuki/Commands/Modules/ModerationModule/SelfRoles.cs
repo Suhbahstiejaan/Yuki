@@ -37,7 +37,7 @@ namespace Yuki.Commands.Modules.ModerationModule
                 }
                 else
                 {
-                    GuildSettings.AddRole(roleId, Context.Guild.Id);
+                    GuildSettings.AddRole(roleId, Context.Guild.Id, false);
 
                     await ReplyAsync(Language.GetString("role_added").Replace("%rolename%", roleName));
                 }

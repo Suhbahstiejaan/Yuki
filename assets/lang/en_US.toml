@@ -518,6 +518,7 @@ roleinfo_hoisted = "Listed Separately"
 roleinfo_mentionable = "Mentionable"
 roleinfo_managed = "Managed by Discord"
 roleinfo_permissions = "Permissions"
+roleinfo_count = "Member Count"
 
 
 modules_title = "List of Modules"
@@ -611,6 +612,8 @@ nsfw_tag_unblacklisted = "`%tag%` has been removed from the blacklist"
 welcome_channel_set = "Welcome channel set to %channelname%"
 welcome_channel_removed = "Welcome channel has been removed"
 welcome_message_removed = "Welcome message has been removed"
+
+team_role_state = "%rolename% team role status: %status%"
 
 # Events
 event_message_updated = "Message Updated"

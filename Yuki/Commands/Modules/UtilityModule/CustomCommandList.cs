@@ -26,9 +26,7 @@ namespace Yuki.Commands.Modules.UtilityModule
 
                     if (commands.Count > 0)
                     {
-                        PageManager manager = new PageManager(commands.Select(c => c.Name).ToArray(), "command");
-
-                        await ReplyAsync(manager.GetPage(page));
+                        await PagedReplyAsync("Custom Commands", commands.Select(c => c.Name).ToArray(), 20);
                     }
                     else
                     {

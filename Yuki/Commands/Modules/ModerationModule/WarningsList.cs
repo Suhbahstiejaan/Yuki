@@ -13,7 +13,7 @@ namespace Yuki.Commands.Modules.ModerationModule
         [Command("warnings")]
         [RequireModerator]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task GetWarningsAsync(IGuildUser user, int page = 0)
+        public async Task GetWarningsAsync(IGuildUser user)
         {
             GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);
 
@@ -21,9 +21,7 @@ namespace Yuki.Commands.Modules.ModerationModule
             {
                 GuildWarnedUser wUser = GuildSettings.GetWarnedUser(user.Id, Context.Guild.Id);
 
-                PageManager manager = new PageManager(wUser.WarningReasons.ToArray(), "warnings");
-
-                await ReplyAsync(manager.GetPage(page));
+                await PagedReplyAsync("Warnings", wUser.WarningReasons.ToArray(), 20);
             }
             else
             {

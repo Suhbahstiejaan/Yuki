@@ -29,7 +29,7 @@ namespace Yuki.Services.Database
                 EnableReactionRoles = false,
                 EnableStarboard = false,
 
-                AssignableRoles = new List<ulong>(),
+                GuildRoles = new List<GuildRole>(),
                 StarboardIgnoredChannels = new List<ulong>(),
                 AutoBanUsers = new List<ulong>(),
                 CacheIgnoredChannels = new List<ulong>(),
@@ -511,7 +511,7 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void AddRole(ulong roleId, ulong guildId)
+        public static void AddRole(ulong roleId, ulong guildId, bool isTeamRole)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
@@ -521,9 +521,39 @@ namespace Yuki.Services.Database
                 {
                     GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
 
-                    if (!config.AssignableRoles.Contains(roleId))
+                    if(config.GuildRoles == null)
                     {
-                        config.AssignableRoles.Add(roleId);
+                        config.GuildRoles = new List<GuildRole>();
+                    }
+
+                    if (!config.GuildRoles.Any(role => role.Id == roleId))
+                    {
+                        config.GuildRoles.Add(new GuildRole() { Id = roleId, IsTeamRole = isTeamRole });
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+        
+        public static void SetTeamRole(ulong roleId, ulong guildId, bool isTeamRole)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.GuildRoles.Any(role => role.Id == roleId))
+                    {
+                        int index = config.GuildRoles.IndexOf(config.GuildRoles.FirstOrDefault(_role => _role.Id == roleId));
+
+                        GuildRole role = config.GuildRoles[index];
+                        role.IsTeamRole = true;
+
+                        config.GuildRoles[index] = role;
                     }
 
                     configs.Update(config);
@@ -885,6 +915,26 @@ namespace Yuki.Services.Database
         }
 
         public static void RemoveRole(ulong roleId, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+
+                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                {
+                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
+
+                    if (config.GuildRoles.Any(role => role.Id == roleId))
+                    {
+                        config.GuildRoles.Remove(config.GuildRoles.First(role => role.Id == roleId));
+                    }
+
+                    configs.Update(config);
+                }
+            }
+        }
+        
+        public static void DropRoleFromOld(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {

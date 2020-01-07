@@ -27,8 +27,9 @@ namespace Yuki.Commands.Modules.UtilityModule
                     .AddField(Language.GetString("roleinfo_hoisted"), Language.GetString($"_{role.IsHoisted.ToString().ToLower()}"), true)
                     .AddField(Language.GetString("roleinfo_mentionable"), Language.GetString($"_{role.IsMentionable.ToString().ToLower()}"), true)
                     .AddField(Language.GetString("roleinfo_managed"), Language.GetString($"_{role.IsManaged.ToString().ToLower()}"), true)
+                    .AddField(Language.GetString("roleinfo_count"), (await Context.Guild.GetUsersAsync()).Where(user => user.RoleIds.Contains(role.Id)).Count(), true)
                     .AddField(Language.GetString("roleinfo_permissions"), string.Join(", ", role.Permissions), true);
-
+                
                 await ReplyAsync(embed);
             }
         }

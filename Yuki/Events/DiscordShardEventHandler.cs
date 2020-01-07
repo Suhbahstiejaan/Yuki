@@ -3,25 +3,12 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Yuki.Core;
-using System.Collections.Generic;
-using Yuki.Data.Objects;
-using Nett;
 using Discord;
-using Yuki.Extensions;
-using System.Diagnostics;
 
 namespace Yuki.Events
 {
     public static class DiscordShardEventHandler
     {
-        private enum StatusType
-        {
-            Playing,
-            Listening,
-            Watching,
-            Count
-        }
-
         private static int connectedShards = 0;
 
         public static Task ShardReady(DiscordSocketClient client)
@@ -36,48 +23,12 @@ namespace Yuki.Events
 
             SetClientEvents(client);
 
-            System.Timers.Timer status = new System.Timers.Timer();
-            status.Interval = 1;
+            string message = System.IO.File.ReadAllLines(FileDirectories.StatusMessages)[0];
 
-            status.Elapsed += new System.Timers.ElapsedEventHandler((EventHandler)async delegate (object sender, EventArgs e)
-            {
-                Random random = new Random();
-
-                List<string> statuses = new List<string>();
-                ActivityType activity = default;
-
-                StatusType statusType = (StatusType)random.Next((int)StatusType.Count);
-
-                StatusMessages messages = Toml.ReadFile<StatusMessages>(FileDirectories.StatusMessages);
-
-                switch (statusType)
-                {
-                    case StatusType.Playing:
-                        statuses = messages.Playing;
-                        activity = ActivityType.Playing;
-                        break;
-                    case StatusType.Listening:
-                        statuses = messages.Playing;
-                        activity = ActivityType.Playing;
-                        break;
-                    case StatusType.Watching:
-                        statuses = messages.Watching;
-                        activity = ActivityType.Watching;
-                        break;
-                }
-
-                
-                string randomStatus = statuses[random.Next(statuses.Count)];
-
-                await client.SetGameAsync(name: randomStatus.Replace("%shardid%", client.ShardId.ToString())
-                                                            .Replace("%usercount%", client.Guilds.Select(guild => guild.MemberCount).Sum().ToString())
-                                                            .Replace("%guildcount%", client.Guilds.Count.ToString()),
-                                          streamUrl: null, type: activity);
-
-                status.Interval = TimeSpan.FromMinutes(random.Next(1, 5)).TotalMilliseconds;
-            });
-
-            status.Start();
+            client.SetGameAsync(name: message.Replace("{shard}", client.ShardId.ToString())
+                                             .Replace("{users}", client.Guilds.Select(guild => guild.MemberCount).Sum().ToString())
+                                             .Replace("{guildcount}", client.Guilds.Count.ToString()),
+                                             streamUrl: null, type: ActivityType.Playing);
 
             return Task.CompletedTask;
         }
