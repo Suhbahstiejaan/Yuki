@@ -13,7 +13,7 @@ namespace Yuki.Extensions
             => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-        public static bool IsImage(this string url)
+        public static bool IsMedia(this string url)
         {
             List<string> recognisedImageExtensions = new List<string>() { ".jpeg", ".jpg", ".png", ".gif" };
 

@@ -131,7 +131,14 @@ namespace Yuki.Events
             {
                 YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
 
-                await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, execCommand.Response, msg));
+                if (execCommand.Response.IsMedia())
+                {
+                    await message.Channel.SendMessageAsync("", false, new EmbedBuilder().WithImageUrl(execCommand.Response).WithColor((message.Author as IGuildUser).HighestRole().Color).Build());
+                }
+                else
+                {
+                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, execCommand.Response, msg));
+                }
             }
         }
 
@@ -219,7 +226,7 @@ namespace Yuki.Events
 
                             IAttachment[] _attachments = message.Attachments.ToArray();
 
-                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+                            imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsMedia())?.ProxyUrl;
 
                             for (int i = 0; i < _attachments.Length; i++)
                             {

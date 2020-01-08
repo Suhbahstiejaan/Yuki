@@ -24,7 +24,7 @@ namespace Yuki.Commands
         public Task<IUserMessage> ReplyAsync(Embed embed) => Context.ReplyAsync(embed);
         public Task<IUserMessage> ReplyAsync(EmbedBuilder embed) => Context.ReplyAsync(embed);
         public Task<IUserMessage> SendFileAsync(string file, string text) => Context.SendFileAsync(file, text, null);
-        public Task<IUserMessage> SendFileAsync(string file, EmbedBuilder embed) => Context.SendFileAsync(file, embed);
+        public Task<IUserMessage> SendFileAsync(string file, EmbedBuilder embedBuilder) => Context.SendFileAsync(file, embedBuilder);
         public Task<IUserMessage> SendFileAsync(string file, Embed embed) => Context.SendFileAsync(file, embed);
 
         public Task PagedReplyAsync(string title, IEnumerable<object> pages, int contentPerPage = 20) => Context.PagedReplyAsync(title, pages, contentPerPage);

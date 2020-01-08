@@ -75,7 +75,7 @@ namespace Yuki.Services
 
                     foreach (string str in message.Content.Split(' '))
                     {
-                        if (str.IsImage())
+                        if (str.IsMedia())
                         {
                             if (imageUrl == null)
                             {
@@ -88,7 +88,7 @@ namespace Yuki.Services
 
                     if (imageUrl == null)
                     {
-                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsImage())?.ProxyUrl;
+                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsMedia())?.ProxyUrl;
                     }
 
                     for (int i = 0; i < _attachments.Length; i++)
