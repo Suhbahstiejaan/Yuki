@@ -12,7 +12,7 @@ namespace Yuki
         internal static string ImageRoot { get; } = AssetRoot + "images/";
         internal static string LogRoot  { get; } = DataRoot + "log/";
         internal static string PollRoot { get; } = DataRoot + "polls/";
-        internal static string TempArchiveRoot { get; } = DataRoot + "tempChannelArchives/";
+        internal static string TempArchiveRoot { get; } = DataRoot + "TEMP_channelarchives/";
         internal static string DBRoot { get; } = DataRoot + "databases/";
 
         internal static string ConfigFile { get; } = DataRoot + "config.toml";
@@ -20,6 +20,7 @@ namespace Yuki
 
         internal static string SettingsDB { get; } = DBRoot + "settings.db";
         internal static string CacheDB { get; } = DBRoot + "cache.db";
+        internal static string Messages { get; } = DataRoot + "messages.json";
 
         public static void CheckCreateDirectories()
         {

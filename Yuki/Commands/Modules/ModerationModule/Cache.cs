@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Qmmands;
 using System.Threading.Tasks;
+using Yuki.Data;
 using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.ModerationModule
@@ -35,6 +36,8 @@ namespace Yuki.Commands.Modules.ModerationModule
                 else
                 {
                     GuildSettings.AddChannelCache(channelId, Context.Guild.Id);
+
+                    UserMessageCache.DeleteWithChannelId(channelId);
 
                     await ReplyAsync(Language.GetString("cache_channel_ignored").Replace("%channelname%", MentionUtils.MentionChannel(channelId)));
                 }

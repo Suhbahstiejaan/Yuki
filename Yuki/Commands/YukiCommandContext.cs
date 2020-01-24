@@ -126,27 +126,35 @@ namespace Yuki.Commands
         public Task<IUserMessage> SendFileAsync(string fileName, Embed embed) => Channel.SendFileAsync(fileName, null, false, embed, null, false);
         public Task<IUserMessage> SendFileAsync(string fileName, string text, Embed embed) => Channel.SendFileAsync(fileName, text, false, embed, null, false);
 
-        public Task PagedReplyAsync(string title, IEnumerable<object> pages, int contentPerPage)
+        public Task PagedReplyAsync(string title, IEnumerable<object> items, int contentPerPage)
         {
-            int totalPages = pages.Count() / contentPerPage;
-
-            Paginator pager = new LazyPaginatorBuilder()
-                .WithUsers(User as SocketUser)
-                .WithPageFactory(PageFactory)
-                .WithMaxPage(totalPages)
-                .WithFooter(PaginatorFooter.PageNumber | PaginatorFooter.Users)
-                .WithDefaultEmotes()
-                .Build();
-
-            Task<PageBuilder> PageFactory(int page)
+            if(items != null)
             {
-                return Task.FromResult(new PageBuilder()
-                    .WithDescription(string.Join("\n", (from d in pages.Skip(page * contentPerPage).Take(contentPerPage) select d.ToString()).ToArray()))
-                    .WithTitle($"{title} (page {page + 1}/{totalPages + 1})")
-                    .WithColor(Colors.Pink));
-            }
+                int totalPages = items.Count() / contentPerPage;
 
-            return Interactivity.SendPaginatorAsync(pager, Channel, TimeSpan.FromMinutes(2));
+                Paginator pager = new LazyPaginatorBuilder()
+                    .WithUsers(User as SocketUser)
+                    .WithPageFactory(PageFactory)
+                    .WithMaxPage(totalPages)
+                    .WithFooter(PaginatorFooter.PageNumber)
+                    .WithDefaultEmotes()
+                    .Build();
+
+                Task<PageBuilder> PageFactory(int page)
+                {
+                    return Task.FromResult(new PageBuilder()
+                        .WithDescription(string.Join("\n", (from d in items.Skip(page * contentPerPage).Take(contentPerPage) select d.ToString()).ToArray()))
+                        .WithTitle($"{title} (page {page + 1}/{totalPages + 1})")
+                        .WithColor(Colors.Pink));
+                }
+
+                return Interactivity.SendPaginatorAsync(pager, Channel, TimeSpan.FromMinutes(2));
+            }
+            else
+            {
+                Channel.SendMessageAsync("Items was null, something went wrong!");
+                return Task.CompletedTask;
+            }
         }
 
         public Task ReactAsync(string unicode) => Message.AddReactionAsync(new Emoji(unicode));

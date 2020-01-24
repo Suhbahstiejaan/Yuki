@@ -71,6 +71,8 @@ namespace Yuki.Events
             client.UserJoined += DiscordSocketEventHandler.UserJoined;
             client.UserLeft += DiscordSocketEventHandler.UserLeft;
             client.UserUnbanned += DiscordSocketEventHandler.UserUnbanned;
+
+            client.RoleDeleted += DiscordSocketEventHandler.RoleDeleted;
         }
     }
 }

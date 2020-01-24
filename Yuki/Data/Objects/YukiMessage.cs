@@ -1,11 +1,9 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 
-namespace Yuki.Data.Objects.Database
+namespace Yuki.Data.Objects
 {
     public struct YukiMessage
     {
-        [BsonId]
         public ulong Id { get; set; }
 
         public DateTime SendDate { get; set; }

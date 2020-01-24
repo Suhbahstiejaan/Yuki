@@ -1,16 +1,13 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Yuki.Core;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Events;
-using Yuki.Extensions;
 using Yuki.Services.Database;
 
 namespace Yuki.Services
@@ -22,9 +19,9 @@ namespace Yuki.Services
             IGuildChannel guildChannel = (message.Channel as IGuildChannel);
 
             GuildConfiguration guild = GuildSettings.GetGuild(guildChannel.GuildId);
-
+            
             Language lang = Localization.GetLanguage(guild.LangCode);
-
+            
             if (guild.EnableFilter)
             {
                 List<string> filter = guild.WordFilter;

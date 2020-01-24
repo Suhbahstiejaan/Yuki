@@ -65,6 +65,8 @@ namespace Yuki
             Logger.Write(LogLevel.Debug, $"Found {Discord.CommandService.GetAllCommands().Count} command(s)");
             Localization.CheckCommands(Discord.CommandService);
 
+            UserMessageCache.LoadFromFile();
+
             await Task.Delay(-1);
         }
 
@@ -107,6 +109,7 @@ namespace Yuki
             ShuttingDown = true;
             Logger.Write(LogLevel.Status, "Stopping client...");
 
+            UserMessageCache.SaveToFile();
             Discord.StopAsync().GetAwaiter().GetResult();
 
             Thread.Sleep(500);

@@ -1,6 +1,4 @@
-﻿using Discord;
-using Qmmands;
-using System;
+﻿using Qmmands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,24 +16,25 @@ namespace Yuki.Commands.Modules.UtilityModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task GetRolesAsync()
         {
-            try
+            GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);
+
+            if (config.EnableRoles)
             {
-                GuildConfiguration config = GuildSettings.GetGuild(Context.Guild.Id);
+                List<ulong> guildRoles = Context.Guild.Roles.OrderByDescending(role => role.Position).Select(role => role.Id).ToList();
 
-                if (config.EnableRoles)
+                foreach(GuildRole role in config.GuildRoles)
                 {
-                    List<ulong> guildRoles = Context.Guild.Roles.OrderByDescending(role => role.Position).Select(role => role.Id).ToList();
+                    if(!guildRoles.Contains(role.Id))
+                    {
+                        GuildSettings.RemoveRole(role.Id, Context.Guild.Id);
+                    }
+                }
 
-                    await PagedReplyAsync("Roles", config.GuildRoles.OrderBy(role => guildRoles.IndexOf(role.Id)).Select(role => Context.Guild.GetRole(role.Id).Name), 20);
-                }
-                else
-                {
-                    await ReplyAsync(Language.GetString("roles_disabled"));
-                }
+                await PagedReplyAsync("Roles", config.GuildRoles.OrderBy(role => guildRoles.IndexOf(role.Id)).Select(role => Context.Guild.GetRole(role.Id).Name), 20);
             }
-            catch(Exception e)
+            else
             {
-                await ReplyAsync(e);
+                await ReplyAsync(Language.GetString("roles_disabled"));
             }
         }
     }

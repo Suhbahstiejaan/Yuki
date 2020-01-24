@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Yuki.Commands;
 using Yuki.Commands.TypeParsers;
 using Yuki.Data;
-using Yuki.Data.Objects;
 using Yuki.Events;
 
 namespace Yuki
@@ -36,7 +35,7 @@ namespace Yuki
 
             Client = new DiscordShardedClient(new DiscordSocketConfig()
             {
-                AlwaysDownloadUsers = true,
+                //AlwaysDownloadUsers = true,
                 MessageCacheSize = ShardCount * 1000,
                 TotalShards = ShardCount,
             });

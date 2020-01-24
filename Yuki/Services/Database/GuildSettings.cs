@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yuki.Data.Objects.Database;
@@ -61,29 +62,23 @@ namespace Yuki.Services.Database
 
         public static GuildConfiguration GetGuild(ulong id)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
-                if (!configs.FindAll().Any(conf => conf.Id == id))
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == id);
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(id));
                     return GetGuild(id);
                 }
                 else
                 {
-                    GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == id);
-
                     if(config.StarboardIgnoredChannels == null)
                     {
                         config.StarboardIgnoredChannels = new List<ulong>();
 
                         configs.Update(config);
-                    }
-
-                    if(config.StarRequirement < 1)
-                    {
-                        config.StarRequirement = 10;
                     }
 
                     return config;
@@ -93,7 +88,7 @@ namespace Yuki.Services.Database
 
         public static List<GuildConfiguration> GetGuilds()
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
@@ -103,11 +98,11 @@ namespace Yuki.Services.Database
 
         public static void AddOrUpdate(GuildConfiguration config)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
-                if (!configs.FindAll().Any(conf => conf.Id == config.Id))
+                if (configs.FindById(config.Id).Equals(default(GuildConfiguration)))
                 {
                     configs.Insert(config);
                 }
@@ -120,11 +115,11 @@ namespace Yuki.Services.Database
 
         public static void Remove(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!configs.FindAll().FirstOrDefault(conf => conf.Id == guildId).Equals(default(GuildConfiguration)))
                 {
                     configs.Delete(guildId);
                 }
@@ -134,11 +129,13 @@ namespace Yuki.Services.Database
         #region Sets
         public static void SetWelcome(string message, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
-                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
+                
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(guildId));
 
@@ -146,7 +143,6 @@ namespace Yuki.Services.Database
                 }
 
 
-                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                 config.WelcomeMessage = message;
 
                 configs.Update(config);
@@ -155,11 +151,13 @@ namespace Yuki.Services.Database
 
         public static void SetGoodbye(string message, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
-                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
+                
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(guildId));
 
@@ -167,7 +165,6 @@ namespace Yuki.Services.Database
                 }
 
 
-                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                 config.GoodbyeMessage = message;
 
                 configs.Update(config);
@@ -176,11 +173,12 @@ namespace Yuki.Services.Database
 
         public static void SetMuteRole(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(guildId));
 
@@ -188,7 +186,6 @@ namespace Yuki.Services.Database
                 }
 
 
-                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                 config.MuteRole = roleId;
 
                 configs.Update(config);
@@ -197,11 +194,12 @@ namespace Yuki.Services.Database
 
         public static void SetLanguage(string langCode, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(guildId));
 
@@ -209,7 +207,6 @@ namespace Yuki.Services.Database
                 }
 
 
-                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                 config.LangCode = langCode;
 
                 configs.Update(config);
@@ -218,11 +215,12 @@ namespace Yuki.Services.Database
 
         public static void SetWelcomeChannel(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (!configs.FindAll().Any(conf => conf.Id == guildId))
+                if (config.Equals(default(GuildConfiguration)))
                 {
                     AddOrUpdate(DefaultConfig(guildId));
 
@@ -230,7 +228,6 @@ namespace Yuki.Services.Database
                 }
 
 
-                GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                 config.WelcomeChannel = channelId;
 
                 configs.Update(config);
@@ -241,14 +238,13 @@ namespace Yuki.Services.Database
         #region Toggles
         public static void ToggleWelcome(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableWelcome = state;
 
                     configs.Update(config);
@@ -258,13 +254,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleGoodbye(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableGoodbye = state;
 
                     configs.Update(config);
@@ -274,13 +270,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleNsfw(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableNsfw = state;
 
                     configs.Update(config);
@@ -290,13 +286,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleLogging(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableLogging = state;
 
                     configs.Update(config);
@@ -306,13 +302,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleCache(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableCache = state;
 
                     configs.Update(config);
@@ -322,13 +318,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleMute(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableMute = !config.EnableMute;
 
                     configs.Update(config);
@@ -338,13 +334,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleWarnings(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableWarnings = state;
 
                     configs.Update(config);
@@ -354,13 +350,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleRoles(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableRoles = state;
 
                     configs.Update(config);
@@ -370,13 +366,13 @@ namespace Yuki.Services.Database
 
         public static void TogglePrefix(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnablePrefix = state;
 
                     configs.Update(config);
@@ -386,13 +382,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleFilter(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableFilter = state;
 
                     configs.Update(config);
@@ -402,13 +398,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleReactionRoles(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableReactionRoles = state;
 
                     configs.Update(config);
@@ -418,13 +414,13 @@ namespace Yuki.Services.Database
 
         public static void ToggleStarboard(ulong guildId, bool state)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
                     config.EnableStarboard = state;
 
                     configs.Update(config);
@@ -436,14 +432,13 @@ namespace Yuki.Services.Database
         #region Adds
         public static void AddChannelNsfw(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if(!config.NsfwChannels.Contains(channelId))
                     {
                         config.NsfwChannels.Add(channelId);
@@ -456,14 +451,13 @@ namespace Yuki.Services.Database
 
         public static void AddChannelLog(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     config.LogChannel = channelId;
 
                     configs.Update(config);
@@ -473,14 +467,13 @@ namespace Yuki.Services.Database
 
         public static void AddChannelCache(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if(!config.CacheIgnoredChannels.Contains(channelId))
                     {
                         config.CacheIgnoredChannels.Add(channelId);
@@ -493,14 +486,13 @@ namespace Yuki.Services.Database
 
         public static void AddWarningAction(GuildWarningAction action, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.WarningActions.Any(a => a.Warning == action.Warning))
                     {
                         config.WarningActions.Add(action);
@@ -513,14 +505,13 @@ namespace Yuki.Services.Database
 
         public static void AddRole(ulong roleId, ulong guildId, bool isTeamRole)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if(config.GuildRoles == null)
                     {
                         config.GuildRoles = new List<GuildRole>();
@@ -538,14 +529,13 @@ namespace Yuki.Services.Database
         
         public static void SetTeamRole(ulong roleId, ulong guildId, bool isTeamRole)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.GuildRoles.Any(role => role.Id == roleId))
                     {
                         int index = config.GuildRoles.IndexOf(config.GuildRoles.FirstOrDefault(_role => _role.Id == roleId));
@@ -563,14 +553,13 @@ namespace Yuki.Services.Database
 
         public static void AddPrefix(string prefix, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     config.Prefix = prefix;
 
                     configs.Update(config);
@@ -580,14 +569,13 @@ namespace Yuki.Services.Database
 
         public static void AddWarning(ulong userId, string reason, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
 
                     int index = config.WarnedUsers.IndexOf(user);
@@ -616,14 +604,13 @@ namespace Yuki.Services.Database
 
         public static void AddRoleModerator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.ModeratorRoles.Contains(roleId))
                     {
                         config.ModeratorRoles.Add(roleId);
@@ -636,14 +623,13 @@ namespace Yuki.Services.Database
 
         public static void AddRoleAdministrator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.AdministratorRoles.Contains(roleId))
                     {
                         config.AdministratorRoles.Add(roleId);
@@ -656,14 +642,13 @@ namespace Yuki.Services.Database
 
         public static void AddMute(GuildMutedUser user, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.MutedUsers.Any(u => u.Id == user.Id))
                     {
                         config.MutedUsers.Add(user);
@@ -676,14 +661,13 @@ namespace Yuki.Services.Database
 
         public static void BlacklistTag(string tag, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.NsfwBlacklist.Contains(tag))
                     {
                         config.NsfwBlacklist.Add(tag);
@@ -696,14 +680,13 @@ namespace Yuki.Services.Database
 
         public static void AddCommand(GuildCommand command, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (!config.Commands.Any(c => c.Name.ToLower() == command.Name.ToLower()))
                     {
                         config.Commands.Add(command);
@@ -716,14 +699,13 @@ namespace Yuki.Services.Database
 
         public static void AddFilter(string filter, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.WordFilter == null)
                     {
                         config.WordFilter = new List<string>();
@@ -741,14 +723,13 @@ namespace Yuki.Services.Database
 
         public static void AddReactionMessage(ReactionMessage message, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.ReactableMessages == null)
                     {
                         config.ReactableMessages = new List<ReactionMessage>();
@@ -770,14 +751,13 @@ namespace Yuki.Services.Database
 
         public static void SetStarRequirement(int numStars, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     config.StarRequirement = numStars;
 
                     configs.Update(config);
@@ -787,14 +767,13 @@ namespace Yuki.Services.Database
 
         public static void SetStarboardChannel(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     config.StarboardChannel = channelId;
 
                     configs.Update(config);
@@ -806,14 +785,13 @@ namespace Yuki.Services.Database
         {
             bool enabled = false;
 
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     enabled = !config.StarboardIgnoredChannels.Contains(channelId);
 
                     if (!enabled)
@@ -836,14 +814,13 @@ namespace Yuki.Services.Database
         #region Removes
         public static void RemoveChannelNsfw(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.NsfwChannels.Contains(channelId))
                     {
                         config.NsfwChannels.Remove(channelId);
@@ -856,14 +833,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveChannelCache(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.CacheIgnoredChannels.Contains(channelId))
                     {
                         config.CacheIgnoredChannels.Remove(channelId);
@@ -876,14 +852,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveChannelLog(ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.LogChannel != 0)
                     {
                         config.LogChannel = 0;
@@ -896,14 +871,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveWarningAction(int num, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.WarningActions.Any(a => a.Warning == num))
                     {
                         config.WarningActions.Remove(config.WarningActions.FirstOrDefault(a => a.Warning == num));
@@ -916,14 +890,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveRole(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.GuildRoles.Any(role => role.Id == roleId))
                     {
                         config.GuildRoles.Remove(config.GuildRoles.First(role => role.Id == roleId));
@@ -936,14 +909,13 @@ namespace Yuki.Services.Database
         
         public static void DropRoleFromOld(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.AssignableRoles.Contains(roleId))
                     {
                         config.AssignableRoles.Remove(roleId);
@@ -956,14 +928,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveWarning(ulong userId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if(!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
 
                     int index = config.WarnedUsers.IndexOf(user);
@@ -986,14 +957,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveRoleModerator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.ModeratorRoles.Contains(roleId))
                     {
                         config.ModeratorRoles.Remove(roleId);
@@ -1006,14 +976,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveRoleAdministrator(ulong roleId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.AdministratorRoles.Contains(roleId))
                     {
                         config.AdministratorRoles.Remove(roleId);
@@ -1026,14 +995,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveMute(GuildMutedUser user, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.MutedUsers.Any(u => u.Id == user.Id))
                     {
                         config.MutedUsers.Remove(user);
@@ -1049,14 +1017,13 @@ namespace Yuki.Services.Database
 
         public static GuildWarnedUser GetWarnedUser(ulong userId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
 
                     int index = config.WarnedUsers.IndexOf(user);
@@ -1073,14 +1040,13 @@ namespace Yuki.Services.Database
 
         public static bool IsChannelExplicit(ulong channelId, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     return config.NsfwChannels.Contains(channelId) && config.EnableNsfw;
                 }
 
@@ -1090,14 +1056,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveBlacklistTag(string tag, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.NsfwBlacklist.Contains(tag))
                     {
                         config.NsfwBlacklist.Remove(tag);
@@ -1110,14 +1075,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveCommand(string command, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if (config.Commands.Any(c => c.Name.ToLower() == command.ToLower()))
                     {
                         config.Commands.Remove(config.Commands.FirstOrDefault(c => c.Name.ToLower() == command.ToLower()));
@@ -1130,14 +1094,13 @@ namespace Yuki.Services.Database
 
         public static void RemoveFilter(int filterIndex, ulong guildId)
         {
-            using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
                 LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
-                if (configs.FindAll().Any(conf => conf.Id == guildId))
+                if (!config.Equals(default(GuildConfiguration)))
                 {
-                    GuildConfiguration config = configs.Find(conf => conf.Id == guildId).FirstOrDefault();
-
                     if(filterIndex >= 0 && filterIndex < config.WordFilter.Count)
                     {
                         config.WordFilter.RemoveAt(filterIndex);

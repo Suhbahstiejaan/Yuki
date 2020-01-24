@@ -25,7 +25,7 @@ namespace Yuki.Data.Objects
             string scrambled = "";
 
             ScramblrData[] data;
-            YukiMessage[] user1_data = Messages.GetFrom(user1.Id).ToArray();
+            YukiMessage[] user1_data = UserMessageCache.GetMessagesFromUser(user1.Id).ToArray();
 
             Random yRandom = new Random();
 
@@ -37,7 +37,7 @@ namespace Yuki.Data.Objects
 
             if (user2 != null)
             {
-                data = GetLikeMessages(user1_data, Messages.GetFrom(user2.Id).ToArray());
+                data = GetLikeMessages(user1_data, UserMessageCache.GetMessagesFromUser(user2.Id).ToArray());
             }
             else
             {

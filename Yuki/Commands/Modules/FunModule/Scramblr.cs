@@ -2,6 +2,7 @@
 using Qmmands;
 using System;
 using System.Threading.Tasks;
+using Yuki.Data;
 using Yuki.Data.Objects;
 using Yuki.Data.Objects.Database;
 using Yuki.Services.Database;
@@ -71,10 +72,7 @@ namespace Yuki.Commands.Modules.FunModule
             {
                 UserSettings.SetCanGetMessages(Context.User.Id, true);
 
-                foreach (YukiMessage message in Messages.GetFrom(Context.User.Id))
-                {
-                    Messages.Remove(message.Id);
-                }
+                UserMessageCache.DeleteFromUser(Context.User.Id);
 
                 await ReplyAsync(Language.GetString("scramblr_disabled"));
             }

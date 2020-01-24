@@ -41,7 +41,7 @@ namespace Yuki.Services
 
                 foreach (IMessage imessage in (await AsyncEnumerable.ToListAsync((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
                 {
-                    if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id && imessage.Embeds != null && imessage.Embeds.Count > 0)
+                    if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id /*&& (imessage.Timestamp.Date - DateTime.UtcNow).TotalDays <= 14*/ && imessage.Embeds != null && imessage.Embeds.Count > 0)
                     {
                         IEmbed messageEmbed = imessage.Embeds.ToArray()[0];
 
@@ -58,9 +58,16 @@ namespace Yuki.Services
                     }
                 }
 
+                string content = message.Content;
+
+                if(string.IsNullOrWhiteSpace(content))
+                {
+                    content = lang.GetString("starboard_jump_to");
+                }
+
                 EmbedBuilder embed = new EmbedBuilder()
                         .WithAuthor(lang.GetString("starboard_title"))
-                        .WithDescription($"[{message.Content ?? lang.GetString("starboard_jump_to")}]({message.GetJumpUrl()})")
+                        .WithDescription($"[{content}]({message.GetJumpUrl()})")
                         .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
                         .AddField(lang.GetString("starboard_field_channel"), ((ITextChannel)message.Channel).Mention, true)
                         .WithFooter($"⭐ {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
@@ -115,6 +122,12 @@ namespace Yuki.Services
                 if (!starUpdated && starCount >= config.StarRequirement)
                 {
                     await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
+
+                    // server-specific for testing, REMOVE
+                    if(guild.Id == 181543198081024000)
+                    {
+                        await (await guild.GetTextChannelAsync(500390658570453002)).SendMessageAsync($"{reaction.User.Value.Username}#{reaction.User.Value.Discriminator} (id {reaction.User.Value.Id}) starred message with id {message.Id}\nContent: {message.Content}");
+                    }
                 }
 
                 if (isDeleteCheck && starCount < 1 && msg != default)
