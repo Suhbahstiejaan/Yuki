@@ -41,7 +41,7 @@ namespace Yuki.Services
 
                 foreach (IMessage imessage in (await AsyncEnumerable.ToListAsync((await guild.GetTextChannelAsync(config.StarboardChannel)).GetMessagesAsync(100))).SelectMany(mlist => mlist))
                 {
-                    if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id /*&& (imessage.Timestamp.Date - DateTime.UtcNow).TotalDays <= 14*/ && imessage.Embeds != null && imessage.Embeds.Count > 0)
+                    if (imessage.Author.Id == YukiBot.Discord.Client.CurrentUser.Id && (imessage.Timestamp.Date - DateTime.UtcNow).TotalDays <= 14   && imessage.Embeds != null && imessage.Embeds.Count > 0)
                     {
                         IEmbed messageEmbed = imessage.Embeds.ToArray()[0];
 

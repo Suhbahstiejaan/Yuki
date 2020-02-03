@@ -55,12 +55,19 @@ namespace Yuki.Data.Objects
             //we want to make sure that if the user didnt mention anyone, the message the bot generates isnt the same as a message the user has sent.   
             for (int i = 0; i < user1_data.Length; i++)
             {
-                if (user1_data[i].Content == scrambled)
+                if (user1_data[i].Content == scrambled || user1_data[i].Content.Length > 2000)
                 {
                     if (loopCount < 25)
                         return GetMessage(user1, null, loopCount++);
                     else
+                    {
+                        if(user1_data[i].Content.Length > 2000)
+                        {
+                            user1_data[i].Content = user1_data[i].Content.Substring(0, 2000);
+                        }
+
                         break;
+                    }
                 }
             }
 
@@ -78,7 +85,7 @@ namespace Yuki.Data.Objects
         {
             Random yRandom = new Random();
 
-            //split the messages each into 2 separete strings where the like word is
+            //split the messages each into 2 separate strings where the like word is
             string[] sanitized_dat1 = Regex.Split(data.Message1.Content, $@"\b{Regex.Escape(data.likeWord)}\b");
             string[] sanitized_dat2 = Regex.Split(data.Message2.Content, $@"\b{Regex.Escape(data.likeWord)}\b");
 

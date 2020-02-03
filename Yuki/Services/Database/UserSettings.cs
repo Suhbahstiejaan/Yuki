@@ -89,13 +89,10 @@ namespace Yuki.Services.Database
             {
                 LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
-                if (users.FindAll().Any(usr => usr.Id == userId))
-                {
-                    return users.FindAll().FirstOrDefault(usr => usr.Id == userId).CanGetMsgs;
-                }
+                YukiUser user = users.FindAll().FirstOrDefault(usr => usr.Id == userId);
+                
+                return !user.Equals(default(YukiUser)) ? user.CanGetMsgs : false;
             }
-
-            return false;
         }
 
         public static void AddReminder(YukiReminder reminder)

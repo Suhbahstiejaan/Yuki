@@ -6,26 +6,37 @@ using System.IO;
 using System.Linq;
 using Yuki.Data.Objects;
 using Yuki.Events;
+using Yuki.Extensions;
 using Yuki.Services.Database;
 
 namespace Yuki.Data
 {
     public static class UserMessageCache
     {
-        public static readonly int MaxMessages = 100;
+        public static readonly int MaxMessages = 1000;
 
         private static List<YukiMessage> Messages = new List<YukiMessage>();
 
         public static void AddOrUpdate(SocketMessage message)
         {
-            if(message.Channel is IDMChannel)
+            string messageContent = (message as SocketUserMessage)
+                                    .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix);
+
+            if(message.Channel is IDMChannel || message.Author.IsBot)
             {
                 return;
             }
 
-            if(message.Author.IsBot)
+            if(message.Content.HasUrl(out int[] indexes))
             {
-                return;
+                List<string> split = message.Content.Split(" ").ToList();
+
+                for(int i = 0; i < indexes.Length; i++)
+                {
+                    split.RemoveAt(i);
+                }
+
+                messageContent = string.Join(" ", split);
             }
 
             IGuild guild = (message.Channel as IGuildChannel).Guild;
@@ -51,11 +62,10 @@ namespace Yuki.Data
                     AuthorId = message.Author.Id,
                     ChannelId = message.Channel.Id,
                     
-                    Content = (message as SocketUserMessage)
-                            .Resolve(TagHandling.FullName, TagHandling.NameNoPrefix, TagHandling.Name, TagHandling.Name, TagHandling.FullNameNoPrefix)
+                    Content = messageContent
                 };
 
-                YukiMessage foundMessage = Messages.FirstOrDefault(msg => msg.Id == message.Id || msg.Content.ToLower() == message.Content.ToLower());
+                YukiMessage foundMessage = Messages.FirstOrDefault(msg => msg.Id == message.Id || msg.Content.ToLower() == messageContent.ToLower());
                 int index = Messages.IndexOf(foundMessage);
 
                 if(!foundMessage.Equals(default(YukiMessage)))

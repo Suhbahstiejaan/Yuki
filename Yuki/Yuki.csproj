@@ -8,16 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.0.0-beta1" />
-    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.1" />
+    <PackageReference Include="ByteSize" Version="2.0.0" />
+    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.3" />
     <PackageReference Include="Discord.Net.Core" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.Rest" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.Webhook" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="Discord.Net.WebSocket" Version="2.2.0-dev-20191025.3" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="MarkovSharp" Version="4.0.32" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
     <PackageReference Include="Nett" Version="0.13.0" />
     <PackageReference Include="Qmmands" Version="3.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

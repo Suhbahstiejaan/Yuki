@@ -37,7 +37,7 @@ namespace Yuki
             {
                 //AlwaysDownloadUsers = true,
                 MessageCacheSize = ShardCount * 1000,
-                TotalShards = ShardCount,
+                TotalShards = ShardCount
             });
 
             await Client.LoginAsync(TokenType.Bot, token);

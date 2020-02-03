@@ -42,102 +42,94 @@ namespace Yuki.Events
 
                 if (config.EnablePrefix && config.Prefix != null)
                 {
-                    return CommandUtilities.HasPrefix(message.Content, config.Prefix, out output);
+                    return CommandUtilities.HasPrefix(message.Content.ToLower(), config.Prefix.ToLower(), out output);
                 }
             }
 
-            return CommandUtilities.HasAnyPrefix(message.Content, Config.GetConfig().prefix.AsReadOnly(), out string prefix, out output);
+            return CommandUtilities.HasAnyPrefix(message.Content.ToLower(), Config.GetConfig().prefix.Select(p => p.ToLower()), out string prefix, out output);
         }
-
 
 
         public static async Task MessageReceived(SocketMessage socketMessage)
         {
-            try
+            if (!(socketMessage is SocketUserMessage message))
+                return;
+            if (message.Source != MessageSource.User)
+                return;
+
+            DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
+                                            YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
+                                            YukiBot.Discord.Client.GetShard(0);
+
+            bool hasPrefix = HasPrefix(message, out string trimmedContent);
+
+
+            if (!(message.Channel is IDMChannel))
             {
-                if (!(socketMessage is SocketUserMessage message))
-                    return;
-                if (message.Source != MessageSource.User)
-                    return;
+                await WordFilter.CheckFilter(message);
+            }
 
-                DiscordSocketClient shard = (message.Channel is IGuildChannel) ?
-                                                YukiBot.Discord.Client.GetShardFor(((IGuildChannel)message.Channel).Guild) :
-                                                YukiBot.Discord.Client.GetShard(0);
+            if (!hasPrefix)
+            {
+                UserMessageCache.AddOrUpdate(socketMessage);
 
-                bool hasPrefix = HasPrefix(message, out string trimmedContent);
+                return;
+            }
 
+            IResult result = YukiBot.Discord.CommandService
+                                .ExecuteAsync(trimmedContent, new YukiCommandContext(
+                                        YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services)).Result;
 
-                if (!(message.Channel is IDMChannel))
+            if (result is FailedResult failedResult)
+            {
+                if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
                 {
-                    await WordFilter.CheckFilter(message);
-                }
-
-                if (!hasPrefix)
-                {
-                    UserMessageCache.AddOrUpdate(socketMessage);
-
-                    return;
-                }
-
-                IResult result = YukiBot.Discord.CommandService
-                                    .ExecuteAsync(trimmedContent, new YukiCommandContext(
-                                            YukiBot.Discord.Client, socketMessage as IUserMessage, YukiBot.Discord.Services)).Result;
-
-                if (result is FailedResult failedResult)
-                {
-                    if (!(failedResult is CommandNotFoundResult) && failedResult is ChecksFailedResult checksFailed)
+                    if (checksFailed.FailedChecks.Count == 1)
                     {
-                        if (checksFailed.FailedChecks.Count == 1)
-                        {
-                            await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Result.Reason);
-                        }
-                        else
-                        {
-                            await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
-                                    $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Result.Reason))}");
-                        }
-                    }
-                }
-
-                if (UserSettings.IsPatron(message.Author.Id))
-                {
-                    PatronCommand cmd = Patreon.GetCommand(message.Author.Id, trimmedContent.Split(' ')[0].ToLower());
-
-                    if (!cmd.Equals(default))
-                    {
-                        YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
-
-                        await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, cmd.Response, msg));
-
-                        return;
-                    }
-                }
-
-                if (message.Channel is IDMChannel)
-                {
-                    return;
-                }
-
-                GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
-                                                        .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.Split(' ')[0].ToLower());
-
-                if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
-                {
-                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
-
-                    if (execCommand.Response.IsMedia())
-                    {
-                        await message.Channel.SendMessageAsync("", false, new EmbedBuilder().WithImageUrl(execCommand.Response).WithColor((message.Author as IGuildUser).HighestRole().Color).Build());
+                        await message.Channel.SendMessageAsync(checksFailed.FailedChecks[0].Result.Reason);
                     }
                     else
                     {
-                        await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, execCommand.Response, msg));
+                        await message.Channel.SendMessageAsync($"The following checks failed:\n\n" +
+                                $"{string.Join("\n", checksFailed.FailedChecks.Select(check => check.Result.Reason))}");
                     }
                 }
             }
-            catch(Exception e)
+
+            if (UserSettings.IsPatron(message.Author.Id))
             {
-                Console.WriteLine(e);
+                PatronCommand cmd = Patreon.GetCommand(message.Author.Id, trimmedContent.Split(' ')[0].ToLower());
+
+                if (!cmd.Equals(default))
+                {
+                    YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, cmd.Response, msg));
+
+                    return;
+                }
+            }
+
+            if (message.Channel is IDMChannel)
+            {
+                return;
+            }
+
+            GuildCommand execCommand = GuildSettings.GetGuild((message.Channel as IGuildChannel).GuildId).Commands
+                                                    .FirstOrDefault(cmd => cmd.Name.ToLower() == trimmedContent.Split(' ')[0].ToLower());
+
+            if (!execCommand.Equals(null) && !execCommand.Equals(default) && !execCommand.Equals(null) && !string.IsNullOrEmpty(execCommand.Response))
+            {
+                YukiContextMessage msg = new YukiContextMessage(message.Author, (message.Author as IGuildUser).Guild);
+
+                if (execCommand.Response.IsMedia())
+                {
+                    await message.Channel.SendMessageAsync("", false, new EmbedBuilder().WithImageUrl(execCommand.Response).WithColor((message.Author as IGuildUser).HighestRole().Color).Build());
+                }
+                else
+                {
+                    await message.Channel.SendMessageAsync(StringReplacements.GetReplacement(trimmedContent, execCommand.Response, msg));
+                }
             }
         }
 

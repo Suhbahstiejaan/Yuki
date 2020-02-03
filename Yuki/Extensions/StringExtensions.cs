@@ -4,11 +4,36 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace Yuki.Extensions
 {
     public static class StringExtensions
     {
+        public static bool HasUrl(this string content, out int[] indexes)
+        {
+            string[] split = content.Split(" ");
+
+            indexes = new int[split.Length];
+
+            for(int i = 0; i < indexes.Length; i++)
+            {
+                indexes[i] = -1;
+            }
+
+            for(int i = 0; i < split.Length; i++)
+            {
+                if(split[i].IsUrl())
+                {
+                    indexes[i] = i;
+                }
+            }
+
+            indexes = indexes.Where(i => i > -1).ToArray();
+
+            return indexes.Length > 0;
+        }
+
         public static bool IsUrl(this string url)
             => Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
