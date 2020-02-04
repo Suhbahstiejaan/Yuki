@@ -77,6 +77,12 @@ namespace Yuki.Services.Database
                 }
                 else
                 {
+                    if(config.NegaStarIgnoredChannels == null)
+                    {
+                        config.NegaStarIgnoredChannels = new List<ulong>();
+                        configs.Update(config);
+                    }
+
                     return config;
                 }
             }

@@ -28,8 +28,10 @@ namespace Yuki.Services
             IMessage msg = default;
 
             if (!config.Equals(null) && config.EnableStarboard && !(reaction.User.Value.IsBot || message.Author.Id == reaction.UserId) &&
-                config.StarboardIgnoredChannels != null && !config.StarboardIgnoredChannels.Contains(message.Channel.Id))
+                config.StarboardIgnoredChannels != null && !config.StarboardIgnoredChannels.Contains(message.Channel.Id) &&
+                DateTime.Now.TimeOfDay.TotalDays - message.Timestamp.TimeOfDay.TotalDays < 7) // make sure the message wasn't sent more than a week ago
             {
+
                 int starCount = message.Reactions.Keys.Select(r => r.Name == Emote) != null ? message.Reactions.FirstOrDefault(r => r.Key.Name == Emote).Value.ReactionCount : 0;
 
                 bool starUpdated = false;

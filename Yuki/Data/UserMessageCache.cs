@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Yuki.Core;
 using Yuki.Data.Objects;
 using Yuki.Events;
 using Yuki.Extensions;
@@ -128,6 +129,7 @@ namespace Yuki.Data
         
         public static void Delete(YukiMessage msg)
         {
+            Logger.Write(LogLevel.Debug, msg.Equals(default(YukiMessage)));
             if(Messages.Contains(msg))
             {
                 Messages.Remove(msg);
