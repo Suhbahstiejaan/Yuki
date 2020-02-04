@@ -1,4 +1,5 @@
 ﻿using System;
+using Yuki.Core;
 
 namespace Yuki.Data.Objects
 {
@@ -19,6 +20,7 @@ namespace Yuki.Data.Objects
             catch (Exception)
             {
                 name = stringName;
+                //Logger.Write(LogLevel.Error, $"{stringName} does not have a translation for language w/code {Code}!");
             }
 
             if (string.IsNullOrWhiteSpace(name))
@@ -109,9 +111,6 @@ namespace Yuki.Data.Objects
         public string command_createpoll_desc { get; set; }
         public string command_createpoll_usage { get; set; }
 
-        public string command_rroulette_desc { get; set; }
-        public string command_rroulette_usage { get; set; }
-
         public string command_config_desc { get; set; }
         public string command_config_usage { get; set; }
 
@@ -157,9 +156,6 @@ namespace Yuki.Data.Objects
         public string command_roleinfo_desc { get; set; }
         public string command_roleinfo_usage { get; set; }
 
-        public string command_modules_desc { get; set; }
-        public string command_modules_usage { get; set; }
-
         public string command_help_desc { get; set; }
         public string command_help_usage { get; set; }
 
@@ -192,9 +188,6 @@ namespace Yuki.Data.Objects
 
         public string command_remindme_desc { get; set; }
         public string command_remindme_usage { get; set; }
-
-        public string command_commands_desc { get; set; }
-        public string command_commands_usage { get; set; }
 
         public string command_commandlist_desc { get; set; }
         public string command_commandlist_usage { get; set; }
@@ -255,7 +248,6 @@ namespace Yuki.Data.Objects
 
         public string command_scramblr_desc { get; set; }
         public string command_scramblr_usage { get; set; }
-
 
         public string command_setlang_desc { get; set; }
         public string command_setlang_usage { get; set; }
@@ -449,10 +441,7 @@ namespace Yuki.Data.Objects
         public string rammoe_stare_alt { get; set; }
         public string rammoe_tickle { get; set; }
         public string rammoe_tickle_alt { get; set; }
-        public string rammoe_triggered { get; set; }
-        public string rammoe_triggered_alt { get; set; }
         public string rammoe_nsfw_gtn { get; set; }
-        public string rammoe_potato { get; set; }
 
         public string poll_not_found { get; set; }
         public string poll_not_in_server { get; set; }
@@ -535,7 +524,6 @@ namespace Yuki.Data.Objects
         public string roulette_trigger_pulled { get; set; }
         public string roulette_join_success { get; set; }
         public string roulette_join_fail { get; set; }
-        public string roulette_game_quit { get; set; }
         public string roulette_player_kicked { get; set; }
 
         public string coin_heads { get; set; }
@@ -725,5 +713,10 @@ namespace Yuki.Data.Objects
         public string archiving { get; set; }
         public string edited { get; set; }
         public string archiving_done { get; set; }
+
+        public string negastar_enabled_in_channel { get; set; }
+        public string negastar_disabled_in_channel { get; set; }
+        public string negastar_channel_ignored { get; set; }
+        public string negastar_requirement_set { get; set; }
     }
 }

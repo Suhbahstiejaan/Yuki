@@ -11,7 +11,7 @@ namespace Yuki.Services
     {
         public static async void Manage(IUserMessage message, ITextChannel channel, SocketReaction reaction, bool isUnreact)
         {
-            if (channel is IDMChannel || !reaction.User.IsSpecified)
+            if(!reaction.User.IsSpecified)
             {
                 return;
             }

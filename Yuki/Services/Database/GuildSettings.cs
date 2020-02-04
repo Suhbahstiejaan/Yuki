@@ -29,6 +29,7 @@ namespace Yuki.Services.Database
                 EnableFilter = false,
                 EnableReactionRoles = false,
                 EnableStarboard = false,
+                EnableNegaStars = false,
 
                 GuildRoles = new List<GuildRole>(),
                 StarboardIgnoredChannels = new List<ulong>(),
@@ -38,6 +39,7 @@ namespace Yuki.Services.Database
                 NsfwChannels = new List<ulong>(),
                 ModeratorRoles = new List<ulong>(),
                 AdministratorRoles = new List<ulong>(),
+                NegaStarIgnoredChannels = new List<ulong>(),
 
                 Commands = new List<GuildCommand>(),
                 Settings = new List<GuildSetting>(),
@@ -50,6 +52,7 @@ namespace Yuki.Services.Database
                 WordFilter = new List<string>(),
 
                 StarRequirement = 10,
+                NegaStarRequirement = 20,
 
                 WelcomeChannel = 0,
                 StarboardChannel = 0,
@@ -74,13 +77,6 @@ namespace Yuki.Services.Database
                 }
                 else
                 {
-                    if(config.StarboardIgnoredChannels == null)
-                    {
-                        config.StarboardIgnoredChannels = new List<ulong>();
-
-                        configs.Update(config);
-                    }
-
                     return config;
                 }
             }
@@ -141,7 +137,6 @@ namespace Yuki.Services.Database
 
                     SetWelcome(message, guildId);
                 }
-
 
                 config.WelcomeMessage = message;
 
@@ -422,6 +417,22 @@ namespace Yuki.Services.Database
                 if (!config.Equals(default(GuildConfiguration)))
                 {
                     config.EnableStarboard = state;
+
+                    configs.Update(config);
+                }
+            }
+        }
+        
+        public static void ToggleNegaStar(ulong guildId, bool state)
+        {
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
+
+                if (!config.Equals(default(GuildConfiguration)))
+                {
+                    config.EnableNegaStars = state;
 
                     configs.Update(config);
                 }
@@ -764,6 +775,22 @@ namespace Yuki.Services.Database
                 }
             }
         }
+        
+        public static void SetNegaStarRequirement(int numStars, ulong guildId)
+        {
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
+
+                if(!config.Equals(default(GuildConfiguration)))
+                {
+                    config.NegaStarRequirement = numStars;
+
+                    configs.Update(config);
+                }
+            }
+        }
 
         public static void SetStarboardChannel(ulong channelId, ulong guildId)
         {
@@ -801,6 +828,35 @@ namespace Yuki.Services.Database
                     else
                     {
                         config.StarboardIgnoredChannels.Add(channelId);
+                    }
+
+                    configs.Update(config);
+                }
+            }
+
+            return enabled;
+        }
+        
+        public static bool ToggleNegastarInChannel(ulong channelId, ulong guildId)
+        {
+            bool enabled = false;
+
+            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
+            {
+                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
+
+                if(!config.Equals(default(GuildConfiguration)))
+                {
+                    enabled = !config.NegaStarIgnoredChannels.Contains(channelId);
+
+                    if (!enabled)
+                    {
+                        config.NegaStarIgnoredChannels.Remove(channelId);
+                    }
+                    else
+                    {
+                        config.NegaStarIgnoredChannels.Add(channelId);
                     }
 
                     configs.Update(config);

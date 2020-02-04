@@ -21,6 +21,7 @@ namespace Yuki.Data.Objects.Database
         public bool EnableFilter { get; set; }
         public bool EnableReactionRoles { get; set; }
         public bool EnableStarboard { get; set; }
+        public bool EnableNegaStars { get; set; }
 
         public string WelcomeMessage { get; set; }
         public string GoodbyeMessage { get; set; }
@@ -30,6 +31,7 @@ namespace Yuki.Data.Objects.Database
         public string Prefix { get; set; } /* Custom prefix for server */
 
         public int StarRequirement { get; set; }
+        public int NegaStarRequirement { get; set; }
 
         public ulong WelcomeChannel { get; set; }
         public ulong StarboardChannel { get; set; }
@@ -51,6 +53,7 @@ namespace Yuki.Data.Objects.Database
         public List<ulong> CacheIgnoredChannels { get; set; }
         public List<ulong> LevelIgnoredChannels { get; set; }
         public List<ulong> StarboardIgnoredChannels { get; set; }
+        public List<ulong> NegaStarIgnoredChannels { get; set; }
         public List<ulong> AutoBanUsers { get; set; }    /* Users to ban when they join */
         public List<ulong> NsfwChannels { get; set; }
         public List<ulong> AssignableRoles { get; set; }

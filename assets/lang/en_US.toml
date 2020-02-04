@@ -339,8 +339,9 @@ command_addpatron_usage = "y!addpatron 1234567890"
 
 command_removepatron_desc = "Remove a user's patron status"
 command_removepatron_usage = "y!removepatron 1234567890"
-        
 
+command_donators_desc = "Show a list of people that have donated to Yuki"
+command_donators_usage = "y!donators"
 
 #Strings
 require_permission_manage_roles = "Sorry! I need the permission Manage Roles to run this command."
@@ -683,3 +684,8 @@ booster_since = "Booster Since"
 archiving = "Archiving...This *might* take a long time, so be patient!"
 edited = "Edited"
 archiving_done = "Archival complete! Your file:"
+
+negastar_enabled_in_channel = "Negastar is enabled in this channel!"
+negastar_disabled_in_channel = "Negastar is disabled in this channel!"
+negastar_channel_ignored = "Messages will no longer be affected by Negastar in this channel"
+negastar_requirement_set = "Negastar requirement set!"

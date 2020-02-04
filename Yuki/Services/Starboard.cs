@@ -13,14 +13,10 @@ namespace Yuki.Services
 {
     public class Starboard
     {
+        public const string Emote = "⭐";
+
         public static async void Manage(IUserMessage message, ITextChannel channel, SocketReaction reaction, bool isDeleteCheck = false)
         {
-            if (channel is IDMChannel)
-            {
-                return;
-            }
-
-
             IGuild guild = (channel as IGuildChannel).Guild;
 
             IGuildUser user = await guild.GetUserAsync(message.Author.Id);
@@ -31,11 +27,10 @@ namespace Yuki.Services
 
             IMessage msg = default;
 
-            /* Starboard */
             if (!config.Equals(null) && config.EnableStarboard && !(reaction.User.Value.IsBot || message.Author.Id == reaction.UserId) &&
                 config.StarboardIgnoredChannels != null && !config.StarboardIgnoredChannels.Contains(message.Channel.Id))
             {
-                int starCount = message.Reactions.Keys.Select(r => r.Name == "⭐") != null ? message.Reactions.FirstOrDefault(r => r.Key.Name == "⭐").Value.ReactionCount : 0;
+                int starCount = message.Reactions.Keys.Select(r => r.Name == Emote) != null ? message.Reactions.FirstOrDefault(r => r.Key.Name == Emote).Value.ReactionCount : 0;
 
                 bool starUpdated = false;
 
@@ -47,7 +42,7 @@ namespace Yuki.Services
 
                         if (messageEmbed.Footer.HasValue)
                         {
-                            if (messageEmbed.Footer.Value.Text.StartsWith('⭐') && messageEmbed.Footer.Value.Text.Contains(message.Id.ToString()))
+                            if (messageEmbed.Footer.Value.Text.StartsWith(Emote) && messageEmbed.Footer.Value.Text.Contains(message.Id.ToString()))
                             {
                                 msg = imessage;
 
@@ -70,7 +65,7 @@ namespace Yuki.Services
                         .WithDescription($"[{content}]({message.GetJumpUrl()})")
                         .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
                         .AddField(lang.GetString("starboard_field_channel"), ((ITextChannel)message.Channel).Mention, true)
-                        .WithFooter($"⭐ {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
+                        .WithFooter($"{Emote} {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
                         .WithColor(Color.Gold);
 
                 if (message.Attachments != null && message.Attachments.Count > 0)

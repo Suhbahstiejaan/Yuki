@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Nett;
+using Newtonsoft.Json.Linq;
 using Qmmands;
 using System.Collections.Generic;
 using System.IO;
@@ -15,16 +16,16 @@ namespace Yuki.Core
 
         public static void LoadLanguages()
         {
-            if(!Directory.Exists(FileDirectories.LangRoot))
+            if (!Directory.Exists(FileDirectories.LangRoot))
             {
                 Directory.CreateDirectory(FileDirectories.LangRoot);
             }
 
-            if(Languages.Count < 1)
+            if (Languages.Count < 1)
             {
                 string[] langFiles = Directory.GetFiles(FileDirectories.LangRoot);
 
-                for(int i = 0; i < langFiles.Length; i++)
+                for (int i = 0; i < langFiles.Length; i++)
                 {
                     Language lang = Toml.ReadFile<Language>(langFiles[i]);
 
@@ -32,7 +33,7 @@ namespace Yuki.Core
                 }
             }
 
-            if(Languages.Count < 1)
+            if (Languages.Count < 1)
             {
                 Languages.Add("none", new Language());
             }
@@ -42,7 +43,7 @@ namespace Yuki.Core
 
         public static void Reload()
         {
-            if(Languages.Count > 0)
+            if (Languages.Count > 0)
             {
                 Languages.Clear();
                 LoadLanguages();
@@ -51,7 +52,7 @@ namespace Yuki.Core
 
         public static Language GetLanguage(string code)
         {
-            if(Languages.ContainsKey(code))
+            if (Languages.ContainsKey(code))
             {
                 return Languages[code];
             }
@@ -65,12 +66,12 @@ namespace Yuki.Core
         {
             string langCode = "en_US";
 
-            if(context.Channel is IGuildChannel)
+            if (context.Channel is IGuildChannel)
             {
                 langCode = GuildSettings.GetGuild(context.Guild.Id).LangCode;
             }
 
-            if(string.IsNullOrWhiteSpace(langCode))
+            if (string.IsNullOrWhiteSpace(langCode))
             {
                 langCode = "en_US";
             }
@@ -78,42 +79,27 @@ namespace Yuki.Core
             return GetLanguage(langCode);
         }
 
-        public static void CheckCommands(CommandService commands)
+        public static void CheckTranslations()
         {
             foreach (KeyValuePair<string, Language> lang in Languages)
             {
-                Logger.Write(LogLevel.Info, $"Checking translations for language {lang.Key}...");
+                Logger.Write(LogLevel.Status, $"Checking translations for language w/code {lang.Value.Code}...");
 
-                int validTranslations = commands.GetAllCommands().Count;
+                JObject json = JObject.FromObject(lang.Value.Strings);
+                int invalidTranslations = 0;
 
-                foreach (Command c in commands.GetAllCommands())
+                foreach (JProperty property in json.Properties())
                 {
-                    string cmd = $"command_{c.Name.ToLower().Replace(' ', '_')}_desc";
-
-                    if (Languages[lang.Key].GetString(cmd) == cmd)
+                    if (lang.Value.GetString(property.Name) == property.Name)
                     {
-                        Logger.Write(LogLevel.Warning, $"No translation found for {cmd}");
-                        validTranslations--;
+                        Logger.Write(LogLevel.Warning, $"   No translation found for {property.Name}");
+                        invalidTranslations++;
                     }
-                }
+                };
 
-                if (validTranslations != commands.GetAllCommands().Count)
+                if(invalidTranslations > 0)
                 {
-                    int numMissing = commands.GetAllCommands().Count - validTranslations;
-
-                    if (numMissing > 1)
-                    {
-                        Logger.Write(LogLevel.Warning, $"{numMissing} commands are missing a translation. Please consider adding them!");
-                    }
-                    else
-                    {
-                        Logger.Write(LogLevel.Warning, $"A command is missing a translation. Please consider adding adding it!");
-                    }
-                }
-                else
-                {
-                    Logger.Write(LogLevel.Info,
-                        $"All command translations validated for {lang.Key}. This does not guarantee ALL string translations exist!");
+                    Logger.Write(LogLevel.Status, $"{lang.Value.Code} has {invalidTranslations} strings without a translation!");
                 }
             }
         }

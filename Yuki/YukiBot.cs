@@ -53,6 +53,8 @@ namespace Yuki
 
             token = Config.GetConfig(reload: true).token;
 
+            Localization.CheckTranslations();
+
             await Discord.LoginAsync(token);
             Logger.Write(LogLevel.Info, $"Client has been recommended {Discord.ShardCount} shards");
 
@@ -63,7 +65,6 @@ namespace Yuki
             CreateEventManager();
 
             Logger.Write(LogLevel.Debug, $"Found {Discord.CommandService.GetAllCommands().Count} command(s)");
-            Localization.CheckCommands(Discord.CommandService);
 
             UserMessageCache.LoadFromFile();
 

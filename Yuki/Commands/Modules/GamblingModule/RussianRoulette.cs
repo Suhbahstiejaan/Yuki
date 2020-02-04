@@ -85,7 +85,7 @@ namespace Yuki.Commands.Modules.GamblingModule
             {
                 RussianRouletteService.GetGuild(Context.Guild.Id).RemovePlayerFromGame(Context.Channel.Id, Context.User.Id);
 
-                await ReplyAsync(Language.GetString("roulette_game_quit").Replace("%user%", Context.User.Username));
+                await ReplyAsync(Language.GetString("roulette_quit").Replace("%user%", Context.User.Username));
             }
 
             [Command("kick")]

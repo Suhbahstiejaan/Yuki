@@ -265,10 +265,9 @@ namespace Yuki.Events
 
             GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
 
-
+            NegaStars.Manage(msg, channel as ITextChannel, reaction);
             Starboard.Manage(msg, channel as ITextChannel, reaction);
-            ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: false);
-
+            //ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: false);
         }
 
         public static async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
@@ -288,7 +287,7 @@ namespace Yuki.Events
 
 
             Starboard.Manage(msg, channel as ITextChannel, reaction, true);
-            ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: true);
+            //ReactionRoles.Manage(msg, channel as ITextChannel, reaction, isUnreact: true);
         }
 
         /*public static async Task ReactionsCleared(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel) { }*/

@@ -50,6 +50,9 @@ namespace Yuki.Commands.Modules.ModerationModule
                 case "starboard":
                     GuildSettings.ToggleStarboard(guildId, true);
                     break;
+                case "negastar":
+                    GuildSettings.ToggleNegaStar(guildId, true);
+                    break;
                 default:
                     found = false;
                     break;
