@@ -119,12 +119,6 @@ namespace Yuki.Services
                 if (!starUpdated && starCount >= config.StarRequirement)
                 {
                     await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
-
-                    // server-specific for testing, REMOVE
-                    if(guild.Id == 181543198081024000)
-                    {
-                        await (await guild.GetTextChannelAsync(500390658570453002)).SendMessageAsync($"{reaction.User.Value.Username}#{reaction.User.Value.Discriminator} (id {reaction.User.Value.Id}) starred message with id {message.Id}\nContent: {message.Content}");
-                    }
                 }
 
                 if (isDeleteCheck && starCount < 1 && msg != default)
