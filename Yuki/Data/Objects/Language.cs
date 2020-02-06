@@ -718,5 +718,7 @@ namespace Yuki.Data.Objects
         public string negastar_disabled_in_channel { get; set; }
         public string negastar_channel_ignored { get; set; }
         public string negastar_requirement_set { get; set; }
+
+        public string crash { get; set; }
     }
 }

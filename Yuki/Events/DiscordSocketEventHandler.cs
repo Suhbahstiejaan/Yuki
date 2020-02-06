@@ -312,7 +312,8 @@ namespace Yuki.Events
             EmbedBuilder embed = new EmbedBuilder()
                 .WithColor(Color.Green)
                 .WithAuthor(lang.GetString("event_user_join"))
-                .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})");
+                .AddField(lang.GetString("event_user_name"), $"{user.Username}#{user.Discriminator} ({user.Id})", true)
+                .AddField(lang.GetString("uinf_acc_create"), user.CreatedAt, true);
 
             await LogMessage(embed, user.Guild.Id);
 

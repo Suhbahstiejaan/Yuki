@@ -94,19 +94,23 @@ namespace Yuki.Core
 
             if(logLevel == LogLevel.Error)
             {
-                WriteCrashFile(o.ToString());
+                WriteCrashFile(o);
             }
         }
 
-        private static void WriteCrashFile(string text)
+        private static void WriteCrashFile(object o)
         {
-            string crashFileName = FileDirectories.LogRoot + $"crash {DateTime.Now.ToLongDateString()} at {DateTime.Now.ToShortTimeString()}.log";
-
-            File.Copy(latestLogFile, crashFileName);
-
             if (Version.ReleaseType != ReleaseType.Development)
             {
-                throw new Exception(text);
+                string log = FileDirectories.LogRoot + $"crash {DateTime.Now.ToLongDateString()} at {DateTime.Now.ToShortTimeString()}.log";
+
+                File.Copy(latestLogFile, log);
+
+                // send a crash log to the Yuki server so that I get notified asap
+                YukiBot.Discord.Client.GetGuild(620246094756184064).GetTextChannel(674991918647869461).SendFileAsync(log, Localization.GetLanguage("en_US").GetString("crash"));
+                File.Delete(log); // cleanup
+
+                //throw new Exception(text);
             }
         }
     }

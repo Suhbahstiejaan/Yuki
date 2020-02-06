@@ -689,3 +689,5 @@ negastar_enabled_in_channel = "Negastar is enabled in this channel!"
 negastar_disabled_in_channel = "Negastar is disabled in this channel!"
 negastar_channel_ignored = "Messages will no longer be affected by Negastar in this channel"
 negastar_requirement_set = "Negastar requirement set!"
+
+crash = "Looks like Yuki crashed! Here's the log:"

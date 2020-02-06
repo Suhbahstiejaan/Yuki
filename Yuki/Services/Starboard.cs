@@ -23,8 +23,6 @@ namespace Yuki.Services
 
             GuildConfiguration config = GuildSettings.GetGuild(guild.Id);
 
-            Language lang = Localization.GetLanguage(config.LangCode);
-
             IMessage msg = default;
 
             if (!config.Equals(null) && config.EnableStarboard && !(reaction.User.Value.IsBot || message.Author.Id == reaction.UserId) &&
@@ -55,70 +53,17 @@ namespace Yuki.Services
                     }
                 }
 
-                string content = message.Content;
-
-                if(string.IsNullOrWhiteSpace(content))
-                {
-                    content = lang.GetString("starboard_jump_to");
-                }
-
-                EmbedBuilder embed = new EmbedBuilder()
-                        .WithAuthor(lang.GetString("starboard_title"))
-                        .WithDescription($"[{content}]({message.GetJumpUrl()})")
-                        .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
-                        .AddField(lang.GetString("starboard_field_channel"), ((ITextChannel)message.Channel).Mention, true)
-                        .WithFooter($"{Emote} {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
-                        .WithColor(Color.Gold);
-
-                if (message.Attachments != null && message.Attachments.Count > 0)
-                {
-                    string attachments = string.Empty;
-                    string imageUrl = null;
-
-                    IAttachment[] _attachments = message.Attachments.ToArray();
-
-                    foreach (string str in message.Content.Split(' '))
-                    {
-                        if (str.IsMedia())
-                        {
-                            if (imageUrl == null)
-                            {
-                                imageUrl = str;
-                            }
-
-                            attachments += $"[{Path.GetFileName(message.Content)}]({str})\n";
-                        }
-                    }
-
-                    if (imageUrl == null)
-                    {
-                        imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsMedia())?.ProxyUrl;
-                    }
-
-                    for (int i = 0; i < _attachments.Length; i++)
-                    {
-                        attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
-                    }
-
-                    if (imageUrl != null)
-                    {
-                        embed.WithImageUrl(imageUrl);
-                    }
-
-                    embed.AddField(lang.GetString("message_attachments"), attachments);
-                }
-
                 if (msg != default)
                 {
                     await ((IUserMessage)msg).ModifyAsync(a =>
                     {
-                        a.Embed = embed.Build();
+                        a.Embed = CreateEmbed(message, config, starCount).Build();
                     });
                 }
 
                 if (!starUpdated && starCount >= config.StarRequirement)
                 {
-                    await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, embed.Build());
+                    await (await guild.GetTextChannelAsync(config.StarboardChannel)).SendMessageAsync("", false, CreateEmbed(message, config, starCount).Build());
                 }
 
                 if (isDeleteCheck && starCount < 1 && msg != default)
@@ -126,6 +71,66 @@ namespace Yuki.Services
                     await msg.DeleteAsync();
                 }
             }
+        }
+
+        private static EmbedBuilder CreateEmbed(IUserMessage message, GuildConfiguration config, int starCount)
+        {
+            Language lang = Localization.GetLanguage(config.LangCode);
+
+            string content = message.Content;
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                content = lang.GetString("starboard_jump_to");
+            }
+
+            EmbedBuilder embed = new EmbedBuilder()
+                    .WithAuthor(lang.GetString("starboard_title"))
+                    .WithDescription($"[{content}]({message.GetJumpUrl()})")
+                    .AddField(lang.GetString("starboard_field_author"), message.Author.Mention, true)
+                    .AddField(lang.GetString("starboard_field_channel"), ((ITextChannel)message.Channel).Mention, true)
+                    .WithFooter($"{Emote} {starCount} {lang.GetString("starboard_stars")} ({message.Id})").WithCurrentTimestamp()
+                    .WithColor(Color.Gold);
+
+            if (message.Attachments != null && message.Attachments.Count > 0)
+            {
+                string attachments = string.Empty;
+                string imageUrl = null;
+
+                IAttachment[] _attachments = message.Attachments.ToArray();
+
+                foreach (string str in message.Content.Split(' '))
+                {
+                    if (str.IsMedia())
+                    {
+                        if (imageUrl == null)
+                        {
+                            imageUrl = str;
+                        }
+
+                        attachments += $"[{Path.GetFileName(message.Content)}]({str})\n";
+                    }
+                }
+
+                if (imageUrl == null)
+                {
+                    imageUrl = _attachments.FirstOrDefault(img => img.ProxyUrl.IsMedia())?.ProxyUrl;
+                }
+
+                for (int i = 0; i < _attachments.Length; i++)
+                {
+                    attachments += $"[{_attachments[i].Filename}]({_attachments[i].ProxyUrl})\n";
+                }
+
+                if (imageUrl != null)
+                {
+                    embed.WithImageUrl(imageUrl);
+                }
+
+                embed.AddField(lang.GetString("message_attachments"), attachments);
+            }
+
+            return embed;
         }
     }
 }
