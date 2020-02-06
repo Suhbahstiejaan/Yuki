@@ -332,14 +332,11 @@ namespace Yuki.Events
 
                 if (!warnedUser.Equals(default))
                 {
-                    List<GuildWarningAction> warnings = GuildSettings.GetGuild(user.Guild.Id).WarningActions;
+                    GuildWarningAction roleAction = GuildSettings.GetGuild(user.Guild.Id).WarningActions.Where(action => action.WarningAction == WarningAction.GiveRole).LastOrDefault();
 
-                    for (int i = 0; i < warnedUser.Warning; ++i)
+                    if(!roleAction.Equals(default(GuildWarningAction)))
                     {
-                        if (warnings.Count <= (i - 1) && warnings[i].WarningAction == WarningAction.GiveRole)
-                        {
-                            await user.AddRoleAsync(user.Guild.GetRole(warnings[i].RoleId));
-                        }
+                        await user.AddRoleAsync(user.Guild.GetRole(roleAction.RoleId));
                     }
                 }
             }
