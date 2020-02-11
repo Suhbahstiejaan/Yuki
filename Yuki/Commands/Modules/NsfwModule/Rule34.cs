@@ -13,7 +13,7 @@ namespace Yuki.Commands.Modules.NsfwModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task R34Async(params string[] tags)
         {
-            YukiImage image = await new ImageSearch().GetImage(ImageType.Rule34, tags, null, true);
+            YukiImage image = await ImageSearch.GetImage(ImageType.Rule34, tags, null, true);
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()

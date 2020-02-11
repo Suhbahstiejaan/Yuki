@@ -1,13 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Yuki.API;
-using Yuki.Core;
 using Yuki.Data.Objects.API.ImageObject;
 
 namespace Yuki.Data.Objects.API
@@ -20,45 +15,60 @@ namespace Yuki.Data.Objects.API
 
         public async Task<YukiImage> GetImage(string[] tags, string[] blacklisted, bool forceExplicit)
         {
+            YukiImage[] images = await GetImages(tags, blacklisted, forceExplicit);
+
+            return images[new Random().Next(images.Length)];
+        }
+
+        public async Task<YukiImage[]> GetImages(string[] tags, string[] blacklisted, bool forceExplicit)
+        {
             string _url = url;
 
-            _url += string.Join("+", tags);
+            if (tags != null)
+            {
+                _url += string.Join("+", tags);
+            }
+
             _url += $"&limit={limit}";
 
-            List<YukiImage> imgs = ImageSearch.GetImages(tags, ImageType.Rule34);
+            List<YukiImage> images = new List<YukiImage>();
 
-            if (imgs == default || imgs.Count < 1)
+            Rule34[] rule34 = await ImageSearch.FetchImages<Rule34>(_url);
+
+            for (int i = 0; i < rule34.Length; i++)
             {
-                Rule34[] r34 = await ImageSearch.FetchImages<Rule34>(_url);
+                string[] imgTags = rule34[i].tags.Split(' ');
 
-                for (int i = 0; i < r34.Length; i++)
+                bool skip = false;
+
+                for (int j = 0; j < blacklisted.Length; j++)
                 {
-                    string[] imgTags = r34[i].tags.Split(' ');
-
-                    if (!imgTags.ToList().Any(tag => blacklisted.Contains(tag)))
+                    if (imgTags.Contains(blacklisted[j]))
                     {
-                        YukiImage img = new YukiImage();
-
-                        img.type = ImageType.Rule34;
-                        img.isExplicit = true;
-                        img.url = $"https://us.rule34.xxx/images/{r34[i].directory}/{r34[i].image}";
-                        img.page = "https://rule34.xxx/index.php?page=post&s=view&id=" + r34[i].id;
-                        img.tags = imgTags;
-                        img.source = "https://rule34.xxx/index.php?page=post&s=view&id=" + r34[i].id;
-
-                        ImageSearch.CacheImage(img);
+                        skip = true;
+                        break;
                     }
                 }
 
-                imgs = ImageSearch.GetImages(tags, ImageType.Rule34);
-
-                if (imgs == default || imgs.Count < 1)
+                if (skip)
                 {
-                    return default;
+                    continue;
                 }
+
+                YukiImage img = new YukiImage();
+
+                img.type = ImageType.Rule34;
+                img.isExplicit = true;
+                img.url = $"https://us.rule34.xxx/images/{rule34[i].directory}/{rule34[i].image}";
+                img.page = "https://rule34.xxx/index.php?page=post&s=view&id=" + rule34[i].id;
+                img.tags = imgTags;
+                img.source = "https://rule34.xxx/index.php?page=post&s=view&id=" + rule34[i].id;
+
+                images.Add(img);
+
             }
 
-            return imgs[new Random().Next(imgs.Count)];
+            return images.ToArray();
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Yuki.API;
 using Yuki.Core;
@@ -19,48 +16,59 @@ namespace Yuki.Data.Objects.API
 
         public async Task<YukiImage> GetImage(string[] tags, string[] blacklisted, bool forceExplicit)
         {
-            string _url = url;
+            YukiImage[] images = await GetImages(tags, blacklisted, forceExplicit);
 
-            _url += string.Join("+", tags);
+            return images[new Random().Next(images.Length)];
+        }
+
+        public async Task<YukiImage[]> GetImages(string[] tags, string[] blacklisted, bool forceExplicit)
+        {
+            string _url = url;
+            
+            if (tags != null)
+            {
+                _url += string.Join("+", tags);
+            }
+
             _url += $"&limit={limit}";
 
+            List<YukiImage> images = new List<YukiImage>();
 
-            List<YukiImage> imgs = ImageSearch.GetImages(tags, ImageType.Gelbooru);
+            Gelbooru[] gelbooru = await ImageSearch.FetchImages<Gelbooru>(_url);
 
-            if (imgs == default || imgs.Count < 1)
+            for (int i = 0; i < gelbooru.Length; i++)
             {
-                Gelbooru[] gelbooru = await ImageSearch.FetchImages<Gelbooru>(_url);
+                string[] imgTags = gelbooru[i].tags.Split(' ');
 
-                for (int i = 0; i < gelbooru.Length; i++)
+                bool skip = false;
+
+                for (int j = 0; j < blacklisted.Length; j++)
                 {
-                    string[] imgTags = gelbooru[i].tags.Split(' ');
-
-                    if (!imgTags.ToList().Any(tag => blacklisted.Contains(tag)))
+                    if (imgTags.Contains(blacklisted[j]))
                     {
-                        YukiImage img = new YukiImage();
-
-                        img.type = ImageType.Gelbooru;
-                        img.isExplicit = (gelbooru[i].rating == "e" || gelbooru[i].rating == "q");
-                        img.url = gelbooru[i].file_url;
-                        img.page = $"https://gelbooru.com/index.php?page=post&s=view&id={gelbooru[i].id}";
-                        img.tags = imgTags;
-                        img.source = gelbooru[i].source;
-
-                        ImageSearch.CacheImage(img);
+                        skip = true;
+                        break;
                     }
                 }
 
-                imgs = ImageSearch.GetImages(tags, ImageType.Gelbooru);
-
-                Console.WriteLine(imgs.Count);
-
-                if (imgs == default || imgs.Count < 1)
+                if (skip)
                 {
-                    return default;
+                    continue;
                 }
+
+                YukiImage img = new YukiImage();
+
+                img.type = ImageType.Gelbooru;
+                img.isExplicit = (gelbooru[i].rating == "e" || gelbooru[i].rating == "q");
+                img.url = gelbooru[i].file_url;
+                img.page = $"https://gelbooru.com/index.php?page=post&s=view&id={gelbooru[i].id}";
+                img.tags = imgTags;
+                img.source = gelbooru[i].source;
+
+                images.Add(img);
             }
 
-            return imgs[new Random().Next(imgs.Count)];
+            return images.ToArray();
         }
     }
 }

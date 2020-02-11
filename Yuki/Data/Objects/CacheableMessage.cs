@@ -1,9 +1,11 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 
 namespace Yuki.Data.Objects
 {
-    public struct YukiMessage
+    public struct CacheableMessage
     {
+        [BsonId]
         public ulong Id { get; set; }
 
         public DateTime SendDate { get; set; }

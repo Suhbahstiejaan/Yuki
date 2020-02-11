@@ -16,46 +16,61 @@ namespace Yuki.Data.Objects.API
 
         public async Task<YukiImage> GetImage(string[] tags, string[] blacklisted, bool forceExplicit)
         {
+            YukiImage[] images = await GetImages(tags, blacklisted, forceExplicit);
+
+            return images[new Random().Next(images.Length)];
+        }
+
+        public async Task<YukiImage[]> GetImages(string[] tags, string[] blacklisted, bool forceExplicit)
+        {
             string _url = url;
-            
+
             /* Danbooru limits searches to 2 tags */
-            _url += string.Join("+", tags.Take(2));
+            if(tags != null)
+            {
+                _url += string.Join("+", tags.Take(2));
+            }
+
             _url += $"&limit={limit}";
 
-            List<YukiImage> imgs = ImageSearch.GetImages(tags, ImageType.Danbooru);
+            List<YukiImage> images = new List<YukiImage>();
 
-            if (imgs == default || imgs.Count < 1)
+            Danbooru[] danbooru = await ImageSearch.FetchImages<Danbooru>(_url);
+            
+            for (int i = 0; i < danbooru.Length; i++)
             {
-                Danbooru[] danbooru = await ImageSearch.FetchImages<Danbooru>(_url);
+                string[] imgTags = danbooru[i].tag_string.Split(' ');
 
-                for (int i = 0; i < danbooru.Length; i++)
+                bool skip = false;
+
+                for (int j = 0; j < blacklisted.Length; j++)
                 {
-                    string[] imgTags = danbooru[i].tag_string.Split(' ');
-
-                    if (!imgTags.ToList().Any(tag => blacklisted.Contains(tag)))
+                    if (imgTags.Contains(blacklisted[j]))
                     {
-                        YukiImage img = new YukiImage();
-
-                        img.type = ImageType.Danbooru;
-                        img.isExplicit = (danbooru[i].rating == "e" || danbooru[i].rating == "q");
-                        img.url = danbooru[i].large_file_url;
-                        img.page = $"https://danbooru.donmai.us/posts/{danbooru[i].id}";
-                        img.tags = imgTags;
-                        img.source = danbooru[i].source;
-
-                        ImageSearch.CacheImage(img);
+                        skip = true;
+                        break;
                     }
                 }
 
-                imgs = ImageSearch.GetImages(tags, ImageType.Danbooru);
-
-                if (imgs == default || imgs.Count < 1)
+                if (skip)
                 {
-                    return default;
+                    continue;
                 }
+
+                YukiImage img = new YukiImage();
+
+                img.type = ImageType.Danbooru;
+                img.isExplicit = (danbooru[i].rating == "e" || danbooru[i].rating == "q");
+                img.url = danbooru[i].large_file_url;
+                img.page = $"https://danbooru.donmai.us/posts/{danbooru[i].id}";
+                img.tags = imgTags;
+                img.source = danbooru[i].source;
+
+                images.Add(img);
+
             }
 
-            return imgs[new Random().Next(imgs.Count)];
+            return images.ToArray();
         }
     }
 }

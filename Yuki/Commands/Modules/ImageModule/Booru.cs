@@ -12,7 +12,7 @@ namespace Yuki.Commands.Modules.ImageModule
     {
         [Command("booru")]
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
-        public async Task BooruAsync(string[] tags = null)
+        public async Task BooruAsync(params string[] tags)
         {
             bool isExplicit = false;
 
@@ -21,7 +21,7 @@ namespace Yuki.Commands.Modules.ImageModule
                 isExplicit = GuildSettings.IsChannelExplicit(Context.Channel.Id, Context.Guild.Id);
             }
 
-            YukiImage image = await new ImageSearch().GetImage(ImageType.Gelbooru, tags, null, forceExplicit: isExplicit);
+            YukiImage image = await ImageSearch.GetImage(ImageType.Gelbooru, tags, null, forceExplicit: isExplicit);
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()

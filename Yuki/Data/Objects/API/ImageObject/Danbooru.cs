@@ -1,9 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Yuki.Data.Objects.API.ImageObject
 {
+    public class Datum
+    {
+        public int delay { get; set; }
+        public string file { get; set; }
+    }
+
+    public class PixivUgoiraFrameData
+    {
+        public int id { get; set; }
+        public int post_id { get; set; }
+        public List<Datum> data { get; set; }
+        public string content_type { get; set; }
+    }
+
     public class Danbooru
     {
         public int id { get; set; }
@@ -11,7 +24,6 @@ namespace Yuki.Data.Objects.API.ImageObject
         public int uploader_id { get; set; }
         public int score { get; set; }
         public string source { get; set; }
-        public string md5 { get; set; }
         public DateTime? last_comment_bumped_at { get; set; }
         public string rating { get; set; }
         public int image_width { get; set; }
@@ -19,10 +31,9 @@ namespace Yuki.Data.Objects.API.ImageObject
         public string tag_string { get; set; }
         public bool is_note_locked { get; set; }
         public int fav_count { get; set; }
-        public string file_ext { get; set; }
-        public DateTime? last_noted_at { get; set; }
+        public object last_noted_at { get; set; }
         public bool is_rating_locked { get; set; }
-        public object parent_id { get; set; }
+        public int? parent_id { get; set; }
         public bool has_children { get; set; }
         public int? approver_id { get; set; }
         public int tag_count_general { get; set; }
@@ -45,9 +56,8 @@ namespace Yuki.Data.Objects.API.ImageObject
         public bool has_active_children { get; set; }
         public int bit_flags { get; set; }
         public int tag_count_meta { get; set; }
-        public object keeper_data { get; set; }
         public string uploader_name { get; set; }
-        public bool has_large { get; set; }
+        public bool? has_large { get; set; }
         public bool has_visible_children { get; set; }
         public string children_ids { get; set; }
         public bool is_favorited { get; set; }
@@ -56,8 +66,11 @@ namespace Yuki.Data.Objects.API.ImageObject
         public string tag_string_copyright { get; set; }
         public string tag_string_artist { get; set; }
         public string tag_string_meta { get; set; }
+        public string md5 { get; set; }
+        public string file_ext { get; set; }
         public string file_url { get; set; }
         public string large_file_url { get; set; }
         public string preview_file_url { get; set; }
+        public PixivUgoiraFrameData pixiv_ugoira_frame_data { get; set; }
     }
 }

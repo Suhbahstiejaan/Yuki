@@ -16,7 +16,7 @@ namespace Yuki.Data
     {
         public static readonly int MaxMessages = 1000;
 
-        private static List<YukiMessage> Messages = new List<YukiMessage>();
+        private static List<CacheableMessage> Messages = new List<CacheableMessage>();
 
         public static void AddOrUpdate(SocketMessage message)
         {
@@ -54,7 +54,7 @@ namespace Yuki.Data
 
             if(UserSettings.CanGetMsgs(message.Author.Id))
             {
-                YukiMessage yukiMessage = new YukiMessage()
+                CacheableMessage yukiMessage = new CacheableMessage()
                 {
                     Id = message.Id,
 
@@ -66,10 +66,10 @@ namespace Yuki.Data
                     Content = messageContent
                 };
 
-                YukiMessage foundMessage = Messages.FirstOrDefault(msg => msg.Id == message.Id || msg.Content.ToLower() == messageContent.ToLower());
+                CacheableMessage foundMessage = Messages.FirstOrDefault(msg => msg.Id == message.Id || msg.Content.ToLower() == messageContent.ToLower());
                 int index = Messages.IndexOf(foundMessage);
 
-                if(!foundMessage.Equals(default(YukiMessage)))
+                if(!foundMessage.Equals(default(CacheableMessage)))
                 {
                     if(foundMessage.Id == message.Id)
                     {
@@ -107,7 +107,7 @@ namespace Yuki.Data
             }
         }
 
-        public static List<YukiMessage> GetMessagesFromUser(ulong userId)
+        public static List<CacheableMessage> GetMessagesFromUser(ulong userId)
         {
             return Messages.Where(msg => msg.AuthorId == userId).ToList();
         }
@@ -119,17 +119,17 @@ namespace Yuki.Data
         
         public static void Delete(ulong id)
         {
-            YukiMessage _message = Messages.FirstOrDefault(msg => msg.Id == id);
+            CacheableMessage _message = Messages.FirstOrDefault(msg => msg.Id == id);
             
-            if(!_message.Equals(default(YukiMessage)))
+            if(!_message.Equals(default(CacheableMessage)))
             {
                 Messages.Remove(_message);
             }
         }
         
-        public static void Delete(YukiMessage msg)
+        public static void Delete(CacheableMessage msg)
         {
-            Logger.Write(LogLevel.Debug, msg.Equals(default(YukiMessage)));
+            Logger.Write(LogLevel.Debug, msg.Equals(default(CacheableMessage)));
             if(Messages.Contains(msg))
             {
                 Messages.Remove(msg);
@@ -138,7 +138,7 @@ namespace Yuki.Data
 
         public static void DeleteWithChannelId(ulong id)
         {
-            YukiMessage[] msgs = Messages.Where(msg => msg.ChannelId == id).ToArray();
+            CacheableMessage[] msgs = Messages.Where(msg => msg.ChannelId == id).ToArray();
 
             for(int i = 0; i < msgs.Length; i++)
             {
@@ -148,7 +148,7 @@ namespace Yuki.Data
 
         public static void DeleteFromUser(ulong id)
         {
-            YukiMessage[] msgs = Messages.Where(msg => msg.AuthorId == id).ToArray();
+            CacheableMessage[] msgs = Messages.Where(msg => msg.AuthorId == id).ToArray();
 
             for (int i = 0; i < msgs.Length; i++)
             {
@@ -160,7 +160,7 @@ namespace Yuki.Data
         {
             if(File.Exists(FileDirectories.Messages))
             {
-                Messages = JsonConvert.DeserializeObject<List<YukiMessage>>(File.ReadAllText(FileDirectories.Messages));
+                Messages = JsonConvert.DeserializeObject<List<CacheableMessage>>(File.ReadAllText(FileDirectories.Messages));
             }
         }
 

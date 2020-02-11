@@ -25,7 +25,7 @@ namespace Yuki.Data.Objects
             string scrambled = "";
 
             ScramblrData[] data;
-            YukiMessage[] user1_data = UserMessageCache.GetMessagesFromUser(user1.Id).ToArray();
+            CacheableMessage[] user1_data = UserMessageCache.GetMessagesFromUser(user1.Id).ToArray();
 
             Random yRandom = new Random();
 
@@ -123,7 +123,7 @@ namespace Yuki.Data.Objects
         /// <param name="dat1"></param>
         /// <param name="dat2"></param>
         /// <returns></returns>
-        private ScramblrData[] GetLikeMessages(YukiMessage[] dat1, YukiMessage[] dat2)
+        private ScramblrData[] GetLikeMessages(CacheableMessage[] dat1, CacheableMessage[] dat2)
         {
             List<ScramblrData> data = new List<ScramblrData>();
 
@@ -144,7 +144,7 @@ namespace Yuki.Data.Objects
         /// <param name="data"></param>
         /// <param name="msg1"></param>
         /// <param name="msg2"></param>
-        private void VerifyData(ref List<ScramblrData> data, YukiMessage msg1, YukiMessage msg2)
+        private void VerifyData(ref List<ScramblrData> data, CacheableMessage msg1, CacheableMessage msg2)
         {
             if (msg1.Id != msg2.Id)
             {
@@ -175,12 +175,12 @@ namespace Yuki.Data.Objects
 
     public class ScramblrData
     {
-        public YukiMessage Message1;
-        public YukiMessage Message2;
+        public CacheableMessage Message1;
+        public CacheableMessage Message2;
 
         public string likeWord;
 
-        public ScramblrData(string word, YukiMessage msg1, YukiMessage msg2)
+        public ScramblrData(string word, CacheableMessage msg1, CacheableMessage msg2)
         {
             likeWord = word;
 

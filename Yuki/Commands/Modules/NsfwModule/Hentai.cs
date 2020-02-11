@@ -16,7 +16,7 @@ namespace Yuki.Commands.Modules.NsfwModule
         [Cooldown(1, 2, CooldownMeasure.Seconds, CooldownBucketType.User)]
         public async Task HentaiAsync(params string[] tags)
         {
-            YukiImage image = await new ImageSearch().GetAnimeImage(tags, null, forceExplicit: true);
+            YukiImage image = await ImageSearch.GetAnimeImage(tags, null, forceExplicit: true);
 
             EmbedBuilder embed = new EmbedBuilder()
                 .WithAuthor(new EmbedAuthorBuilder()

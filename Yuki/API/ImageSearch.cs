@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Yuki.Core;
@@ -21,10 +20,8 @@ namespace Yuki.API
         None
     }
 
-    public class ImageSearch
+    public static class ImageSearch
     {
-        public static List<YukiImage> CachedImages = new List<YukiImage>();
-
         private static List<string> defaultBlackList = new List<string>()
         {
             "loli",
@@ -35,19 +32,6 @@ namespace Yuki.API
             "kid",
             "cub"
         };
-
-        public static void CacheImage(YukiImage image)
-        {
-            if(!CachedImages.Any(img => img.url == image.url))
-            {
-                if(string.IsNullOrWhiteSpace(image.source))
-                {
-                    image.source = image.page;
-                }
-
-                CachedImages.Add(image);
-            }
-        }
 
         public static string[] GetTags(string[] tag)
         {
@@ -73,44 +57,13 @@ namespace Yuki.API
             return tags.ToArray();
         }
 
-        public static List<YukiImage> GetImages(string[] associatedTags, ImageType imgType = ImageType.None)
-        {
-            List<YukiImage> imgs = new List<YukiImage>();
-
-            string[] tags = GetTags(associatedTags);
-
-            if (associatedTags != null && associatedTags.Length > 0)
-            {
-                imgs = CachedImages.Where(img => img.tags.Any(tag => tags.Contains(tag))).ToList();
-
-                foreach(YukiImage img in imgs.ToList())
-                {
-                    if(!tags.Any(tag => img.tags.Contains(tag)))
-                    {
-                        imgs.Remove(img);
-                    }
-                }
-            }
-            else
-            {
-                imgs = CachedImages;
-            }
-
-            if (imgType == ImageType.None)
-            {
-                return imgs;
-            }
-
-            return imgs.Where(img => img.type == imgType).ToList();
-        }
-
-        public async Task<YukiImage> GetImage(ImageType type, string[] tags, string[] blacklistedTags, bool forceExplicit)
+        public static async Task<YukiImage[]> GetImages(ImageType type, string[] tags, string[] blacklistedTags, bool forceExplicit)
         {
             IImageSearcherObject search = default;
 
             List<string> blacklist = new List<string>();
 
-            switch(type)
+            switch (type)
             {
                 case ImageType.Danbooru:
                     search = new DanbooruImageSearch();
@@ -128,15 +81,22 @@ namespace Yuki.API
 
             blacklist.AddRange(defaultBlackList);
 
-            if(blacklistedTags != null)
+            if (blacklistedTags != null)
             {
                 blacklist.AddRange(blacklistedTags);
             }
 
-            return await search.GetImage(tags, blacklist.ToArray(), forceExplicit);
+            return await search.GetImages(tags, blacklist.ToArray(), forceExplicit);
         }
 
-        public async Task<YukiImage> GetAnimeImage(string[] searchedTags, string[] blacklistedTags, bool forceExplicit)
+        public static async Task<YukiImage> GetImage(ImageType type, string[] tags, string[] blacklistedTags, bool forceExplicit)
+        {
+            YukiImage[] images = await GetImages(type, tags, blacklistedTags, forceExplicit);
+            
+            return images[new Random().Next(images.Length)];
+        }
+
+        public static async Task<YukiImage> GetAnimeImage(string[] searchedTags, string[] blacklistedTags, bool forceExplicit)
         {
             List<string> blacklist = new List<string>();
 
@@ -149,21 +109,12 @@ namespace Yuki.API
 
             string[] tags = GetTags(searchedTags);
 
-            YukiImage[] images = CachedImages.Where(img => (img.type == ImageType.Danbooru || img.type == ImageType.Gelbooru) &&
-                                    img.tags.Any(tag => tags.Contains(tag) && !blacklist.Contains(tag))).ToArray();
+            List<YukiImage> images = new List<YukiImage>();
 
-            if(images == null || images.Length < 50)
-            {
-                await GetImage(ImageType.Danbooru, searchedTags, blacklistedTags, forceExplicit);
-                await GetImage(ImageType.Gelbooru, searchedTags, blacklistedTags, forceExplicit);
-
-                await GetAnimeImage(searchedTags, blacklistedTags, forceExplicit);
-            }
-
-            images = CachedImages.Where(img => (img.type == ImageType.Danbooru || img.type == ImageType.Gelbooru) &&
-                                    img.tags.Any(tag => tags.Contains(tag) && !blacklist.Contains(tag))).ToArray();
-
-            return images[new Random().Next(images.Length)];
+            images.AddRange(await GetImages(ImageType.Danbooru, searchedTags, blacklistedTags, forceExplicit));
+            images.AddRange(await GetImages(ImageType.Gelbooru, searchedTags, blacklistedTags, forceExplicit));
+            
+            return images[new Random().Next(images.Count)];
         }
 
         public static async Task<T[]> FetchImages<T>(string pageUrl)

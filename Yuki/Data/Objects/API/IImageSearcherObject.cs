@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Yuki.Data.Objects.API
 {
@@ -10,5 +7,6 @@ namespace Yuki.Data.Objects.API
         string url { get; set; }
 
         Task<YukiImage> GetImage(string[] tags, string[] blacklisted, bool forceExplicit);
+        Task<YukiImage[]> GetImages(string[] tags, string[] blacklisted, bool forceExplicit);
     }
 }
