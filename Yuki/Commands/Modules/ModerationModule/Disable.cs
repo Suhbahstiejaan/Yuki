@@ -35,15 +35,6 @@ namespace Yuki.Commands.Modules.ModerationModule
                 case "roles":
                     GuildSettings.ToggleRoles(guildId, false);
                     break;
-                case "reactionrole":
-                    GuildSettings.ToggleReactionRoles(guildId, false);
-                    break;
-                case "warnings":
-                    GuildSettings.ToggleWarnings(guildId, false);
-                    break;
-                case "muting":
-                    GuildSettings.ToggleMute(guildId, false);
-                    break;
                 case "filter":
                     GuildSettings.ToggleFilter(guildId, false);
                     break;

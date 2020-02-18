@@ -62,47 +62,11 @@ namespace Yuki
 
             await Discord.Client.StartAsync();
 
-            CreateEventManager();
-
             Logger.Write(LogLevel.Debug, $"Found {Discord.CommandService.GetAllCommands().Count} command(s)");
 
             UserMessageCache.LoadFromFile();
 
             await Task.Delay(-1);
-        }
-
-        public void CreateEventManager()
-        {
-            System.Timers.Timer eventManager = new System.Timers.Timer();
-
-            eventManager.Interval = TimeSpan.FromSeconds(1).TotalMilliseconds;
-
-            eventManager.Elapsed += new System.Timers.ElapsedEventHandler((EventHandler)async delegate (object sender, EventArgs e)
-            {
-                DateTime now = DateTime.UtcNow;
-
-                List<YukiReminder> reminders = UserSettings.GetReminders(now);
-                List<GuildConfiguration> configs = GuildSettings.GetGuilds();
-
-                foreach (YukiReminder reminder in reminders.ToArray())
-                {
-                    await Discord.Client.GetUser(reminder.AuthorId).SendMessageAsync(reminder.Message);
-
-                    UserSettings.RemoveReminder(reminder);
-                }
-
-                foreach (GuildConfiguration config in configs)
-                {
-                    foreach (GuildMutedUser muted in config.MutedUsers.Where(m => m.Time <= now))
-                    {
-                        await Discord.Client.GetGuild(config.Id).GetUser(muted.Id).RemoveRoleAsync(Discord.Client.GetGuild(config.Id).GetRole(config.MuteRole));
-
-                        GuildSettings.RemoveMute(muted, config.Id);
-                    }
-                }
-            });
-
-            eventManager.Start();
         }
 
         public void Stop()

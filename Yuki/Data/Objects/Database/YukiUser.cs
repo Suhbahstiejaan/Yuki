@@ -1,5 +1,4 @@
 ﻿using LiteDB;
-using System.Collections.Generic;
 
 namespace Yuki.Data.Objects.Database
 {
@@ -12,7 +11,5 @@ namespace Yuki.Data.Objects.Database
 
         public bool IsPatron { get; set; }
         public bool CanGetMsgs { get; set; }
-
-        public List<YukiReminder> Reminders { get; set; }
     }
 }

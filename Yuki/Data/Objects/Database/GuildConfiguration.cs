@@ -12,14 +12,11 @@ namespace Yuki.Data.Objects.Database
         public bool EnableWelcome { get; set; }
         public bool EnableGoodbye { get; set; }
         public bool EnableCache { get; set; }
-        public bool EnableMute { get; set; }
         public bool EnableNsfw { get; set; }
-        public bool EnableWarnings { get; set; }
         public bool EnablePrefix { get; set; }
         public bool EnableRoles { get; set; }
         public bool EnableLogging { get; set; }
         public bool EnableFilter { get; set; }
-        public bool EnableReactionRoles { get; set; }
         public bool EnableStarboard { get; set; }
         public bool EnableNegaStars { get; set; }
 
@@ -36,15 +33,10 @@ namespace Yuki.Data.Objects.Database
         public ulong WelcomeChannel { get; set; }
         public ulong StarboardChannel { get; set; }
         public ulong LogChannel { get; set; }
-        public ulong MuteRole { get; set; }
         
         public List<GuildSetting> Settings { get; set; }
         public List<GuildCommand> Commands { get; set; }
-        public List<GuildMutedUser> MutedUsers { get; set; }
-        public List<GuildWarnedUser> WarnedUsers { get; set; }
-        public List<GuildWarningAction> WarningActions { get; set; }
-        public List<ReactionMessage> ReactableMessages { get; set; }
-
+        
         public List<GuildRole> GuildRoles { get; set; }
 
         public List<string> NsfwBlacklist { get; set; }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Yuki.API;
 using Yuki.Data.Objects;
-using Yuki.Services.Database;
 
 namespace Yuki.Commands.Modules.ImageModule
 {

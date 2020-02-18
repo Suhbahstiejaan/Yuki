@@ -325,21 +325,6 @@ namespace Yuki.Events
 
                 await user.Guild.GetTextChannel(guild.WelcomeChannel).SendMessageAsync(StringReplacements.GetReplacement(null, guild.WelcomeMessage, msg));
             }
-
-            if (guild.EnableWarnings)
-            {
-                GuildWarnedUser warnedUser = GuildSettings.GetWarnedUser(user.Id, user.Guild.Id);
-
-                if (!warnedUser.Equals(default))
-                {
-                    GuildWarningAction roleAction = GuildSettings.GetGuild(user.Guild.Id).WarningActions.Where(action => action.WarningAction == WarningAction.GiveRole).LastOrDefault();
-
-                    if(!roleAction.Equals(default(GuildWarningAction)))
-                    {
-                        await user.AddRoleAsync(user.Guild.GetRole(roleAction.RoleId));
-                    }
-                }
-            }
         }
 
         public static async Task UserLeft(SocketGuildUser user)

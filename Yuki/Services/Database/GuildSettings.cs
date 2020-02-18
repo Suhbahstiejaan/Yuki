@@ -22,12 +22,9 @@ namespace Yuki.Services.Database
                 EnableNsfw = false,
                 EnableCache = false,
                 EnableLogging = false,
-                EnableMute = false,
                 EnablePrefix = false,
                 EnableRoles = false,
-                EnableWarnings = false,
                 EnableFilter = false,
-                EnableReactionRoles = false,
                 EnableStarboard = false,
                 EnableNegaStars = false,
 
@@ -43,11 +40,7 @@ namespace Yuki.Services.Database
 
                 Commands = new List<GuildCommand>(),
                 Settings = new List<GuildSetting>(),
-                WarnedUsers = new List<GuildWarnedUser>(),
-                WarningActions = new List<GuildWarningAction>(),
-                MutedUsers = new List<GuildMutedUser>(),
-                ReactableMessages = new List<ReactionMessage>(),
-
+                
                 NsfwBlacklist = new List<string>(),
                 WordFilter = new List<string>(),
 
@@ -57,8 +50,7 @@ namespace Yuki.Services.Database
                 WelcomeChannel = 0,
                 StarboardChannel = 0,
                 LogChannel = 0,
-                MuteRole = 0,
-
+                
                 WelcomeMessage = null,
                 GoodbyeMessage = null
             };
@@ -167,27 +159,6 @@ namespace Yuki.Services.Database
 
 
                 config.GoodbyeMessage = message;
-
-                configs.Update(config);
-            }
-        }
-
-        public static void SetMuteRole(ulong roleId, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (config.Equals(default(GuildConfiguration)))
-                {
-                    AddOrUpdate(DefaultConfig(guildId));
-
-                    SetMuteRole(roleId, guildId);
-                }
-
-
-                config.MuteRole = roleId;
 
                 configs.Update(config);
             }
@@ -317,38 +288,6 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void ToggleMute(ulong guildId, bool state)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    config.EnableMute = !config.EnableMute;
-
-                    configs.Update(config);
-                }
-            }
-        }
-
-        public static void ToggleWarnings(ulong guildId, bool state)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    config.EnableWarnings = state;
-
-                    configs.Update(config);
-                }
-            }
-        }
-
         public static void ToggleRoles(ulong guildId, bool state)
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
@@ -391,22 +330,6 @@ namespace Yuki.Services.Database
                 if (!config.Equals(default(GuildConfiguration)))
                 {
                     config.EnableFilter = state;
-
-                    configs.Update(config);
-                }
-            }
-        }
-
-        public static void ToggleReactionRoles(ulong guildId, bool state)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    config.EnableReactionRoles = state;
 
                     configs.Update(config);
                 }
@@ -501,25 +424,6 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void AddWarningAction(GuildWarningAction action, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    if (!config.WarningActions.Any(a => a.Warning == action.Warning))
-                    {
-                        config.WarningActions.Add(action);
-                    }
-
-                    configs.Update(config);
-                }
-            }
-        }
-
         public static void AddRole(ulong roleId, ulong guildId, bool isTeamRole)
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
@@ -584,41 +488,6 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void AddWarning(ulong userId, string reason, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
-
-                    int index = config.WarnedUsers.IndexOf(user);
-
-                    if (user.Equals(default))
-                    {
-                        user = new GuildWarnedUser()
-                        {
-                            Id = userId,
-                            Warning = 0,
-                            WarningReasons = new List<string>()
-                        };
-                        config.WarnedUsers.Add(user);
-                        index = config.WarnedUsers.IndexOf(user);
-                    }
-
-                    user.Warning++;
-                    user.WarningReasons.Add(reason);
-
-                    config.WarnedUsers[index] = user;
-
-                    configs.Update(config);
-                }
-            }
-        }
-
         public static void AddRoleModerator(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
@@ -650,25 +519,6 @@ namespace Yuki.Services.Database
                     if (!config.AdministratorRoles.Contains(roleId))
                     {
                         config.AdministratorRoles.Add(roleId);
-                    }
-
-                    configs.Update(config);
-                }
-            }
-        }
-
-        public static void AddMute(GuildMutedUser user, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    if (!config.MutedUsers.Any(u => u.Id == user.Id))
-                    {
-                        config.MutedUsers.Add(user);
                     }
 
                     configs.Update(config);
@@ -731,34 +581,6 @@ namespace Yuki.Services.Database
                     if (!config.WordFilter.Any(str => str.ToLower() == filter.ToLower()))
                     {
                         config.WordFilter.Add(filter);
-                    }
-
-                    configs.Update(config);
-                }
-            }
-        }
-
-        public static void AddReactionMessage(ReactionMessage message, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    if (config.ReactableMessages == null)
-                    {
-                        config.ReactableMessages = new List<ReactionMessage>();
-                    }
-
-                    if (!config.ReactableMessages.Any(msg => msg.Id == message.Id))
-                    {
-                        config.ReactableMessages.Add(message);
-                    }
-                    else
-                    {
-                        config.ReactableMessages[config.ReactableMessages.IndexOf(config.ReactableMessages.FirstOrDefault(msg => msg.Id == message.Id))].Reactions.AddRange(message.Reactions);
                     }
 
                     configs.Update(config);
@@ -931,25 +753,6 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemoveWarningAction(int num, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if(!config.Equals(default(GuildConfiguration)))
-                {
-                    if (config.WarningActions.Any(a => a.Warning == num))
-                    {
-                        config.WarningActions.Remove(config.WarningActions.FirstOrDefault(a => a.Warning == num));
-                    }
-
-                    configs.Update(config);
-                }
-            }
-        }
-
         public static void RemoveRole(ulong roleId, ulong guildId)
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
@@ -984,35 +787,6 @@ namespace Yuki.Services.Database
                     }
 
                     configs.Update(config);
-                }
-            }
-        }
-
-        public static void RemoveWarning(ulong userId, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if(!config.Equals(default(GuildConfiguration)))
-                {
-                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
-
-                    int index = config.WarnedUsers.IndexOf(user);
-
-                    if (!user.Equals(default))
-                    {
-                        if(user.Warning > 0)
-                        {
-                            user.Warning--;
-                            user.WarningReasons.Remove(user.WarningReasons[user.Warning++]);
-
-                            config.WarnedUsers[index] = user;
-
-                            configs.Update(config);
-                        }
-                    }
                 }
             }
         }
@@ -1055,50 +829,9 @@ namespace Yuki.Services.Database
             }
         }
 
-        public static void RemoveMute(GuildMutedUser user, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    if (config.MutedUsers.Any(u => u.Id == user.Id))
-                    {
-                        config.MutedUsers.Remove(user);
-                    }
-
-                    configs.Update(config);
-                }
-            }
-        }
         #endregion
 
         #region Gets
-
-        public static GuildWarnedUser GetWarnedUser(ulong userId, ulong guildId)
-        {
-            using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
-            {
-                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
-                GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
-
-                if (!config.Equals(default(GuildConfiguration)))
-                {
-                    GuildWarnedUser user = config.WarnedUsers.FirstOrDefault(u => u.Id == userId);
-
-                    int index = config.WarnedUsers.IndexOf(user);
-
-                    if (!user.Equals(default))
-                    {
-                        return user;
-                    }
-                }
-
-                return default;
-            }
-        }
 
         public static bool IsChannelExplicit(ulong channelId, ulong guildId)
         {
