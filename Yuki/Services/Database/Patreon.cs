@@ -17,7 +17,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<PatronCommand> commands = db.GetCollection<PatronCommand>(collection);
+                ILiteCollection<PatronCommand> commands = db.GetCollection<PatronCommand>(collection);
 
                 if (!commands.FindAll().Any(cmd => cmd.UserId == command.UserId))
                 {
@@ -34,7 +34,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<PatronCommand> commands = db.GetCollection<PatronCommand>(collection);
+                ILiteCollection<PatronCommand> commands = db.GetCollection<PatronCommand>(collection);
 
                 if (!commands.FindAll().Any(cmd => cmd.UserId == userId))
                 {

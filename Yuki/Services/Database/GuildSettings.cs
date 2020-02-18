@@ -67,7 +67,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == id);
                 if (config.Equals(default(GuildConfiguration)))
@@ -92,7 +92,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 return configs.FindAll().ToList();
             }
@@ -102,7 +102,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 if (configs.FindById(config.Id).Equals(default(GuildConfiguration)))
                 {
@@ -119,7 +119,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 if (!configs.FindAll().FirstOrDefault(conf => conf.Id == guildId).Equals(default(GuildConfiguration)))
                 {
@@ -133,7 +133,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
                 
@@ -154,7 +154,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
 
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
                 
@@ -176,7 +176,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (config.Equals(default(GuildConfiguration)))
@@ -197,7 +197,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (config.Equals(default(GuildConfiguration)))
@@ -218,7 +218,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (config.Equals(default(GuildConfiguration)))
@@ -241,7 +241,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -257,7 +257,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -273,7 +273,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -289,7 +289,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -305,7 +305,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -321,7 +321,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -337,7 +337,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -353,7 +353,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -369,7 +369,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -385,7 +385,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -401,7 +401,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -417,7 +417,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -433,7 +433,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -451,7 +451,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -470,7 +470,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -486,7 +486,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -505,7 +505,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -524,7 +524,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -548,7 +548,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -572,7 +572,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -588,7 +588,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -623,7 +623,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(config.Equals(default(GuildConfiguration)))
@@ -642,7 +642,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -661,7 +661,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -680,7 +680,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -699,7 +699,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -718,7 +718,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(config.Equals(default(GuildConfiguration)))
@@ -742,7 +742,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -770,7 +770,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -786,7 +786,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -802,7 +802,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -820,7 +820,7 @@ namespace Yuki.Services.Database
 
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -849,7 +849,7 @@ namespace Yuki.Services.Database
 
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -878,7 +878,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -897,7 +897,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -916,7 +916,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (config.Equals(default(GuildConfiguration)))
@@ -935,7 +935,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -954,7 +954,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -973,7 +973,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -992,7 +992,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if(!config.Equals(default(GuildConfiguration)))
@@ -1021,7 +1021,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1040,7 +1040,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1059,7 +1059,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1081,7 +1081,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1104,7 +1104,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1120,7 +1120,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1139,7 +1139,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))
@@ -1158,7 +1158,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase($"filename={FileDirectories.SettingsDB}; journal=false"))
             {
-                LiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
+                ILiteCollection<GuildConfiguration> configs = db.GetCollection<GuildConfiguration>(collection);
                 GuildConfiguration config = configs.FindAll().FirstOrDefault(conf => conf.Id == guildId);
 
                 if (!config.Equals(default(GuildConfiguration)))

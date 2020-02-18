@@ -27,7 +27,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == user.Id))
                 {
@@ -44,7 +44,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -57,7 +57,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -72,7 +72,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.IsPatron))
                 {
@@ -87,7 +87,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 YukiUser user = users.FindAll().FirstOrDefault(usr => usr.Id == userId);
                 
@@ -99,7 +99,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == reminder.AuthorId))
                 {
@@ -120,7 +120,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Id == reminder.AuthorId))
                 {
@@ -136,7 +136,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (users.FindAll().Any(usr => usr.Reminders != null && usr.Reminders.Count > 0))
                 {
@@ -151,7 +151,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if(!users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -169,7 +169,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == userId))
                 {
@@ -187,7 +187,7 @@ namespace Yuki.Services.Database
         {
             using (LiteDatabase db = new LiteDatabase(FileDirectories.SettingsDB))
             {
-                LiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
+                ILiteCollection<YukiUser> users = db.GetCollection<YukiUser>(collection);
 
                 if (!users.FindAll().Any(usr => usr.Id == userId))
                 {
