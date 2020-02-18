@@ -16,11 +16,6 @@ namespace Yuki.Commands.Modules.ImageModule
         {
             bool isExplicit = false;
 
-            if (!(Context.Channel is IDMChannel))
-            {
-                isExplicit = GuildSettings.IsChannelExplicit(Context.Channel.Id, Context.Guild.Id);
-            }
-
             YukiImage image = await ImageSearch.GetImage(ImageType.Gelbooru, tags, null, forceExplicit: isExplicit);
 
             EmbedBuilder embed = new EmbedBuilder()
