@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Qmmands;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Yuki.Commands;
 using Yuki.Data.Objects;
 using Yuki.Services.Database;
@@ -85,17 +86,18 @@ namespace Yuki.Core
             {
                 Logger.Write(LogLevel.Status, $"Checking translations for language w/code {lang.Value.Code}...");
 
-                JObject json = JObject.FromObject(lang.Value.Strings);
+                List<JProperty> properties = JObject.FromObject(lang.Value.Strings).Properties().ToList();
                 int invalidTranslations = 0;
 
-                foreach (JProperty property in json.Properties())
+
+                foreach (JProperty property in properties)
                 {
                     if (lang.Value.GetString(property.Name) == property.Name)
                     {
                         Logger.Write(LogLevel.Warning, $"   No translation found for {property.Name}");
                         invalidTranslations++;
                     }
-                };
+                }
 
                 if(invalidTranslations > 0)
                 {

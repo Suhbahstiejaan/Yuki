@@ -9,9 +9,6 @@ command_avatar_usage = "y!avatar | y!avatar @exampleuser#1234"
 command_ping_desc = "Pong! Find out the bot's latency"
 command_ping_usage = "y!ping"
 
-command_repeat_desc = "I repeat the next message you say!"
-command_repeat_usage = "y!repeat text"
-
 command_cry_desc = "Send a crying gif/image"
 command_cry_usage = "y!cry"
 
@@ -174,18 +171,6 @@ command_remwarn_usage = "y!remwarn @JoeyWowey#4665"
 command_slowmode_desc = "Enable slowmdoe in a channel"
 command_slowmode_usage = "y!slowmode 5m"
 
-command_unmute_desc = "Unmute a member"
-command_unmute_usage = "y!unmute @JoeyWowey#4665"
-
-command_warn_desc = "Warn a member"
-command_warn_usage = "y!warn @JoeyWowey#4665 Stealing the cookies"
-
-command_mute_desc = "Mute a member"
-command_mute_usage = "y!mute @JoeyWowey#4665 30m Spam"
-
-command_warnings_desc = "View the warnings a member has"
-command_warnings_usage = "y!warnings @JoeyWowey#4665"
-
 command_roles_desc = "View the custom roles set in a server"
 command_roles_usage = "y!roles"
 
@@ -201,9 +186,6 @@ command_clear_with_usage = "y!clear with 30 LOL"
 command_emojify_desc = "Turn text into emojis"
 command_emojify_usage = "y!emojify hello world!"
 
-command_pokeinfo_desc = "Get info on a pokemon"
-command_pokeinfo_usage = "y!pokeinfo bulbasaur"
-
 command_reverse_desc = "Reverse txet"
 command_reverse_usage = "y!reverse text"
 
@@ -212,12 +194,6 @@ command_scramblr_usage = "y!scramblr\ny!scramblr @JoeyWowey#4665"
 
 command_setlang_desc = "Sets the response language for your server. Specify `default` to return to the default language."
 command_setlang_usage = "y!scramblr\ny!scramblr @JoeyWowey#4665"
-
-command_selfrole_add_desc = "Add a self-assignable role to your server"
-command_selfrole_add_usage = "y!selfrole add @Gamer\ny!selfrole add Gamer"
-
-command_selfrole_remove_desc = "Remove a role from the list of self-assignable roles in your server"
-command_selfrole_remove_usage = "y!selfrole remove @Gamer\ny!selfrole remove Gamer"
 
 command_welcome_setchannel_desc = "Set the channel welcome and goodbye messages are sent in"
 command_welcome_setchannel_usage = "y!welcome setchannel #welcome"
@@ -239,12 +215,6 @@ command_nsfw_blacklist_add_usage = "y!blacklist add yiff"
 
 command_nsfw_blacklist_remove_desc = "Remove a tag from the tag blacklist"
 command_nsfw_blacklist_remove_usage = "y!blacklist remove yiff"
-
-command_muterole_set_desc = "Set the role that gets assigned when someone is muted"
-command_muterole_set_usage = "y!muterole set @Muted"
-
-command_muterole_remove_desc = "Unassign the mute role"
-command_muterole_remove_usage = "y!muterole remove"
 
 command_logchannel_set_desc = "Set the channel log messages are sent to"
 command_logchannel_set_usage = "y!logchannel set #logs"
@@ -309,21 +279,11 @@ command_starboard_channel_usage = "y!starboard channel #starboard"
 command_starboard_ignore_desc = "Enable or disable Starboard starring in a channel by running the command in that channel. Rerun the command to re-enable Starboard starring."
 command_starboard_ignore_usage = "y!starboard ignore"
 
-command_reactionrole_desc = "Add a reaction role"
-command_reactionrole_usage = "y!reactionrole :emote: Role Name"
-
-command_warningaction_add_desc = "Add a warning action"
-command_warningaction_add_usage = "y!warningaction add 1 ban\ny!warningaction add 1 kick\ny!warningaction add 1 giverole"
-
-command_warningaction_remove_desc = "Remove a warning action"
-command_warningaction_remove_usage = "y!warningaction remove 1"
-
 command_blacklist_add_desc = "Add a word/Regex filter to the blacklist"
 command_blacklist_add_usage = "y!blacklist add porn"
 
 command_blacklist_remove_desc = "Remove a blacklisted word/Regex filter (done by index!)"
 command_blacklist_remove_usage = "y!blacklist remove 1"
-
 
 command_scramblr_info_desc = "Get info on scramblr"
 command_scramblr_info_usage = "y!scramblr info"
@@ -454,7 +414,6 @@ serverinfo_roles = "Roles"
 serverinfo_roles_view = "To view a list of roles, run y!serverroles"
 serverinfo_created = "Created"
 
-eightball_response_title = "Magic 8Ball says"
 eightball_response_1 = "It is certain."
 eightball_response_2 = "It is decidedly so."
 eightball_response_3 = "Without a doubt."
@@ -539,14 +498,6 @@ help_description = "Description"
 remindme_success = ":thumbsup: Got it, %user%! I'll remember to remind you about this:\n\n%reminder%"
 remindme_datetime_short = "Sorry! The time must be greater than or equal to 1 minute."
 
-pokemon_weight = "Weight"
-pokemon_height = "Height"
-pokemon_base_exp = "Base EXP"
-pokemon_abilities = "Abilities"
-pokemon_types = "Types"
-pokemon_evolution_chain = "Evolution Chain"
-pokemon_not_found = "No pokemon found with this name"
-
 donate_title = "Wanna support me? Donate!"
 donate_desc = "If you're interested in supporting me, you can become a patron or send some some money to my creator through PayPal!\n\n[Become a patron](%patreon%)\n[Donate through PayPal](%paypal%)\n\nTo get donator perks, include your discord name and tag in your donation message (ie Vee#0003). You can donate any amount, but please keep in mind that donations under $1.00 will not be considered for the donator's rank."
 
@@ -558,10 +509,6 @@ safe = "Safe"
 user_banned = "***%user% has been banned. Reason: %banreason%***"
 user_kicked = "***%user% has been kicked. Reason: %kickreason%***"
 user_unbanned = "***%user% has been unbanned.***"
-user_muted = "***%user% has been muted. Reason: %mutereason%***"
-user_unmuted = "***%user% has been unmuted.***"
-user_warned = "***%user% has been warned. Reason: %warnreason%***"
-user_remwarn = "***%user% has had a warning removed.***"
 no_reason = "Unknown Reason"
 
 clear_result = "%msgs% cleared!"
@@ -604,8 +551,6 @@ goodbye_message_removed = "Goodbye message removed"
 channel_not_found = "%channelname% not found"
 log_channel_added = "%channelname% is now the log channel"
 log_channel_removed = "Log channel has been removed"
-muterole_set = "Mute Role has been set to `%rolename%%"
-muterole_removed = "Mute Role is no longer `%rolename%`"
 nsfw_channel_added = "%channelname% is now an NSFW channel"
 nsfw_channel_removed = "%channelname% is no longer an NSFW channel"
 nsfw_tag_blacklisted = "`%tag%` has been blacklisted"
@@ -633,7 +578,6 @@ event_user_join = "New Member"
 event_user_leave = "Member Left"
 event_user_unban = "Member Unbanned"
 
-
 bot_stats_title = "Bot Statistics"
 bot_stats_users_unique = "Unique Users"
 bot_stats_guilds = "Guilds"
@@ -659,13 +603,6 @@ starboard_stars = "stars"
 starboard_enabled_in_channel = "Starboard starring is enabled in this channel."
 starboard_disabled_in_channel = "Starboard starring is disabled in this channel."
 starboard_channel_ignored = "Starboard starring has been toggled for this channel. Status: %channel_status%"
-
-warningaction_added = "Added warning action %action%"
-warningaction_invalid_action = "Action invalid!"
-warningaction_exists = "Warning action already exists! Please remove it first."
-warningaction_removed = "Warning action removed"
-warningaction_not_found = "Warning action not found!"
-warningaction_role_name = "Please type the name of the role you'd like to set for this action."
 
 patron_added = "Patron added"
 patron_removed = "Patron removed"
